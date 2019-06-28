@@ -32,12 +32,23 @@ public class Main {
         //
 
         Pin pin = PCA9685Pin.ALL[0];
-        provider.setPwm(pin, 100, 900);
+        provider.setPwm(pin, 100);
 
         System.out.println("Press <Enter> to turn...");
         new Scanner(System.in).nextLine();
 
-        provider.setPwm(pin, 900, 100);
+        provider.setPwm(pin, 900);
+
+        System.out.println("Press <Enter> to exit...");
+
+        new Scanner(System.in).nextLine();
+        for (int i = 0; i<400; i++){
+            provider.setPwm(pin, i*10);
+            provider.setPwm(pin, i);
+            Thread.sleep(20);
+            System.out.println(i);
+
+        }
 
 
         System.out.println("Exiting");
