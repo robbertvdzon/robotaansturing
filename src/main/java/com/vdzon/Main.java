@@ -35,16 +35,20 @@ public class Main {
         provider.setPwm(pin, 100);
 
         System.out.println("Press <Enter> to turn...");
-        new Scanner(System.in).nextLine();
+        String s = "100";
+        while (!s.equals("q")) {
+            s = new Scanner(System.in).nextLine();
+            System.out.println("use " + s);
+            provider.setPwm(pin, Integer.parseInt(s));
+        }
 
-        provider.setPwm(pin, 900);
 
         System.out.println("Press <Enter> to exit...");
 
         new Scanner(System.in).nextLine();
         for (int i = 10; i<400; i++){
             provider.setPwm(pin, i*10);
-            provider.setPwm(pin, i);
+//            provider.setPwm(pin, i);
             Thread.sleep(20);
             System.out.println(i);
 
