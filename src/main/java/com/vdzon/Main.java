@@ -48,6 +48,14 @@ public class Main {
             int offPosition = checkForOverflow(pulseDuration * (i + 1));
             provider.setPwm(pin, onPosition, offPosition);
         }
+
+        for (int i = 0; i < 10; i++) {
+            Pin pin = PCA9685Pin.ALL[i];
+            int onPosition = checkForOverflow(offset * (i+1));
+            int offPosition = checkForOverflow(pulseDuration * (i + 2));
+            provider.setPwm(pin, onPosition, offPosition);
+        }
+
         // Set full ON
         provider.setAlwaysOn(PCA9685Pin.PWM_10);
         // Set full OFF
