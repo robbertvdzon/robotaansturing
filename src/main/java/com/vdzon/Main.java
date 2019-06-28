@@ -32,15 +32,8 @@ public class Main {
         //
 
         Pin pin = PCA9685Pin.ALL[0];
-        provider.setPwm(pin, 100);
+//        provider.setPwm(pin, 100);
 
-        System.out.println("Press <Enter> to turn...");
-        String s = "100";
-        while (!s.equals("q")) {
-            s = new Scanner(System.in).nextLine();
-            System.out.println("use " + s);
-            provider.setPwm(pin, Integer.parseInt(s));
-        }
 
 
         System.out.println("Press <Enter> to exit...");
@@ -54,6 +47,18 @@ public class Main {
 
         }
 
+        System.out.println("enter value");
+        String s = "100";
+        try {
+            while (!s.equals("q")) {
+                System.out.println("use " + s);
+                provider.setPwm(pin, Integer.parseInt(s));
+                s = new Scanner(System.in).nextLine();
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
 
         System.out.println("Exiting");
     }
