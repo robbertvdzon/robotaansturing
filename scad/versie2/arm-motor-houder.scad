@@ -26,16 +26,16 @@ difference(){
           cube([4,9,23], center=false);
         }      
         // steun rechtsachter
-        translate([28,10,0]){
-          cube([4,9,23], center=false);
+        translate([28,0,0]){
+          cube([4,10,23], center=false);
         }      
-        // steun linksvoor (later verhogen)
+        // steun linksvoor
         translate([13,41+10,0]){
-          cube([6,6,5], center=false);
+          cube([6,6,23], center=false);
         }      
-        // steun linksachter (later verhogen)
-        translate([13,10,0]){
-          cube([6,6,5], center=false);
+        // steun linksachter
+        translate([13,0,0]){
+          cube([6,6,23], center=false);
         }      
         
         translate([0,51-9,13]){
@@ -61,20 +61,18 @@ difference(){
         }			   
        
        
-/*
        // gat in steun rechtsachter
-       translate([26,3.5,0]){
+       translate([16,3,0]){
             rotate(a = [0,0,90]) {
                 cylinder(h=600, r=1, $fn=100, center=true);
             }
        }			   
        // gat in steun rechtsvoor
-       translate([26,35-2.5,0]){
+       translate([16,54,0]){
             rotate(a = [0,0,90]) {
                 cylinder(h=600, r=1, $fn=100, center=true);
             }
        }	
-*/       
        // uitsparing vloer
         translate([42,20,-10]){
           cube([20,50,20], center=false);

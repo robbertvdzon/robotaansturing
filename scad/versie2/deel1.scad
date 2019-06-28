@@ -6,10 +6,8 @@ union(){
 difference(){
 	union(){
         
-         translate([25,0,623]){
-            rotate(a = [90,0,0]) {
-                cylinder(h=3, r=625, $fn=300, center=true);
-            }
+         translate([0,-3,0]){
+           cube([51,3,23], center=false);
         }
 
 
@@ -26,21 +24,6 @@ difference(){
             }
        }			   
 
-        // uitsparing ronding
-         translate([25,0,623]){
-            rotate(a = [90,0,0]) {
-                cylinder(h=40, r=600, $fn=300, center=true);
-            }
-        }
-        translate([-20-1000,-5,-50]){
-           cube([1000,30,1000], center=false);
-        }
-        translate([71,-5,-5]){
-           cube([1000,30,1000], center=false);
-        }
-        translate([-1000,-5,300]){
-           cube([2000,30,2000], center=false);
-        }
 
 
         
