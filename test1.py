@@ -23,9 +23,16 @@ def setDirection(direction, ch):
 print "starting"
 setup()
 
+setDirection(80,0)
+setDirection(80,1)
+setDirection(80,2)
+setDirection(80,3)
+time.sleep(1) # allow to settle
+
 setDirection(90,0)
 setDirection(90,1)
 setDirection(90,2)
+setDirection(90,3)
 
 # for direction in range(0, 181, 1):
 #     setDirection(direction,0)
