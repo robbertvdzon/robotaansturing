@@ -42,7 +42,7 @@ public class Main {
         System.out.println("Press <Enter> to exit...");
 
         new Scanner(System.in).nextLine();
-        for (int i = 0; i<400; i++){
+        for (int i = 10; i<400; i++){
             provider.setPwm(pin, i*10);
             provider.setPwm(pin, i);
             Thread.sleep(20);
