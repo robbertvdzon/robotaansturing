@@ -40,7 +40,7 @@ public class Main {
         provider.setPwm(PCA9685Pin.ALL[4], 1500);
 
 
-        for (int i = 1500; i<2500; i++){
+        for (int i = 1500; i<2400; i+=2){
             provider.setPwm(PCA9685Pin.ALL[0], i);
 //            provider.setPwm(PCA9685Pin.ALL[1], i);
 //            provider.setPwm(PCA9685Pin.ALL[2], i);
@@ -51,7 +51,7 @@ public class Main {
 //                System.out.println(i);
 //            }
         }
-        for (int i = 2500; i>1100; i-=2){
+        for (int i = 2500; i>700; i-=2){
             provider.setPwm(PCA9685Pin.ALL[0], i);
 //            provider.setPwm(PCA9685Pin.ALL[1], i);
 //            provider.setPwm(PCA9685Pin.ALL[2], i);
@@ -62,7 +62,7 @@ public class Main {
 //                System.out.println(i);
 //            }
         }
-        for (int i = 1100; i<1500; i+=4){
+        for (int i = 700; i<1500; i+=2){
             provider.setPwm(PCA9685Pin.ALL[0], i);
 //            provider.setPwm(PCA9685Pin.ALL[1], i);
 //            provider.setPwm(PCA9685Pin.ALL[2], i);
