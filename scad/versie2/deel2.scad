@@ -43,7 +43,7 @@ difference(){
 
         translate([0,-55,11.5]){
             rotate(a = [0,90,0]) {
-                cylinder(h=300, r=3.9, $fn=100, center=true);
+                cylinder(h=300, r=3.7, $fn=100, center=true);
             }
         }	
 
