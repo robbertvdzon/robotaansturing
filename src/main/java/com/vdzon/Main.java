@@ -33,28 +33,28 @@ public class Main {
 
         Pin pin = PCA9685Pin.ALL[0];
 //        provider.setPwm(pin, 100);
-        provider.setPwm(PCA9685Pin.ALL[0], 2000);
-        provider.setPwm(PCA9685Pin.ALL[1], 2000);
-        provider.setPwm(PCA9685Pin.ALL[2], 2000);
-        provider.setPwm(PCA9685Pin.ALL[3], 2000);
-        provider.setPwm(PCA9685Pin.ALL[4], 2000);
+        provider.setPwm(PCA9685Pin.ALL[0], 1500);
+        provider.setPwm(PCA9685Pin.ALL[1], 1500);
+        provider.setPwm(PCA9685Pin.ALL[2], 1500);
+        provider.setPwm(PCA9685Pin.ALL[3], 1500);
+        provider.setPwm(PCA9685Pin.ALL[4], 1500);
 
 
-        for (int i = 2000; i<2500; i++){
-            provider.setPwm(pin, i);
-            Thread.sleep(2);
-            if (i%100==0) {
-                System.out.println(i);
-            }
-        }
-        for (int i = 2500; i>1500; i--){
-            provider.setPwm(pin, i);
-            Thread.sleep(2);
-            if (i%100==0) {
-                System.out.println(i);
-            }
-        }
         for (int i = 1500; i<2000; i++){
+            provider.setPwm(pin, i);
+            Thread.sleep(2);
+            if (i%100==0) {
+                System.out.println(i);
+            }
+        }
+        for (int i = 2000; i>1000; i--){
+            provider.setPwm(pin, i);
+            Thread.sleep(2);
+            if (i%100==0) {
+                System.out.println(i);
+            }
+        }
+        for (int i = 1000; i<1500; i++){
             provider.setPwm(pin, i);
             Thread.sleep(2);
             if (i%100==0) {
