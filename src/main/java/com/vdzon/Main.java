@@ -40,7 +40,7 @@ public class Main {
         provider.setPwm(PCA9685Pin.ALL[4], 1500);
 
 
-        for (int i = 1500; i<2000; i++){
+        for (int i = 1500; i<2500; i++){
             provider.setPwm(PCA9685Pin.ALL[0], i);
 //            provider.setPwm(PCA9685Pin.ALL[1], i);
 //            provider.setPwm(PCA9685Pin.ALL[2], i);
