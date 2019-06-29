@@ -44,21 +44,21 @@ public class Main {
             provider.setPwm(PCA9685Pin.ALL[0], i);
             provider.setPwm(PCA9685Pin.ALL[1], i);
             provider.setPwm(PCA9685Pin.ALL[2], i);
-            Thread.sleep(2);
+            Thread.sleep(1);
             if (i%100==0) {
                 System.out.println(i);
             }
         }
-        for (int i = 2000; i>1000; i--){
+        for (int i = 2000; i>1100; i--){
             provider.setPwm(PCA9685Pin.ALL[0], i);
             provider.setPwm(PCA9685Pin.ALL[1], i);
             provider.setPwm(PCA9685Pin.ALL[2], i);
-            Thread.sleep(2);
+            Thread.sleep(1);
             if (i%100==0) {
                 System.out.println(i);
             }
         }
-        for (int i = 1000; i<1500; i++){
+        for (int i = 1100; i<1500; i++){
             provider.setPwm(PCA9685Pin.ALL[0], i);
             provider.setPwm(PCA9685Pin.ALL[1], i);
             provider.setPwm(PCA9685Pin.ALL[2], i);
