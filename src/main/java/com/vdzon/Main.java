@@ -5,22 +5,23 @@ import com.pi4j.gpio.extension.pca.PCA9685Pin;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
-import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
 
 import java.math.BigDecimal;
-import java.util.Scanner;
 
 public class Main {
 
-    private static final int SERVO_DURATION_MIN = 900;
-    private static final int SERVO_DURATION_NEUTRAL = 1500;
-    private static final int SERVO_DURATION_MAX = 2100;
 
-    @SuppressWarnings("resource")
+    private static int midden = 1500;
+    private static int links = 1200;
+    private static int rechts = 1800;
+    private static int stap = 1;
+    private static int delay = 5;
+
+
     public static void main(String args[]) throws Exception {
-        System.out.println("<--Pi4J--> PCA9685 PWM Example ... started.");
+        System.out.println("started.");
 
         I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
         final PCA9685GpioProvider provider = new PCA9685GpioProvider(bus, 0x40, BigDecimal.valueOf(50), BigDecimal.ONE);
@@ -31,88 +32,48 @@ public class Main {
         provider.reset();
         //
 
-        Pin pin = PCA9685Pin.ALL[0];
-//        provider.setPwm(pin, 100);
-        provider.setPwm(PCA9685Pin.ALL[0], 1500);
-        provider.setPwm(PCA9685Pin.ALL[1], 1500);
-        provider.setPwm(PCA9685Pin.ALL[2], 1500);
-        provider.setPwm(PCA9685Pin.ALL[3], 1500);
-        provider.setPwm(PCA9685Pin.ALL[4], 1500);
+
+        setPos(provider, midden);
 
 
-        for (int i = 1500; i<1800; i+=2){
-            provider.setPwm(PCA9685Pin.ALL[0], i);
-            provider.setPwm(PCA9685Pin.ALL[1], i);
-            provider.setPwm(PCA9685Pin.ALL[2], i);
-            provider.setPwm(PCA9685Pin.ALL[3], i);
-            provider.setPwm(PCA9685Pin.ALL[4], i);
+        for (int i = midden; i < rechts; i += stap) {
+            setPos(provider, i);
         }
-        for (int i = 1800; i>1200; i-=2){
-            provider.setPwm(PCA9685Pin.ALL[0], i);
-            provider.setPwm(PCA9685Pin.ALL[1], i);
-            provider.setPwm(PCA9685Pin.ALL[2], i);
-            provider.setPwm(PCA9685Pin.ALL[3], i);
-            provider.setPwm(PCA9685Pin.ALL[4], i);
+        for (int i = rechts; i > links; i -= stap) {
+            setPos(provider, i);
         }
-        for (int i = 1200; i<1800; i+=2){
-            provider.setPwm(PCA9685Pin.ALL[0], i);
-            provider.setPwm(PCA9685Pin.ALL[1], i);
-            provider.setPwm(PCA9685Pin.ALL[2], i);
-            provider.setPwm(PCA9685Pin.ALL[3], i);
-            provider.setPwm(PCA9685Pin.ALL[4], i);
+        for (int i = links; i < rechts; i += stap) {
+            setPos(provider, i);
         }
-        for (int i = 1800; i>1200; i-=2){
-            provider.setPwm(PCA9685Pin.ALL[0], i);
-            provider.setPwm(PCA9685Pin.ALL[1], i);
-            provider.setPwm(PCA9685Pin.ALL[2], i);
-            provider.setPwm(PCA9685Pin.ALL[3], i);
-            provider.setPwm(PCA9685Pin.ALL[4], i);
+        for (int i = rechts; i > links; i -= stap) {
+            setPos(provider, i);
         }
-        for (int i = 1200; i<1500; i+=2){
-            provider.setPwm(PCA9685Pin.ALL[0], i);
-            provider.setPwm(PCA9685Pin.ALL[1], i);
-            provider.setPwm(PCA9685Pin.ALL[2], i);
-            provider.setPwm(PCA9685Pin.ALL[3], i);
-            provider.setPwm(PCA9685Pin.ALL[4], i);
+        for (int i = links; i < midden; i += stap) {
+            setPos(provider, i);
         }
 
 
-
-/*
-        System.out.println("Press <Enter> to exit...");
-
-        new Scanner(System.in).nextLine();
-        for (int i = 10; i<400; i++){
-            provider.setPwm(pin, i*10);
-//            provider.setPwm(pin, i);
-            Thread.sleep(20);
-            System.out.println(i);
-
-        }
-
-        System.out.println("enter value");
-        String s = "100";
-        try {
-            while (!s.equals("q")) {
-                System.out.println("use " + s);
-                provider.setPwm(pin, Integer.parseInt(s));
-                s = new Scanner(System.in).nextLine();
-            }
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-        }
-
-        System.out.println("Exiting");
-        */
     }
 
-    private static int checkForOverflow(int position) {
-        int result = position;
-        if (position > PCA9685GpioProvider.PWM_STEPS - 1) {
-            result = position - PCA9685GpioProvider.PWM_STEPS - 1;
+    private static void setPos(PCA9685GpioProvider provider, int i) {
+        long start = System.currentTimeMillis();
+        provider.setPwm(PCA9685Pin.ALL[0], i);
+        provider.setPwm(PCA9685Pin.ALL[1], i);
+        provider.setPwm(PCA9685Pin.ALL[2], i);
+        provider.setPwm(PCA9685Pin.ALL[3], i);
+        provider.setPwm(PCA9685Pin.ALL[4], i);
+        long end = System.currentTimeMillis();
+        long diff = (end - start) / 5;
+        System.out.println(diff);
+        sleep(delay);
+    }
+
+    private static void sleep(int i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return result;
     }
 
     private static GpioPinPwmOutput[] provisionPwmOutputs(final PCA9685GpioProvider gpioProvider) {
