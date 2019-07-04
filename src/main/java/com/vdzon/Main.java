@@ -17,7 +17,7 @@ public class Main {
     private static int links = 1200;
     private static int rechts = 1800;
     private static int stap = 1;
-    private static int delay = 5;
+    private static int delay = 1;
 
 
     public static void main(String args[]) throws Exception {
