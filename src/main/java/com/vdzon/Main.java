@@ -16,8 +16,8 @@ public class Main {
     private static int midden = 1500;
     private static int links = 1200;
     private static int rechts = 1800;
-    private static int stap = 4;
-    private static int delay = 1;
+    private static int stap = 6;
+    private static int delay = 0;
 
 
     public static void main(String args[]) throws Exception {
