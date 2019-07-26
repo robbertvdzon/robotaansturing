@@ -55,8 +55,9 @@ public class RobotAansturingImpl implements RobotAansturing{
         provider.setPwm(PCA9685Pin.ALL[0], moveRequest.getM1());
         provider.setPwm(PCA9685Pin.ALL[1], moveRequest.getM2());
         provider.setPwm(PCA9685Pin.ALL[2], moveRequest.getM3());
-        provider.setPwm(PCA9685Pin.ALL[3], moveRequest.getM4());
-//        provider.setPwm(PCA9685Pin.ALL[4], moveRequest.getM5());
+        // skip 4e : die leek instabiel!
+        provider.setPwm(PCA9685Pin.ALL[4], moveRequest.getM4());
+        provider.setPwm(PCA9685Pin.ALL[5], moveRequest.getM5());
     }
 
 
