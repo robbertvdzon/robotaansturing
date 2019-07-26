@@ -30,10 +30,6 @@ public class Main {
     public void start() throws Exception {
         System.out.println("started.");
         RobotAansturing robotAansturing = new RobotAansturingImpl();
-        robotAansturing.move(new MoveRequest(1300,1300,1300,1300,1300,10));
-        sleep(1000);
-        robotAansturing.move(new MoveRequest(1700,1700,1700,1700,1700,10));
-        sleep(1000);
 
         app = Javalin.create();
         app.enableStaticFiles("/html");
