@@ -13,19 +13,13 @@
         return min + ((posNr*diff)/100);
     }
 
-    $( ".slider" ).change(function() {
-        $( "#output" ).html("changed");
-        var arm1 = $( "#arm1" ).get("0")["dataset"]["value"];
-        var arm2 = $( "#arm2" ).get("0")["dataset"]["value"];
-        var arm3 = $( "#arm3" ).get("0")["dataset"]["value"];
-        var arm4 = $( "#arm4" ).get("0")["dataset"]["value"];
-        var arm5 = $( "#arm5" ).get("0")["dataset"]["value"];
+    function move(arm1, arm2, arm3, arm4, arm5){
 
-        arm1 = normalize(arm1);
-        arm2 = normalize(arm2);
-        arm3 = normalize(arm3);
-        arm4 = normalize(arm4);
-        arm5 = normalize(arm5);
+        var arm1 = normalize(arm1);
+        var arm2 = normalize(arm2);
+        var arm3 = normalize(arm3);
+        var arm4 = normalize(arm4);
+        var arm5 = normalize(arm5);
 
         $( "#output" ).html(arm1+"-"+arm2+"-"+arm3+"-"+arm4+"-"+arm5);
 
@@ -41,6 +35,33 @@
                 alert(errMsg);
             }
         });
+    }
+
+    //30 20
+    // 50 50
+
+    $( "#sec1" ).click( function( event ) {
+        move(50, 50, 50, 50, 50);
+    } );
+    $( "#sec2" ).click( function( event ) {
+        move(35, 25, 50, 50, 50);
+    } );
+    $( "#sec3" ).click( function( event ) {
+        move(28, 52, 50, 50, 50);
+    } );
+
+    $( ".slider" ).change(function() {
+        $( "#output" ).html("changed");
+        var arm1 = $( "#arm1" ).get("0")["dataset"]["value"];
+        var arm2 = $( "#arm2" ).get("0")["dataset"]["value"];
+        var arm3 = $( "#arm3" ).get("0")["dataset"]["value"];
+        var arm4 = $( "#arm4" ).get("0")["dataset"]["value"];
+        var arm5 = $( "#arm5" ).get("0")["dataset"]["value"];
+
+
+
+        move(arm1, arm2, arm3, arm4, arm5);
+
 
     });
 
