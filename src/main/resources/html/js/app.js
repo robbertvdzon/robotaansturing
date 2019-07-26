@@ -7,7 +7,7 @@
 
     function normalize(pos){
         var min = 100;
-        var max = 1600;
+        var max = 2600;
         var diff = max-min
         var posNr = Number(pos);
         return min + ((posNr*diff)/100);
