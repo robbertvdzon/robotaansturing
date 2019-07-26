@@ -6,8 +6,8 @@
     $slider.aminoSlider();
 
     function normalize(pos){
-        var min = 1200;
-        var max = 1800;
+        var min = 100;
+        var max = 1600;
         var diff = max-min
         var posNr = Number(pos);
         return min + ((posNr*diff)/100);
