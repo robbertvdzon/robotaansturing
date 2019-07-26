@@ -7,6 +7,9 @@ import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
+import com.vdzon.robot.RobotAansturing;
+import com.vdzon.robot.RobotAansturingImpl;
+import io.javalin.Javalin;
 
 import java.math.BigDecimal;
 
@@ -18,10 +21,31 @@ public class Main {
     private static int rechts = 1800;
     private static int stap = 6;
     private static int delay = 0;
-
+    Javalin app;
 
     public static void main(String args[]) throws Exception {
+        new Main().start();
+    }
+
+    public void start() throws Exception {
         System.out.println("started.");
+        RobotAansturing robotAansturing = new RobotAansturingImpl();
+        robotAansturing.move(new MoveRequest(1300,1300,1300,1300,1300,10));
+        sleep(1000);
+        robotAansturing.move(new MoveRequest(1700,1700,1700,1700,1700,10));
+        sleep(1000);
+
+        app = Javalin.create();
+        app.enableStaticFiles("/html");
+        new RestEndpoints().initRestEndpoints(app, robotAansturing);
+        app.start(8080);
+
+    }
+
+
+    public static void mainOud(String args[]) throws Exception {
+        System.out.println("started.");
+//        RobotAansturingImpl
 
         I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
         final PCA9685GpioProvider provider = new PCA9685GpioProvider(bus, 0x40, BigDecimal.valueOf(50), BigDecimal.ONE);
