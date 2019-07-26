@@ -11,7 +11,7 @@ import com.vdzon.MoveRequest;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-
+import java.util.stream.Stream;
 
 
 public class RobotAansturingImpl implements RobotAansturing{
@@ -28,6 +28,13 @@ public class RobotAansturingImpl implements RobotAansturing{
 
             // Define outputs in use for this example
             GpioPinPwmOutput[] myOutputs = provisionPwmOutputs(provider);
+
+            // Show PWM values for outputs 0..14
+            for (GpioPinPwmOutput output : myOutputs) {
+                int[] onOffValues = provider.getPwmOnOffValues(output.getPin());
+                System.out.println(output.getPin().getName() + " (" + output.getName() + "): ON value [" + onOffValues[0] + "], OFF value [" + onOffValues[1] + "]");
+            }
+
             // Reset outputs
             provider.reset();
 
@@ -49,7 +56,7 @@ public class RobotAansturingImpl implements RobotAansturing{
         provider.setPwm(PCA9685Pin.ALL[1], moveRequest.getM2());
         provider.setPwm(PCA9685Pin.ALL[2], moveRequest.getM3());
         provider.setPwm(PCA9685Pin.ALL[3], moveRequest.getM4());
-        provider.setPwm(PCA9685Pin.ALL[4], moveRequest.getM5());
+//        provider.setPwm(PCA9685Pin.ALL[4], moveRequest.getM5());
     }
 
 
