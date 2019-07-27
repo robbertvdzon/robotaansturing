@@ -44,10 +44,10 @@
         move(50, 50, 50, 50, 50);
     } );
     $( "#sec2" ).click( function( event ) {
-        move(35, 25, 50, 50, 50);
+        move(44, 35, 38, 38, 50);
     } );
     $( "#sec3" ).click( function( event ) {
-        move(28, 52, 50, 50, 50);
+        move(49, 30, 21, 45, 50);
     } );
 
     $( ".slider" ).change(function() {
