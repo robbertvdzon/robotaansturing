@@ -111,7 +111,6 @@ public class RobotAansturingImpl implements RobotAansturing{
     }
 
     private void setPos(PCA9685GpioProvider provider, int m1, int m2, int m3, int m4, int m5) {
-        System.out.println(""+m1+" : "+m2+" : "+m3+" : "+m4+" : "+m5);
         if (!simulation) {
             provider.setPwm(PCA9685Pin.ALL[0], m1);
             provider.setPwm(PCA9685Pin.ALL[1], m2);
