@@ -27,7 +27,7 @@
             type: "POST",
             url: "/move",
             // The key needs to match your method's input parameter (case-sensitive).
-            data: "{\"m1\":"+arm1+",\"m2\":"+arm2+",\"m3\":"+arm3+",\"m4\":"+arm4+",\"m5\":"+arm5+",\"msec\":100}",
+            data: "{\"m1\":"+arm1+",\"m2\":"+arm2+",\"m3\":"+arm3+",\"m4\":"+arm4+",\"m5\":"+arm5+",\"msec\":1000}",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data){alert(data);},

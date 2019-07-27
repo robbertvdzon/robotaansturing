@@ -29,7 +29,7 @@ public class Main {
 
     public void start() throws Exception {
         System.out.println("started.");
-        RobotAansturing robotAansturing = new RobotAansturingImpl();
+        RobotAansturing robotAansturing = new RobotAansturingImpl(false);
 
         app = Javalin.create();
         app.enableStaticFiles("/html");
