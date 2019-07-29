@@ -18,10 +18,9 @@ def setup():
     pwm = PWM(bus, i2c_address)
     pwm.setFreq(fPWM)
 
-def setDirection(direction, ch):
-    duty = a / 180 * direction + b
+def setDirection(duty, ch):
     pwm.setDuty(ch, duty)
-    print "direction =", direction, "-> duty =", duty
+    print "duty =", duty
     #time.sleep(0.003) # allow to settle
 
 print "starting"
@@ -57,11 +56,11 @@ print('Reading ADS1x15 values, press Ctrl-C to quit...')
 # Main loop.
 while True:
     # Read all the ADC channel values in a list.
-    max = 200
-    value0 = adc.read_adc(0, gain=GAIN) * max / 32767
-    value1 = adc.read_adc(1, gain=GAIN) * max / 32767
-    value2 = adc.read_adc(2, gain=GAIN) * max / 32767
-    value3 = adc.read_adc(3, gain=GAIN) * max / 32767
+
+    duty0 = adc.read_adc(0, gain=GAIN)  / 3276
+    duty1 = adc.read_adc(1, gain=GAIN)  / 3276
+    duty2 = adc.read_adc(2, gain=GAIN)  / 3276
+    duty3 = adc.read_adc(3, gain=GAIN)  / 3276
 
     #print("bus0:%1.3f  " %(value0))
     #print("bus1:%1.3f  " %(value1))
@@ -69,7 +68,7 @@ while True:
     #print("bus3:%1.3f  " %(value3))
 
 
-    setDirection(value0,0)
+    setDirection(duty0,0)
     #setDirection(value1,1)
     #setDirection(value2,2)
     #setDirection(value3,3)
