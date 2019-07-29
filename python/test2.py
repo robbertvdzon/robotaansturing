@@ -57,10 +57,10 @@ print('Reading ADS1x15 values, press Ctrl-C to quit...')
 while True:
     # Read all the ADC channel values in a list.
 
-    duty0 = adc.read_adc(0, gain=GAIN)  / 3276
-    duty1 = adc.read_adc(1, gain=GAIN)  / 3276
-    duty2 = adc.read_adc(2, gain=GAIN)  / 3276
-    duty3 = adc.read_adc(3, gain=GAIN)  / 3276
+    duty0 = adc.read_adc(0, gain=GAIN)  / float(3276)
+    duty1 = adc.read_adc(1, gain=GAIN)  / float(3276)
+    duty2 = adc.read_adc(2, gain=GAIN)  / float(3276)
+    duty3 = adc.read_adc(3, gain=GAIN)  / float(3276)
 
     #print("bus0:%1.3f  " %(value0))
     #print("bus1:%1.3f  " %(value1))
