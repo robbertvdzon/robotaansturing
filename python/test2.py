@@ -22,7 +22,7 @@ def setDirection(direction, ch):
     duty = a / 180 * direction + b
     pwm.setDuty(ch, duty)
     #print "direction =", direction, "-> duty =", duty
-    time.sleep(0.003) # allow to settle
+    #time.sleep(0.003) # allow to settle
 
 print "starting"
 setup()
@@ -63,14 +63,14 @@ while True:
     value2 = adc.read_adc(2, gain=GAIN) * max / 32767
     value3 = adc.read_adc(3, gain=GAIN) * max / 32767
 
-    print("bus0:%1.3f  " %(value0))
-    print("bus1:%1.3f  " %(value1))
-    print("bus2:%1.3f  " %(value2))
-    print("bus3:%1.3f  " %(value3))
+    #print("bus0:%1.3f  " %(value0))
+    #print("bus1:%1.3f  " %(value1))
+    #print("bus2:%1.3f  " %(value2))
+    #print("bus3:%1.3f  " %(value3))
 
 
     setDirection(value0,0)
     setDirection(value1,1)
     setDirection(value2,2)
     setDirection(value3,3)
-    time.sleep(0.1)
+    #time.sleep(0.1)
