@@ -58,10 +58,10 @@ print('Reading ADS1x15 values, press Ctrl-C to quit...')
 while True:
     # Read all the ADC channel values in a list.
     max = 1800
-    values0 = adc.read_adc(0, gain=GAIN) * max / 32767
-    values1 = adc.read_adc(1, gain=GAIN) * max / 32767
-    values2 = adc.read_adc(2, gain=GAIN) * max / 32767
-    values3 = adc.read_adc(3, gain=GAIN) * max / 32767
+    value0 = adc.read_adc(0, gain=GAIN) * max / 32767
+    value1 = adc.read_adc(1, gain=GAIN) * max / 32767
+    value2 = adc.read_adc(2, gain=GAIN) * max / 32767
+    value3 = adc.read_adc(3, gain=GAIN) * max / 32767
 
     print("bus0:%1.3f  " %(value0))
     print("bus1:%1.3f  " %(value1))
@@ -69,7 +69,7 @@ while True:
     print("bus3:%1.3f  " %(value3))
 
 
-setDirection(value0,0)
+    setDirection(value0,0)
     setDirection(value1,1)
     setDirection(value2,2)
     setDirection(value3,3)
