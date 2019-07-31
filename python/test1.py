@@ -48,7 +48,7 @@ def moveTo(duty0, duty1, duty2, duty3 ):
     diff1 = duty1-current1
     diff2 = duty2-current2
     diff3 = duty3-current3
-    steps = 100
+    steps = 300
     step0 = diff0/steps
     step1 = diff1/steps
     step2 = diff2/steps
@@ -62,6 +62,7 @@ def moveTo(duty0, duty1, duty2, duty3 ):
         setDirection(current1,1)
         setDirection(current2,2)
         setDirection(current3,3)
+    time.sleep( 1 )
 
 
 
@@ -71,19 +72,19 @@ print "starting"
 setup()
 
 moveTo (5.288,6.765,6.291,3.009) # 4 hoog
-time.sleep( 2 )
 moveTo (5.296 ,6.349 ,5.941, 3.384) # 4 laag
-time.sleep( 2 )
+moveTo (5.288,6.765,6.291,3.009) # 4 hoog
+
 moveTo (7.088,5.104,5.936,2.273) # 3 hoog
-time.sleep( 2 )
 moveTo (6.429, 5.096, 5.445, 3.239) # 3 laag
-time.sleep( 2 )
+moveTo (7.088,5.104,5.936,2.273) # 3 hoog
+
 moveTo (7.792, 4.547, 5.460, 2.677) # 2 hoog
-time.sleep( 2 )
 moveTo (7.304 ,4.386 ,5.169 ,3.332) # 2 laag
-time.sleep( 2 )
+moveTo (7.792, 4.547, 5.460, 2.677) # 2 hoog
+
 moveTo (7.846, 5.120 ,2.846, 4.375) # 1 hoog
-time.sleep( 2 )
 moveTo (7.810, 4.350 ,2.846 ,5.104) # 1 laag
-time.sleep( 2 )
+moveTo (7.846, 5.120 ,2.846, 4.375) # 1 hoog
+
 moveTo (5.288,6.765,6.291,3.009) # 4 hoog
