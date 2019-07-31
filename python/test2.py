@@ -60,7 +60,7 @@ while True:
     duty2 = adc.read_adc(2, gain=GAIN)  / float(3276)
     duty3 = adc.read_adc(3, gain=GAIN)  / float(3276)
 
-    print("bus0:%1.3f %1.3f %1.3f %1.3f " %(value0, value1, value2, value3))
+    print("bus0:%1.3f %1.3f %1.3f %1.3f " %(duty0, duty1, duty2, duty3))
     #print("bus1:%1.3f  " %(value1))
     #print("bus2:%1.3f  " %(value2))
     #print("bus3:%1.3f  " %(value3))
