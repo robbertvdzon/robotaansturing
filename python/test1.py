@@ -40,6 +40,10 @@ def setDirection(duty, ch):
     pwm.setDuty(ch, duty)
 
 def moveTo(duty0, duty1, duty2, duty3 ):
+    global current0
+    global current1
+    global current2
+    global current3
     diff0 = duty0-current0
     diff1 = duty1-current1
     diff2 = duty2-current2
