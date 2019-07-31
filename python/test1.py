@@ -71,9 +71,9 @@ def moveTo(duty0, duty1, duty2, duty3 ):
 print "starting"
 setup()
 
-moveTo (5.288,6.765,6.291,3.009) # 4 hoog
-moveTo (5.296 ,6.349 ,5.941, 3.384) # 4 laag
-moveTo (5.288,6.765,6.291,3.009) # 4 hoog
+moveTo (6.393 ,5.908 ,5.985, 2.514) # 4 hoog
+moveTo (6.008 ,5.792 ,5.996 ,3.625) # 4 laag
+moveTo (6.393 ,5.908 ,5.985,2.514) # 4 hoog
 
 moveTo (7.088,5.104,5.936,2.273) # 3 hoog
 moveTo (6.429, 5.096, 5.445, 3.239) # 3 laag
