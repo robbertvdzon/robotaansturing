@@ -31,7 +31,7 @@ def moveTo(duty0, duty1, duty2, duty3 ):
     diff1 = duty1-current1
     diff2 = duty2-current2
     diff3 = duty3-current3
-    steps = 300
+    steps = 150
     step0 = diff0/steps
     step1 = diff1/steps
     step2 = diff2/steps
