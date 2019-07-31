@@ -45,9 +45,9 @@ setup()
 
 # Main loop.
 moveTo (5.288,6.765,6.291,3.009) # 4 hoog
-sleep 3
+time.sleep( 5 )
 moveTo (5.296 ,6.349 ,5.941, 3.384) # 4 laag
-sleep 3
+time.sleep( 5 )
 moveTo (5.288,6.765,6.291,3.009) # 4 hoog
 
 # 4 laag :  5.296 6.349 5.941 3.384
