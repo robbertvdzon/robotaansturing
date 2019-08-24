@@ -9,6 +9,13 @@
     var currSpeedArm4 = 1530;
     var currSpeedArm5 = 1530;
 
+    var snelLinks = 1400;
+    var langzaamLinks = 1485;
+    var stil = 1530;
+    var langzaamRechts = 1624;
+    var snelRechts = 1800;
+
+
     $( "#key1" ).click( function( event ) {processKey("1");} );
     $( "#key2" ).click( function( event ) {processKey("2");} );
     $( "#key3" ).click( function( event ) {processKey("3");} );
@@ -21,28 +28,28 @@
     }
 
     function processKey(key){
-        if (key=='1') currSpeedArm1 = 1400;
-        if (key=='2') currSpeedArm1 = 1490;
-        if (key=='3') currSpeedArm1 = 1530;
-        if (key=='4') currSpeedArm1 = 1624;
+        if (key=='1') currSpeedArm1 = snelLinks;
+        if (key=='2') currSpeedArm1 = langzaamLinks;
+        if (key=='3') currSpeedArm1 = stil;
+        if (key=='4') currSpeedArm1 = langzaamRechts;
         if (key=='5') currSpeedArm1 = 1800;
 
-        if (key=='q') currSpeedArm2 = 1400;
-        if (key=='w') currSpeedArm2 = 1490;
-        if (key=='e') currSpeedArm2 = 1530;
-        if (key=='r') currSpeedArm2 = 1624;
+        if (key=='q') currSpeedArm2 = snelLinks;
+        if (key=='w') currSpeedArm2 = langzaamLinks;
+        if (key=='e') currSpeedArm2 = stil;
+        if (key=='r') currSpeedArm2 = langzaamRechts;
         if (key=='t') currSpeedArm2 = 1800;
 
-        if (key=='a') currSpeedArm3 = 1400;
-        if (key=='s') currSpeedArm3 = 1490;
-        if (key=='d') currSpeedArm3 = 1530;
-        if (key=='f') currSpeedArm3 = 1624;
+        if (key=='a') currSpeedArm3 = snelLinks;
+        if (key=='s') currSpeedArm3 = langzaamLinks;
+        if (key=='d') currSpeedArm3 = stil;
+        if (key=='f') currSpeedArm3 = langzaamRechts;
         if (key=='g') currSpeedArm3 = 1800;
 
-        if (key=='z') currSpeedArm4 = 1400;
-        if (key=='x') currSpeedArm4 = 1490;
-        if (key=='c') currSpeedArm4 = 1530;
-        if (key=='v') currSpeedArm4 = 1624;
+        if (key=='z') currSpeedArm4 = snelLinks;
+        if (key=='x') currSpeedArm4 = langzaamLinks;
+        if (key=='c') currSpeedArm4 = stil;
+        if (key=='v') currSpeedArm4 = langzaamRechts;
         if (key=='b') currSpeedArm4 = 1800;
 
         setSpeed(currSpeedArm1, currSpeedArm2, currSpeedArm3, currSpeedArm4, currSpeedArm5);
