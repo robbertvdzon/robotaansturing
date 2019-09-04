@@ -22,6 +22,24 @@
     $( "#key4" ).click( function( event ) {processKey("4");} );
     $( "#key5" ).click( function( event ) {processKey("5");} );
 
+    $( "#keyq" ).click( function( event ) {processKey("q");} );
+    $( "#keyw" ).click( function( event ) {processKey("w");} );
+    $( "#keye" ).click( function( event ) {processKey("e");} );
+    $( "#keyr" ).click( function( event ) {processKey("r");} );
+    $( "#keyt" ).click( function( event ) {processKey("t");} );
+
+    $( "#keya" ).click( function( event ) {processKey("a");} );
+    $( "#keys" ).click( function( event ) {processKey("s");} );
+    $( "#keyd" ).click( function( event ) {processKey("d");} );
+    $( "#keyf" ).click( function( event ) {processKey("f");} );
+    $( "#keyg" ).click( function( event ) {processKey("g");} );
+
+    $( "#keyz" ).click( function( event ) {processKey("z");} );
+    $( "#keyx" ).click( function( event ) {processKey("x");} );
+    $( "#keyc" ).click( function( event ) {processKey("c");} );
+    $( "#keyv" ).click( function( event ) {processKey("v");} );
+    $( "#keyb" ).click( function( event ) {processKey("b");} );
+
     function logKey(e) {
         console.log(e);
         processKey(e.key);
