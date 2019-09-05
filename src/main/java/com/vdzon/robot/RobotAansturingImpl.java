@@ -69,7 +69,7 @@ public class RobotAansturingImpl implements RobotAansturing{
             if (verschil>0) {
                 if (verschil<0.01){
                     // stil
-                    aansturing = 0;
+                    aansturing = 1530;
                 }
                 else if (verschil<0.2){
                     // langzaam
@@ -78,12 +78,13 @@ public class RobotAansturingImpl implements RobotAansturing{
                 else{
                     // snel
                     aansturing = 1400;
+                    aansturing = 1485;
                 }
             }
             if (verschil<0) {
                 if (Math.abs(verschil)<0.01){
                     // stil
-                    aansturing = 0;
+                    aansturing = 1530;
                 }
                 else if (Math.abs(verschil)<0.2){
                     // langzaam
@@ -92,6 +93,7 @@ public class RobotAansturingImpl implements RobotAansturing{
                 else{
                     // snel
                     aansturing = 1800;
+                    aansturing = 1624;
                 }
             }
 
@@ -99,6 +101,7 @@ public class RobotAansturingImpl implements RobotAansturing{
 
             log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
         }
+        provider.setPwm(PCA9685Pin.ALL[0], 1530);
 
     }
 
