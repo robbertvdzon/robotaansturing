@@ -63,7 +63,7 @@ public class RobotAansturingImpl implements RobotAansturing{
         while (System.currentTimeMillis()<endTime){
             double currentPos = robotUitlezing.getArmPos(arm);
             double verschil = pos-currentPos;
-            double aansturing = 0;
+            int aansturing = 0;
 
 
             if (verschil>0) {
@@ -94,6 +94,8 @@ public class RobotAansturingImpl implements RobotAansturing{
                     aansturing = 1800;
                 }
             }
+
+            setPos(provider, 0, 0, 0, aansturing, 0);
 
             log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
         }
