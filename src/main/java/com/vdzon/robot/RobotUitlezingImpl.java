@@ -103,7 +103,7 @@ public class RobotUitlezingImpl implements RobotUitlezing{
 
                 // display output
                 String armName = event.getPin().getName();
-                System.out.println(" (" + armName +") : VOLTS=" + df.format(voltage) + "  | PERCENT=" + pdf.format(percent) + "% | RAW=" + value + "       ");
+//                System.out.println(" (" + armName +") : VOLTS=" + df.format(voltage) + "  | PERCENT=" + pdf.format(percent) + "% | RAW=" + value + "       ");
                 if (armName.equals("arm0")){
                     armPos[0] = voltage;
                 }
