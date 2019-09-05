@@ -45,18 +45,77 @@
         processKey(e.key);
     }
 
+
+    function move1(){
+        alert("move1-test");
+        $( "#output" ).html("move1");
+        $.ajax({
+            type: "POST",
+            url: "/move1",
+            // The key needs to match your method's input parameter (case-sensitive).
+            data: "{\"m1\":"+arm1+",\"m2\":"+arm2+",\"m3\":"+arm3+",\"m4\":"+arm4+",\"m5\":"+arm5+",\"msec\":1000}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data){alert(data);},
+            failure: function(errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
+
+
+    function move3(){
+        alert("move3-test");
+        $( "#output" ).html("move3");
+        $.ajax({
+            type: "POST",
+            url: "/move3",
+            // The key needs to match your method's input parameter (case-sensitive).
+            data: "{\"m1\":"+arm1+",\"m2\":"+arm2+",\"m3\":"+arm3+",\"m4\":"+arm4+",\"m5\":"+arm5+",\"msec\":1000}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data){alert(data);},
+            failure: function(errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
+
+
+    function move2(){
+        alert("move2-test");
+        $( "#output" ).html("move2");
+        $.ajax({
+            type: "POST",
+            url: "/move2",
+            // The key needs to match your method's input parameter (case-sensitive).
+            data: "{\"m1\":"+arm1+",\"m2\":"+arm2+",\"m3\":"+arm3+",\"m4\":"+arm4+",\"m5\":"+arm5+",\"msec\":1000}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data){alert(data);},
+            failure: function(errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
+
+
+
     function processKey(key){
-        alert(key);
         if (key=='8') {
-            move("move1");
+            alert("move1a");
+            move1();
+            alert("move1b");
             return;
         }
         if (key=='9') {
-            move("move2");
+            alert("move2");
+            move2();
             return;
         }
         if (key=='0') {
-            move("move3");
+            alert("move3");
+            move3();
             return;
         }
 
@@ -86,23 +145,6 @@
 
         setSpeed(currSpeedArm1, currSpeedArm2, currSpeedArm3, currSpeedArm4, currSpeedArm5);
         // $( "#output" ).html(key);
-    }
-
-    function move(move){
-        alert("move to "+move);
-        $( "#output" ).html(move);
-        $.ajax({
-            type: "POST",
-            url: "/"+move,
-            // The key needs to match your method's input parameter (case-sensitive).
-            data: "{\"m1\":"+arm1+",\"m2\":"+arm2+",\"m3\":"+arm3+",\"m4\":"+arm4+",\"m5\":"+arm5+",\"msec\":1000}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(data){alert(data);},
-            failure: function(errMsg) {
-                alert(errMsg);
-            }
-        });
     }
 
 
