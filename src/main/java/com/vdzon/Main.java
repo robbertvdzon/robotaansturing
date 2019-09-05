@@ -33,8 +33,8 @@ public class Main {
 
     public void start() throws Exception {
         System.out.println("started.");
-        RobotAansturing robotAansturing = new RobotAansturingImpl(false);
         RobotUitlezing robotUitlezing = new RobotUitlezingImpl(false);
+        RobotAansturing robotAansturing = new RobotAansturingImpl(false, robotUitlezing);
 
         app = Javalin.create();
         app.enableStaticFiles("/html");

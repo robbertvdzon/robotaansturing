@@ -8,15 +8,18 @@ import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
 import com.vdzon.MoveRequest;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
 
+@Slf4j
 public class RobotAansturingImpl implements RobotAansturing{
     private PCA9685GpioProvider provider;
     private final boolean simulation;
+    private final RobotUitlezing robotUitlezing;
 
     private int lastM1 = -1;
     private int lastM2 = -1;
@@ -24,8 +27,9 @@ public class RobotAansturingImpl implements RobotAansturing{
     private int lastM4 = -1;
     private int lastM5 = -1;
 
-    public RobotAansturingImpl(boolean simulation) {
+    public RobotAansturingImpl(boolean simulation, RobotUitlezing robotUitlezing) {
         this.simulation = simulation;
+        this.robotUitlezing = robotUitlezing;
         if (!simulation) {
             I2CBus bus = null;
             try {
@@ -50,6 +54,50 @@ public class RobotAansturingImpl implements RobotAansturing{
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void moveTo(double pos, int arm) {
+        long startTime = System.currentTimeMillis();
+        long endTime = startTime + 5000;
+        while (System.currentTimeMillis()<endTime){
+            double currentPos = robotUitlezing.getArmPos(arm);
+            double verschil = pos-currentPos;
+            double aansturing = 0;
+
+
+            if (verschil>0) {
+                if (verschil<0.01){
+                    // stil
+                    aansturing = 0;
+                }
+                else if (verschil<0.2){
+                    // langzaam
+                    aansturing = 1485;
+                }
+                else{
+                    // snel
+                    aansturing = 1400;
+                }
+            }
+            if (verschil<0) {
+                if (Math.abs(verschil)<0.01){
+                    // stil
+                    aansturing = 0;
+                }
+                else if (Math.abs(verschil)<0.2){
+                    // langzaam
+                    aansturing = 1624;
+                }
+                else{
+                    // snel
+                    aansturing = 1800;
+                }
+            }
+
+            log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
+        }
+
     }
 
     @Override

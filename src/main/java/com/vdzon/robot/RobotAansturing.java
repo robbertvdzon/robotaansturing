@@ -4,4 +4,5 @@ import com.vdzon.MoveRequest;
 
 public interface RobotAansturing {
     void move(MoveRequest moveRequest);
+    void moveTo(double pos, int arm);
 }

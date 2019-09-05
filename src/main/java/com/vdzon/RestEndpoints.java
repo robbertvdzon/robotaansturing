@@ -12,6 +12,14 @@ public class RestEndpoints {
         this.robotAansturing = robotAansturing;
         app.get("/", ctx -> ctx.redirect("/index.html"));
         app.post("/move", ctx -> ctx.result("Got move request of " + process(ctx)));
+        app.post("/move1", ctx -> ctx.result("Got move request of " + moveTo(3,1.5)));
+        app.post("/move2", ctx -> ctx.result("Got move request of " + moveTo(3,2.0)));
+        app.post("/move3", ctx -> ctx.result("Got move request of " + moveTo(3,2.5)));
+    }
+
+    private String moveTo(int arm, double value) {
+        robotAansturing.moveTo(value, arm);
+        return arm+" to "+ value;
     }
 
     private String process(Context ctx) {
