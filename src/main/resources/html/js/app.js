@@ -47,7 +47,6 @@
 
 
     function move1(){
-        alert("move1-test");
         $( "#output" ).html("move1");
         $.ajax({
             type: "POST",
@@ -65,7 +64,6 @@
 
 
     function move3(){
-        alert("move3-test");
         $( "#output" ).html("move3");
         $.ajax({
             type: "POST",
@@ -83,7 +81,6 @@
 
 
     function move2(){
-        alert("move2-test");
         $( "#output" ).html("move2");
         $.ajax({
             type: "POST",
@@ -103,18 +100,14 @@
 
     function processKey(key){
         if (key=='8') {
-            alert("move1a");
             move1();
-            alert("move1b");
             return;
         }
         if (key=='9') {
-            alert("move2");
             move2();
             return;
         }
         if (key=='0') {
-            alert("move3");
             move3();
             return;
         }
