@@ -42,11 +42,11 @@ public class Main {
         app.start(8080);
 
         while (true){
-            int armPos0 = robotUitlezing.getArmPos(0);
-            int armPos1 = robotUitlezing.getArmPos(1);
-            int armPos2 = robotUitlezing.getArmPos(2);
-            int armPos3 = robotUitlezing.getArmPos(3);
-            log.info(String.format("Pos1: %i  Pos2: %i  Pos3: %i  Pos4: %i  ",armPos0, armPos1, armPos2, armPos3));
+            double armPos0 = robotUitlezing.getArmPos(0);
+            double armPos1 = robotUitlezing.getArmPos(1);
+            double armPos2 = robotUitlezing.getArmPos(2);
+            double armPos3 = robotUitlezing.getArmPos(3);
+            log.info(String.format("Pos1: %.3f  Pos2: %.3f  Pos3: %.3f  Pos4: %.3f  ",armPos0, armPos1, armPos2, armPos3));
             sleep(500);
         }
 
