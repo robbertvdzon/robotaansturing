@@ -46,6 +46,7 @@
     }
 
     function processKey(key){
+        alert(key);
         if (key=='8') {
             move("move1");
             return;
@@ -88,6 +89,7 @@
     }
 
     function move(move){
+        alert("move to "+move);
         $( "#output" ).html(move);
         $.ajax({
             type: "POST",

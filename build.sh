@@ -1,2 +1,2 @@
 #!/bin/sh
-./mvnw package
+./mvnw package -DskipTests=true
