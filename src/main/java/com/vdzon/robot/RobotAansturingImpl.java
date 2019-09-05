@@ -17,6 +17,11 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class RobotAansturingImpl implements RobotAansturing{
+    public static final int STIL = 1530;
+    public static final int LANGZAAM_LINKS = 1624;
+    public static final int SNEL_LINKS = 1800;
+    public static final int LANGZAAM_RECHTS = 1485;
+    public static final int SNEL_RECHTS = 1400;
     private PCA9685GpioProvider provider;
     private final boolean simulation;
     private final RobotUitlezing robotUitlezing;
@@ -69,31 +74,31 @@ public class RobotAansturingImpl implements RobotAansturing{
             if (verschil>0) {
                 if (verschil<0.01){
                     // stil
-                    aansturing = 1530;
+                    aansturing = STIL;
                 }
                 else if (verschil<0.2){
                     // langzaam
-                    aansturing = 1485;
+                    aansturing = LANGZAAM_LINKS;
                 }
                 else{
                     // snel
-                    aansturing = 1400;
-                    aansturing = 1485;
+                    aansturing = SNEL_LINKS;
+                    aansturing = LANGZAAM_LINKS;
                 }
             }
             if (verschil<0) {
                 if (Math.abs(verschil)<0.01){
                     // stil
-                    aansturing = 1530;
+                    aansturing = STIL;
                 }
                 else if (Math.abs(verschil)<0.2){
                     // langzaam
-                    aansturing = 1624;
+                    aansturing = LANGZAAM_RECHTS;
                 }
                 else{
                     // snel
-                    aansturing = 1800;
-                    aansturing = 1624;
+                    aansturing = SNEL_RECHTS;
+                    aansturing = LANGZAAM_RECHTS;
                 }
             }
 
@@ -101,7 +106,7 @@ public class RobotAansturingImpl implements RobotAansturing{
 
             log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
         }
-        provider.setPwm(PCA9685Pin.ALL[0], 1530);
+        provider.setPwm(PCA9685Pin.ALL[0], STIL);
 
     }
 
