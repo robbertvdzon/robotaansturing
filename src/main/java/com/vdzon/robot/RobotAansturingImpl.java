@@ -64,7 +64,7 @@ public class RobotAansturingImpl implements RobotAansturing{
     @Override
     public void moveTo(double pos, int arm) {
         long startTime = System.currentTimeMillis();
-        long endTime = startTime + 5000;
+        long endTime = startTime + 10000;
         while (System.currentTimeMillis()<endTime){
             double currentPos = robotUitlezing.getArmPos(arm);
             double verschil = pos-currentPos;
@@ -83,7 +83,7 @@ public class RobotAansturingImpl implements RobotAansturing{
                 else{
                     // snel
                     aansturing = SNEL_LINKS;
-                    aansturing = LANGZAAM_LINKS;
+//                    aansturing = LANGZAAM_LINKS;
                 }
             }
             if (verschil<0) {
@@ -98,7 +98,7 @@ public class RobotAansturingImpl implements RobotAansturing{
                 else{
                     // snel
                     aansturing = SNEL_RECHTS;
-                    aansturing = LANGZAAM_RECHTS;
+//                    aansturing = LANGZAAM_RECHTS;
                 }
             }
 
