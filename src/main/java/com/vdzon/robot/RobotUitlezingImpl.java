@@ -40,7 +40,7 @@ public class RobotUitlezingImpl implements RobotUitlezing{
         }
     }
 
-    public static void runTest() throws InterruptedException, I2CFactory.UnsupportedBusNumberException, IOException {
+    public void runTest() throws InterruptedException, I2CFactory.UnsupportedBusNumberException, IOException {
 
         System.out.println("<--Pi4J--> ADS1115 GPIO Example ... started.");
 
@@ -56,10 +56,10 @@ public class RobotUitlezingImpl implements RobotUitlezing{
 
         // provision gpio analog input pins from ADS1115
         GpioPinAnalogInput myInputs[] = {
-                gpio.provisionAnalogInputPin(gpioProvider, ADS1115Pin.INPUT_A0, "MyAnalogInput-A0"),
-                gpio.provisionAnalogInputPin(gpioProvider, ADS1115Pin.INPUT_A1, "MyAnalogInput-A1"),
-                gpio.provisionAnalogInputPin(gpioProvider, ADS1115Pin.INPUT_A2, "MyAnalogInput-A2"),
-                gpio.provisionAnalogInputPin(gpioProvider, ADS1115Pin.INPUT_A3, "MyAnalogInput-A3"),
+                gpio.provisionAnalogInputPin(gpioProvider, ADS1115Pin.INPUT_A0, "arm0"),
+                gpio.provisionAnalogInputPin(gpioProvider, ADS1115Pin.INPUT_A1, "arm1"),
+                gpio.provisionAnalogInputPin(gpioProvider, ADS1115Pin.INPUT_A2, "arm2"),
+                gpio.provisionAnalogInputPin(gpioProvider, ADS1115Pin.INPUT_A3, "arm3"),
         };
 
         // ATTENTION !!
@@ -77,13 +77,13 @@ public class RobotUitlezingImpl implements RobotUitlezing{
 
         // Define a threshold value for each pin for analog value change events to be raised.
         // It is important to set this threshold high enough so that you don't overwhelm your program with change events for insignificant changes
-        gpioProvider.setEventThreshold(500, ADS1115Pin.ALL);
+        gpioProvider.setEventThreshold(50, ADS1115Pin.ALL);
 
 
         // Define the monitoring thread refresh interval (in milliseconds).
         // This governs the rate at which the monitoring thread will read input values from the ADC chip
         // (a value less than 50 ms is not permitted)
-        gpioProvider.setMonitorInterval(100);
+        gpioProvider.setMonitorInterval(50);
 
 
         // create analog pin value change listener
@@ -102,7 +102,20 @@ public class RobotUitlezingImpl implements RobotUitlezing{
                 double voltage = gpioProvider.getProgrammableGainAmplifier(event.getPin()).getVoltage() * (percent/100);
 
                 // display output
-                System.out.println(" (" + event.getPin().getName() +") : VOLTS=" + df.format(voltage) + "  | PERCENT=" + pdf.format(percent) + "% | RAW=" + value + "       ");
+                String armName = event.getPin().getName();
+                System.out.println(" (" + armName +") : VOLTS=" + df.format(voltage) + "  | PERCENT=" + pdf.format(percent) + "% | RAW=" + value + "       ");
+                if (armName.equals("arm0")){
+                    armPos[0] = voltage;
+                }
+                if (armName.equals("arm1")){
+                    armPos[1] = voltage;
+                }
+                if (armName.equals("arm2")){
+                    armPos[2] = voltage;
+                }
+                if (armName.equals("arm3")){
+                    armPos[3] = voltage;
+                }
             }
         };
 
@@ -112,18 +125,20 @@ public class RobotUitlezingImpl implements RobotUitlezing{
         myInputs[3].addListener(listener);
 
         // keep program running for 10 minutes
-        Thread.sleep(600000);
+//        Thread.sleep(600000);
 
         // stop all GPIO activity/threads by shutting down the GPIO controller
         // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
-        gpio.shutdown();
+//        gpio.shutdown();
 
-        System.out.println("Exiting ADS1115GpioExample");
+//        System.out.println("Exiting ADS1115GpioExample");
     }
 
+    private double[] armPos = new double[4];
+
     @Override
-    public int getArmPos(int arm) {
-        return 0;
+    public double getArmPos(int arm) {
+        return armPos[arm];
 
     }
 }
