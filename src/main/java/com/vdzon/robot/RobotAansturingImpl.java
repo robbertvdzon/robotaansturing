@@ -95,7 +95,7 @@ public class RobotAansturingImpl implements RobotAansturing{
                 }
             }
 
-            setPos(provider, 0, 0, 0, aansturing, 0);
+            provider.setPwm(PCA9685Pin.ALL[3], aansturing);
 
             log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
         }
