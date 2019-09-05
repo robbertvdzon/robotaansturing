@@ -16,6 +16,11 @@ public class RobotAansturingClient implements RobotAansturing{
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
+    public void moveTo(double pos, int arm) {
+
+    }
+
+    @Override
     public void move(MoveRequest moveRequest) {
         System.out.println("Move to "+moveRequest);
 

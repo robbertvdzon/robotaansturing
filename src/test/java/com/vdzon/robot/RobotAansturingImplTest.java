@@ -9,7 +9,7 @@ public class RobotAansturingImplTest {
 
     @Test
     public void test(){
-        RobotAansturingImpl robotAansturing = new RobotAansturingImpl(true);
+        RobotAansturingImpl robotAansturing = new RobotAansturingImpl(true, null);
         MoveRequest mr = new MoveRequest(10,20,30,40,50,100);
         robotAansturing.move(mr);
         MoveRequest mr2 = new MoveRequest(30,40,50,60,70,100);
