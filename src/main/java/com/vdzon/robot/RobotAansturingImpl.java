@@ -62,7 +62,7 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
             if (currentAansturing != aansturing) {
                 log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
                 provider.setPwm(PCA9685Pin.ALL[arm], aansturing);
-                currentAansturing = aansturing;
+                currentAansturingList[arm] = aansturing;
             }
         }
     }
