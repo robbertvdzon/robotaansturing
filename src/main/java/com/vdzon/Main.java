@@ -41,6 +41,14 @@ public class Main {
         new RestEndpoints().initRestEndpoints(app, robotAansturing);
         app.start(8080);
 
+        while (true){
+            double armPos0 = robotUitlezing.getArmPos(0);
+            double armPos1 = robotUitlezing.getArmPos(1);
+            double armPos2 = robotUitlezing.getArmPos(2);
+            double armPos3 = robotUitlezing.getArmPos(3);
+            log.info(String.format("Pos1: %.3f  Pos2: %.3f  Pos3: %.3f  Pos4: %.3f  ",armPos0, armPos1, armPos2, armPos3));
+            sleep(500);
+        }
 
     }
 
