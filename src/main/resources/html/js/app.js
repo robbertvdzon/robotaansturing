@@ -97,6 +97,22 @@
     }
 
 
+    function moveArm(arm, delta){
+        $( "#output" ).html("movearm");
+        $.ajax({
+            type: "POST",
+            url: "/movearm",
+            data: "{\"arm\":"+arm+",\"delta\":"+delta+"}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data){alert(data);},
+            failure: function(errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
+
+
 
     function processKey(key){
         if (key=='8') {
@@ -109,6 +125,23 @@
         }
         if (key=='0') {
             move3();
+            return;
+        }
+
+        if (key=='1') {
+            moveArm(3,-0.3);
+            return;
+        }
+        if (key=='2') {
+            moveArm(3,-0.1);
+            return;
+        }
+        if (key=='4') {
+            moveArm(3,0.1);
+            return;
+        }
+        if (key=='5') {
+            moveArm(3,0.3);
             return;
         }
 

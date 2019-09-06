@@ -12,6 +12,7 @@ public class RestEndpoints {
         this.robotAansturing = robotAansturing;
         app.get("/", ctx -> ctx.redirect("/index.html"));
         app.post("/move", ctx -> ctx.result("Got move request of " + process(ctx)));
+        app.post("/moveArm", ctx -> ctx.result("Got move request of " + processMoveArm(ctx)));
         app.post("/move1", ctx -> ctx.result("Got move request of " + moveTo(3,1.5)));
         app.post("/move2", ctx -> ctx.result("Got move request of " + moveTo(3,2.0)));
         app.post("/move3", ctx -> ctx.result("Got move request of " + moveTo(3,2.5)));
@@ -28,4 +29,15 @@ public class RestEndpoints {
         robotAansturing.move(moveRequest);
         return moveRequest.toString();
     }
+
+    private String processMoveArm(Context ctx) {
+        System.out.println(ctx.body());
+        MoveArmRequest moveRequest = ctx.bodyAsClass(MoveArmRequest.class);
+        double huidigePos = robotAansturing.getPos(moveRequest.getArm());
+        double pos = moveRequest.getDelta() + huidigePos;
+        System.out.println("Nieuwe pos:"+pos);
+        robotAansturing.moveTo(pos, moveRequest.getArm());
+        return moveRequest.toString();
+    }
+
 }

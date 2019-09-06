@@ -35,6 +35,11 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
     }
 
     @Override
+    public double getPos(int arm) {
+        return robotUitlezing.getArmPos(arm);
+    }
+
+    @Override
     public void run() {
 
         int currentAansturing = -1;
@@ -46,10 +51,10 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
                 double verschil = pos - currentPos;
                 int aansturing = berekenAansturing(verschil);
                 if (currentAansturing != aansturing) {
+                    log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
                     provider.setPwm(PCA9685Pin.ALL[0], aansturing);
                     currentAansturing = aansturing;
                 }
-                log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
             }
             sleep();
         }

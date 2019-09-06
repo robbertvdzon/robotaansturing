@@ -21,6 +21,11 @@ public class RobotAansturingClient implements RobotAansturing{
     }
 
     @Override
+    public double getPos(int arm) {
+        return 0;
+    }
+
+    @Override
     public void move(MoveRequest moveRequest) {
         System.out.println("Move to "+moveRequest);
 
