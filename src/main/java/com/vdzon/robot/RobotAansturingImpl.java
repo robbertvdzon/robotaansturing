@@ -45,8 +45,10 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
     public void run() {
 
         while (true){
-            int arm = 0;
-            controlArm(arm);
+            controlArm(0);
+            controlArm(1);
+            controlArm(2);
+            controlArm(3);
             sleep();
         }
 
