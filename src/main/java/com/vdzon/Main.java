@@ -34,7 +34,7 @@ public class Main {
     public void start() throws Exception {
         System.out.println("started.");
         RobotUitlezing robotUitlezing = new RobotUitlezingImpl(false);
-        RobotAansturing robotAansturing = new RobotAansturingImpl(false, robotUitlezing);
+        RobotAansturing robotAansturing = new RobotAansturingImpl(robotUitlezing);
 
         app = Javalin.create();
         app.enableStaticFiles("/html");

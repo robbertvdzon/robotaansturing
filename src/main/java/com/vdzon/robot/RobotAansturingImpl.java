@@ -16,26 +16,77 @@ import java.util.stream.Stream;
 
 
 @Slf4j
-public class RobotAansturingImpl implements RobotAansturing{
+public class RobotAansturingImpl implements RobotAansturing, Runnable{
     public static final int STIL = 1530;
     public static final int LANGZAAM_LINKS = 1624;
     public static final int SNEL_LINKS = 1800;
     public static final int LANGZAAM_RECHTS = 1485;
     public static final int SNEL_RECHTS = 1400;
     private PCA9685GpioProvider provider;
-    private final boolean simulation;
     private final RobotUitlezing robotUitlezing;
 
-    private int lastM1 = -1;
-    private int lastM2 = -1;
-    private int lastM3 = -1;
-    private int lastM4 = -1;
-    private int lastM5 = -1;
+    double[] requestedPos = {-1,-1,-1,-1};
 
-    public RobotAansturingImpl(boolean simulation, RobotUitlezing robotUitlezing) {
-        this.simulation = simulation;
+
+    public RobotAansturingImpl(RobotUitlezing robotUitlezing) {
         this.robotUitlezing = robotUitlezing;
-        if (!simulation) {
+        setup();
+        new Thread(this).start();
+    }
+
+    @Override
+    public void run() {
+
+        int currentAansturing = -1;
+        while (true){
+            int arm = 3;
+            double pos = getRequestedPos(arm);
+            if (pos!=-1) {
+                double currentPos = robotUitlezing.getArmPos(arm);
+                double verschil = pos - currentPos;
+                int aansturing = berekenAansturing(verschil);
+                if (currentAansturing != aansturing) {
+                    provider.setPwm(PCA9685Pin.ALL[0], aansturing);
+                    currentAansturing = aansturing;
+                }
+                log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
+            }
+            sleep();
+        }
+
+    }
+
+    private double getRequestedPos(int arm) {
+        synchronized (requestedPos) {
+            return requestedPos[arm];
+        }
+    }
+
+    private int berekenAansturing(double verschil) {
+        if (verschil > 0) {
+            if (verschil < 0.01) {
+                return STIL;
+            } else if (verschil < 0.2) {
+                return LANGZAAM_LINKS;
+            } else {
+                return SNEL_LINKS;
+            }
+        }
+        else if (verschil < 0) {
+            if (Math.abs(verschil) < 0.01) {
+                return STIL;
+            } else if (Math.abs(verschil) < 0.2) {
+                return LANGZAAM_RECHTS;
+            } else {
+                return SNEL_RECHTS;
+            }
+        }
+        else {
+            return STIL;
+        }
+    }
+
+    private void setup() {
             I2CBus bus = null;
             try {
                 bus = I2CFactory.getInstance(I2CBus.BUS_1);
@@ -58,106 +109,19 @@ public class RobotAansturingImpl implements RobotAansturing{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
     }
+
 
     @Override
     public void moveTo(double pos, int arm) {
-        long startTime = System.currentTimeMillis();
-        long endTime = startTime + 10000;
-        while (System.currentTimeMillis()<endTime){
-            double currentPos = robotUitlezing.getArmPos(arm);
-            double verschil = pos-currentPos;
-            int aansturing = 0;
-
-
-            if (verschil>0) {
-                if (verschil<0.01){
-                    // stil
-                    aansturing = STIL;
-                }
-                else if (verschil<0.2){
-                    // langzaam
-                    aansturing = LANGZAAM_LINKS;
-                }
-                else{
-                    // snel
-                    aansturing = SNEL_LINKS;
-//                    aansturing = LANGZAAM_LINKS;
-                }
-            }
-            if (verschil<0) {
-                if (Math.abs(verschil)<0.01){
-                    // stil
-                    aansturing = STIL;
-                }
-                else if (Math.abs(verschil)<0.2){
-                    // langzaam
-                    aansturing = LANGZAAM_RECHTS;
-                }
-                else{
-                    // snel
-                    aansturing = SNEL_RECHTS;
-//                    aansturing = LANGZAAM_RECHTS;
-                }
-            }
-
-            provider.setPwm(PCA9685Pin.ALL[0], aansturing);
-
-            log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
+        synchronized (requestedPos){
+            requestedPos[arm] = pos;
         }
-        provider.setPwm(PCA9685Pin.ALL[0], STIL);
-
     }
 
     @Override
     public void move(MoveRequest moveRequest) {
         System.out.println("Move to "+moveRequest);
-
-        long startTime = System.currentTimeMillis();
-        long endTime = startTime + moveRequest.getMsec();
-        int posDiffM1 = 0;
-        int posDiffM2 = 0;
-        int posDiffM3 = 0;
-        int posDiffM4 = 0;
-        int posDiffM5 = 0;
-        boolean initialized = lastM1 != -1;
-
-        if (!initialized){
-            lastM1 = moveRequest.getM1();
-            lastM2 = moveRequest.getM2();
-            lastM3 = moveRequest.getM3();
-            lastM4 = moveRequest.getM4();
-            lastM5 = moveRequest.getM5();
-        }
-
-        posDiffM1 = moveRequest.getM1() - lastM1;
-        posDiffM2 = moveRequest.getM2() - lastM2;
-        posDiffM3 = moveRequest.getM3() - lastM3;
-        posDiffM4 = moveRequest.getM4() - lastM4;
-        posDiffM5 = moveRequest.getM5() - lastM5;
-
-        while (System.currentTimeMillis()<endTime){
-            double percentage =  (double)(System.currentTimeMillis() - startTime) / moveRequest.getMsec();
-            int m1 = lastM1 + (int)(percentage*posDiffM1);
-            int m2 = lastM2 + (int)(percentage*posDiffM2);
-            int m3 = lastM3 + (int)(percentage*posDiffM3);
-            int m4 = lastM4 + (int)(percentage*posDiffM4);
-            int m5 = lastM5 + (int)(percentage*posDiffM5);
-
-            setPos(provider, m1, m2, m3, m4, m5);
-
-            if (simulation) {
-                sleep();
-            }
-        }
-
-        lastM1 = moveRequest.getM1();
-        lastM2 = moveRequest.getM2();
-        lastM3 = moveRequest.getM3();
-        lastM4 = moveRequest.getM4();
-        lastM5 = moveRequest.getM5();
-
     }
 
     private void sleep() {
@@ -168,15 +132,15 @@ public class RobotAansturingImpl implements RobotAansturing{
         }
     }
 
-    private void setPos(PCA9685GpioProvider provider, int m1, int m2, int m3, int m4, int m5) {
-        if (!simulation) {
-            provider.setPwm(PCA9685Pin.ALL[0], m1);
-            provider.setPwm(PCA9685Pin.ALL[1], m2);
-            provider.setPwm(PCA9685Pin.ALL[2], m3);
-            provider.setPwm(PCA9685Pin.ALL[3], m4);
-            provider.setPwm(PCA9685Pin.ALL[4], m5);
-        }
-    }
+//    private void setPos(PCA9685GpioProvider provider, int m1, int m2, int m3, int m4, int m5) {
+//        if (!simulation) {
+//            provider.setPwm(PCA9685Pin.ALL[0], m1);
+//            provider.setPwm(PCA9685Pin.ALL[1], m2);
+//            provider.setPwm(PCA9685Pin.ALL[2], m3);
+//            provider.setPwm(PCA9685Pin.ALL[3], m4);
+//            provider.setPwm(PCA9685Pin.ALL[4], m5);
+//        }
+//    }
 
 
     private static GpioPinPwmOutput[] provisionPwmOutputs(final PCA9685GpioProvider gpioProvider) {
