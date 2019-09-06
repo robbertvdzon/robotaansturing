@@ -129,19 +129,19 @@
         }
 
         if (key=='1') {
-            moveArm(3,-0.3);
+            moveArm(0,-0.3);
             return;
         }
         if (key=='2') {
-            moveArm(3,-0.1);
+            moveArm(0,-0.1);
             return;
         }
         if (key=='4') {
-            moveArm(3,0.1);
+            moveArm(0,0.1);
             return;
         }
         if (key=='5') {
-            moveArm(3,0.3);
+            moveArm(0,0.3);
             return;
         }
 
