@@ -60,10 +60,10 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
             double verschil = pos - currentPos;
             int aansturing = berekenAansturing(verschil);
             if (currentAansturing != aansturing) {
-                log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
                 provider.setPwm(PCA9685Pin.ALL[arm], aansturing);
                 currentAansturing = aansturing;
             }
+            log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
         }
     }
 
