@@ -145,6 +145,62 @@
             return;
         }
 
+
+        if (key=='q') {
+            moveArm(1,-0.3);
+            return;
+        }
+        if (key=='w') {
+            moveArm(1,-0.1);
+            return;
+        }
+        if (key=='e') {
+            moveArm(1,0.1);
+            return;
+        }
+        if (key=='r') {
+            moveArm(1,0.3);
+            return;
+        }
+
+
+        if (key=='a') {
+            moveArm(2,-0.3);
+            return;
+        }
+        if (key=='s') {
+            moveArm(2,-0.1);
+            return;
+        }
+        if (key=='d') {
+            moveArm(2,0.1);
+            return;
+        }
+        if (key=='f') {
+            moveArm(2,0.3);
+            return;
+        }
+
+
+        if (key=='z') {
+            moveArm(3,-0.3);
+            return;
+        }
+        if (key=='x') {
+            moveArm(3,-0.1);
+            return;
+        }
+        if (key=='c') {
+            moveArm(3,0.1);
+            return;
+        }
+        if (key=='v') {
+            moveArm(3,0.3);
+            return;
+        }
+
+
+
         if (key=='1') currSpeedArm1 = snelLinks;
         if (key=='2') currSpeedArm1 = langzaamLinks;
         if (key=='3') currSpeedArm1 = stil;
