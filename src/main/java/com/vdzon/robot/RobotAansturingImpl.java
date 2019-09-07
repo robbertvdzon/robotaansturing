@@ -57,7 +57,13 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
     private void controlArm(int arm) {
         int currentAansturing = currentAansturingList[arm];
         double pos = getRequestedPos(arm);
-        if (pos!=-1) {
+        if (pos==-1 ) {
+        }
+        else if (pos==-2) {
+            provider.setPwm(PCA9685Pin.ALL[arm], STIL);
+            currentAansturingList[arm] = -1;
+        }
+        else{
             double currentPos = robotUitlezing.getArmPos(arm);
             double verschil = pos - currentPos;
             int aansturing = berekenAansturing(verschil);
@@ -135,7 +141,7 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
     @Override
     public void stopMove(int arm) {
         synchronized (requestedPos){
-            requestedPos[arm] = -1;
+            requestedPos[arm] = -2;
         }
     }
 

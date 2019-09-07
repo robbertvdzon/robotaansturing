@@ -25,22 +25,23 @@ public class RestEndpoints {
         double m4 = 1.5;
         switch (moveRequest.getNr()){
             case 0:
-                m1 = 1.5;
-                m2 = 1.5;
-                m3 = 1.5;
-                m4 = 1.5;
+                m1 = 1.813;
+                m2 = 2.95;
+                m3 = 2.854;
+                m4 = 3.227;
                 break;
             case 1:
-                m1 = 1.5;
-                m2 = 1.5;
-                m3 = 1.5;
-                m4 = 1.5;
+                m1 = 1.794;
+                m2 = 3.525;
+                m3 = 3.490;
+                m4 = 3.333;
                 break;
+
             case 2:
-                m1 = 1.5;
-                m2 = 1.5;
-                m3 = 1.5;
-                m4 = 1.5;
+                m1 = 2.466;
+                m2 = 2.516;
+                m3 = 3.208;
+                m4 = 3.356;
                 break;
             case 3:
                 m1 = 1.5;
@@ -52,7 +53,7 @@ public class RestEndpoints {
         robotAansturing.moveTo(m1, 0);
         robotAansturing.moveTo(m2, 1);
         robotAansturing.moveTo(m3, 2);
-        robotAansturing.moveTo(m4, 3);
+//        robotAansturing.moveTo(m4, 3);
         return "move to : "+m1+", "+m2+", "+m3+", "+m4;
     }
 
