@@ -21,6 +21,11 @@ public class RobotAansturingClient implements RobotAansturing{
     }
 
     @Override
+    public void stopMove(int arm) {
+
+    }
+
+    @Override
     public double getPos(int arm) {
         return 0;
     }

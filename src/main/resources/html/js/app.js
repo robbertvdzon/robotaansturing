@@ -21,6 +21,11 @@
     $( "#key3" ).click( function( event ) {processKey("3");} );
     $( "#key4" ).click( function( event ) {processKey("4");} );
     $( "#key5" ).click( function( event ) {processKey("5");} );
+    $( "#key6" ).click( function( event ) {processKey("6");} );
+    $( "#key7" ).click( function( event ) {processKey("7");} );
+    $( "#key8" ).click( function( event ) {processKey("8");} );
+    $( "#key9" ).click( function( event ) {processKey("9");} );
+    $( "#key0" ).click( function( event ) {processKey("0");} );
 
     $( "#keyq" ).click( function( event ) {processKey("q");} );
     $( "#keyw" ).click( function( event ) {processKey("w");} );
@@ -46,13 +51,13 @@
     }
 
 
-    function move1(){
+    function move1(nr){
         $( "#output" ).html("move1");
         $.ajax({
             type: "POST",
             url: "/move1",
             // The key needs to match your method's input parameter (case-sensitive).
-            data: "{\"m1\":"+arm1+",\"m2\":"+arm2+",\"m3\":"+arm3+",\"m4\":"+arm4+",\"m5\":"+arm5+",\"msec\":1000}",
+            data: "{\"nr\":"+nr+"}",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data){alert(data);},
@@ -115,16 +120,24 @@
 
 
     function processKey(key){
+        if (key=='6') {
+            move1(0);
+            return;
+        }
+        if (key=='7') {
+            move1(1);
+            return;
+        }
         if (key=='8') {
-            move1();
+            move1(2);
             return;
         }
         if (key=='9') {
-            move2();
+            move1(3);
             return;
         }
         if (key=='0') {
-            move3();
+            move1(3);
             return;
         }
 
@@ -134,6 +147,10 @@
         }
         if (key=='2') {
             moveArm(0,-0.1);
+            return;
+        }
+        if (key=='3') {
+            moveArm(0,0);
             return;
         }
         if (key=='4') {
@@ -155,10 +172,14 @@
             return;
         }
         if (key=='e') {
-            moveArm(1,0.1);
+            moveArm(1,0.0);
             return;
         }
         if (key=='r') {
+            moveArm(1,0.1);
+            return;
+        }
+        if (key=='t') {
             moveArm(1,0.3);
             return;
         }
@@ -173,10 +194,14 @@
             return;
         }
         if (key=='d') {
-            moveArm(2,0.1);
+            moveArm(2,0.0);
             return;
         }
         if (key=='f') {
+            moveArm(2,0.1);
+            return;
+        }
+        if (key=='g') {
             moveArm(2,0.3);
             return;
         }
@@ -191,10 +216,14 @@
             return;
         }
         if (key=='c') {
-            moveArm(3,0.1);
+            moveArm(3,0.0);
             return;
         }
         if (key=='v') {
+            moveArm(3,0.1);
+            return;
+        }
+        if (key=='b') {
             moveArm(3,0.3);
             return;
         }

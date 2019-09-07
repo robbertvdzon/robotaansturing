@@ -133,6 +133,13 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
     }
 
     @Override
+    public void stopMove(int arm) {
+        synchronized (requestedPos){
+            requestedPos[arm] = -1;
+        }
+    }
+
+    @Override
     public void move(MoveRequest moveRequest) {
         System.out.println("Move to "+moveRequest);
     }

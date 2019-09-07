@@ -13,14 +13,47 @@ public class RestEndpoints {
         app.get("/", ctx -> ctx.redirect("/index.html"));
         app.post("/move", ctx -> ctx.result("Got move request of " + process(ctx)));
         app.post("/movearm", ctx -> ctx.result("Got move request of " + processMoveArm(ctx)));
-        app.post("/move1", ctx -> ctx.result("Got move request of " + moveTo(3,1.5)));
-        app.post("/move2", ctx -> ctx.result("Got move request of " + moveTo(3,2.0)));
-        app.post("/move3", ctx -> ctx.result("Got move request of " + moveTo(3,2.5)));
+        app.post("/move1", ctx -> ctx.result("Got move request of " + moveTo(ctx)));
     }
 
-    private String moveTo(int arm, double value) {
-        robotAansturing.moveTo(value, arm);
-        return arm+" to "+ value;
+    private String moveTo(Context ctx) {
+        System.out.println(ctx.body());
+        MoveCombinedArmRequest moveRequest = ctx.bodyAsClass(MoveCombinedArmRequest.class);
+        double m1 = 1.5;
+        double m2 = 1.5;
+        double m3 = 1.5;
+        double m4 = 1.5;
+        switch (moveRequest.getNr()){
+            case 0:
+                m1 = 1.5;
+                m2 = 1.5;
+                m3 = 1.5;
+                m4 = 1.5;
+                break;
+            case 1:
+                m1 = 1.5;
+                m2 = 1.5;
+                m3 = 1.5;
+                m4 = 1.5;
+                break;
+            case 2:
+                m1 = 1.5;
+                m2 = 1.5;
+                m3 = 1.5;
+                m4 = 1.5;
+                break;
+            case 3:
+                m1 = 1.5;
+                m2 = 1.5;
+                m3 = 1.5;
+                m4 = 1.5;
+                break;
+        }
+        robotAansturing.moveTo(m1, 0);
+        robotAansturing.moveTo(m2, 1);
+        robotAansturing.moveTo(m3, 2);
+        robotAansturing.moveTo(m4, 3);
+        return "move to : "+m1+", "+m2+", "+m3+", "+m4;
     }
 
     private String process(Context ctx) {
@@ -33,10 +66,15 @@ public class RestEndpoints {
     private String processMoveArm(Context ctx) {
         System.out.println(ctx.body());
         MoveArmRequest moveRequest = ctx.bodyAsClass(MoveArmRequest.class);
-        double huidigePos = robotAansturing.getPos(moveRequest.getArm());
-        double pos = moveRequest.getDelta() + huidigePos;
-        System.out.println("Nieuwe pos:"+pos);
-        robotAansturing.moveTo(pos, moveRequest.getArm());
+        if (moveRequest.getDelta()<0.0001){
+            robotAansturing.stopMove(moveRequest.getArm());
+        }
+        else {
+            double huidigePos = robotAansturing.getPos(moveRequest.getArm());
+            double pos = moveRequest.getDelta() + huidigePos;
+            System.out.println("Nieuwe pos:" + pos);
+            robotAansturing.moveTo(pos, moveRequest.getArm());
+        }
         return moveRequest.toString();
     }
 
