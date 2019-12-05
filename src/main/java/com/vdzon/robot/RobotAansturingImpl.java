@@ -51,8 +51,8 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
             controlArm(3);
             sleep();
         }
-
     }
+
 
     private void controlArm(int arm) {
         int currentAansturing = currentAansturingList[arm];
