@@ -22,7 +22,7 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
     public static final int SNEL_LINKS = 1800;
     public static final int LANGZAAM_RECHTS = 1485;
     public static final int SNEL_RECHTS = 1400;
-    private PCA9685GpioProvider provider;
+//    private PCA9685GpioProvider provider;
     private final RobotUitlezing robotUitlezing;
 
     double[] requestedPos = {-1,-1,-1,-1};
@@ -60,7 +60,7 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
         if (pos==-1 ) {
         }
         else if (pos==-2) {
-            provider.setPwm(PCA9685Pin.ALL[arm], STIL);
+//            provider.setPwm(PCA9685Pin.ALL[arm], STIL);
             currentAansturingList[arm] = -1;
         }
         else{
@@ -69,7 +69,7 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
             int aansturing = berekenAansturing(verschil);
             if (currentAansturing != aansturing) {
                 log.info("Curr:{}  Requested:{} Sturing:{}", currentPos, pos, aansturing);
-                provider.setPwm(PCA9685Pin.ALL[arm], aansturing);
+//                provider.setPwm(PCA9685Pin.ALL[arm], aansturing);
                 currentAansturingList[arm] = aansturing;
             }
         }
@@ -109,19 +109,19 @@ public class RobotAansturingImpl implements RobotAansturing, Runnable{
             I2CBus bus = null;
             try {
                 bus = I2CFactory.getInstance(I2CBus.BUS_1);
-                provider = new PCA9685GpioProvider(bus, 0x40, BigDecimal.valueOf(50), BigDecimal.ONE);
+//                provider = new PCA9685GpioProvider(bus, 0x40, BigDecimal.valueOf(50), BigDecimal.ONE);
 
                 // Define outputs in use for this example
-                GpioPinPwmOutput[] myOutputs = provisionPwmOutputs(provider);
+//                GpioPinPwmOutput[] myOutputs = provisionPwmOutputs(provider);
 
                 // Show PWM values for outputs 0..14
-                for (GpioPinPwmOutput output : myOutputs) {
-                    int[] onOffValues = provider.getPwmOnOffValues(output.getPin());
-                    System.out.println(output.getPin().getName() + " (" + output.getName() + "): ON value [" + onOffValues[0] + "], OFF value [" + onOffValues[1] + "]");
-                }
+//                for (GpioPinPwmOutput output : myOutputs) {
+//                    int[] onOffValues = provider.getPwmOnOffValues(output.getPin());
+//                    System.out.println(output.getPin().getName() + " (" + output.getName() + "): ON value [" + onOffValues[0] + "], OFF value [" + onOffValues[1] + "]");
+//                }
 
                 // Reset outputs
-                provider.reset();
+//                provider.reset();
 
             } catch (I2CFactory.UnsupportedBusNumberException e) {
                 e.printStackTrace();
