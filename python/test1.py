@@ -37,4 +37,4 @@ print "to 3"
 setDirection(3,0)
 time.sleep( 3 )
 print "to 4"
-1setDirection(3,0)
+setDirection(3,0)
