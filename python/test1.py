@@ -8,11 +8,6 @@ channel = 0 # adapt to your wiring
 a = 8.5 # adapt to your servo
 b = 2  # adapt to your servo
 
-current0 =6.393
-current1 =5.908
-current2 =5.985
-current3 =2.514
-
 def setup():
     global pwm
     bus = SMBus(1) # Raspberry Pi revision 2
@@ -20,7 +15,15 @@ def setup():
     pwm.setFreq(fPWM)
 
 def setDirection(duty, ch):
-    pwm.setDuty(ch, duty)
+    pwm.setDuty(0, duty)
+    pwm.setDuty(1, duty)
+    pwm.setDuty(2, duty)
+    pwm.setDuty(3, duty)
+    pwm.setDuty(4, duty)
+    pwm.setDuty(5, duty)
+    pwm.setDuty(6, duty)
+    pwm.setDuty(7, duty)
+    pwm.setDuty(8, duty)
 
 print "starting 1"
 setup()
