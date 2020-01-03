@@ -40,24 +40,37 @@ send: state + pos
 #define HOMING 3
 #define IN_ERROR 4
 
-struct Command {
+#define dirPin 2
+#define stepPin 3
+#define stepsPerRevolution 200
+#define arm1SensorPin 4
+#define button1Pin 5
+#define button2Pin 6
+//#define home_motor_speed 800
+//#define max_motor_speed 800
+
   char command;
   int requestedPos;
   int stepDelay;
   bool m0;
   bool m1;
   bool m2;
-};
 
 char number[50];
 int state = HOMING_NEEDED;
 int readPos = 0;
-Command currentCommand = {'-',0,0,0,0,0};
+int currentPos = 0;
+
+int button1State = 0;
+int button2State = 0;
+int arm1State = 0;
+int currentDir = -1;
+int newDir = 0;
+int turn = 0;
+int homeFinished = 0;
 
 
 
-
-//Code Initialization
 void setup() {
   // initialize i2c as slave
   Serial.begin(9600);
@@ -67,13 +80,21 @@ void setup() {
   Wire.begin(SLAVE_ADDRESS);
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
+
+  pinMode(arm1SensorPin, INPUT);
+  pinMode(button1Pin, INPUT);
+  pinMode(button2Pin, INPUT);
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
 }
 
 void loop() {
-  delay(1);
-  processCommand(currentCommand);
-  currentCommand = {'-',0,0,0,0,0};
+  processCommand();
 } 
+
+void sendData(){
+  Wire.write(state);
+}
 
 void receiveData(int byteCount){
   while(Wire.available()) {
@@ -82,7 +103,6 @@ void receiveData(int byteCount){
 }  
 
 void processCharRead(char c){
-
   if (c == '^'){
     readPos = 0;
   }
@@ -94,17 +114,25 @@ void processCharRead(char c){
 
   readPos ++;
   if (readPos == NR_OF_BYTES_TO_READ){
-    Command command = parseCommand();
-    currentCommand = command;
+    parseCommand();
+//    Command command = parseCommand();
+    //currentCommand = command;
+//    Serial.print("SET CURRENT COMMAND"); 
+//    currentCommand = {
+//      command.command,
+//      command.requestedPos,
+//      command.stepDelay,
+//      command.m0, 
+//      command.m1, 
+//      command.m2
+//      };
   }
-  
 }
 
 
-Command parseCommand(){
+void parseCommand(){
   Serial.print("parseCommand:"); 
   Serial.println(number);
-
 
   char buffer[7];
 
@@ -116,6 +144,8 @@ Command parseCommand(){
   buffer[5] = number[7];
   buffer[6] = '\0';
   int toPos = atoi(buffer);
+//  Serial.println(buffer);
+//  Serial.println(toPos);
 
   buffer[0] = number[8];
   buffer[1] = number[9];
@@ -126,44 +156,145 @@ Command parseCommand(){
   buffer[6] = '\0';
   int delay = atoi(buffer);
 
-  byte m0 = number[14] == '1';
-  byte m1 = number[15] == '1';
-  byte m2 = number[16] == '1';
+//  int toPos = 2110;
+//  int delay = 1100;
+
+//  Serial.println(buffer);
+//  Serial.println(delay);
+
+  m0 = number[14] == '1';
+  m1 = number[15] == '1';
+  m2 = number[16] == '1';
+  stepDelay = delay;
+  requestedPos = toPos;
+  command = number[1];
   
-  Command command = {number[1],toPos,delay,m0, m1, m2}; 
-  return command; 
+//  Command command = {number[1],toPos,delay,m0, m1, m2}; 
+
+//  Serial.print("- cmd:");Serial.println(command.command);
+//  Serial.print("- pos:");Serial.println(command.requestedPos);
+//  Serial.print("- delay:");Serial.println(command.stepDelay);
+//  Serial.print("- m0:");Serial.println(command.m0);
+//  Serial.print("- m1:");Serial.println(command.m1);
+//  Serial.print("- m2:");Serial.println(command.m2);
+//  Serial.print("- currentPos:");Serial.println(currentPos);  
+//  return command; 
+
+
+  Serial.print("- cmd:");Serial.println(command);
+  Serial.print("- pos:");Serial.println(requestedPos);
+  Serial.print("- delay:");Serial.println(stepDelay);
+  Serial.print("- m0:");Serial.println(m0);
+  Serial.print("- m1:");Serial.println(m1);
+  Serial.print("- m2:");Serial.println(m2);
+  Serial.print("- currentPos:");Serial.println(currentPos);  
+
+
 }
 
-void processCommand(Command command ){
- if (command.command == 'H') home(command);
- if (command.command == 'M') move(command);
+void processCommand(){
+ if (command == 'H') home1();
+ if (command == 'M') move();
 }
 
-void home(Command command ){
+void home1(){
   state = HOMING;
   Serial.println("home");
-  Serial.print("delay:");Serial.println(command.stepDelay);
-  Serial.print("m0:");Serial.println(command.m0);
-  Serial.print("m1:");Serial.println(command.m1);
-  Serial.print("m2:");Serial.println(command.m2);
-  delay(5000);
+  Serial.print("cmd:");Serial.println(command);
+  Serial.print("pos:");Serial.println(requestedPos);
+  Serial.print("delay:");Serial.println(stepDelay);
+  Serial.print("m0:");Serial.println(m0);
+  Serial.print("m1:");Serial.println(m1);
+  Serial.print("m2:");Serial.println(m2);
+  home();
   state = READY;
+  Serial.println("RESET CURRENT COMMAND");
+  command = '-';
+
+  
 }
 
-void move(Command command ){
+void move(){
   state = MOVING;
   Serial.println("move");
-  Serial.print("pos:");Serial.println(command.requestedPos);
-  Serial.print("delay:");Serial.println(command.stepDelay);
-  Serial.print("m0:");Serial.println(command.m0);
-  Serial.print("m1:");Serial.println(command.m1);
-  Serial.print("m2:");Serial.println(command.m2);
-  delay(5000);
+  Serial.print("cmd:");Serial.println(command);
+  Serial.print("pos:");Serial.println(requestedPos);
+  Serial.print("delay:");Serial.println(stepDelay);
+  Serial.print("m0:");Serial.println(m0);
+  Serial.print("m1:");Serial.println(m1);
+  Serial.print("m2:");Serial.println(m2);
+  Serial.print("currentPos:");Serial.println(currentPos);
+
+  if (requestedPos>currentPos){
+    moveUp(requestedPos);
+  }
+  else{
+    moveDown(requestedPos);
+  }
+
   state = READY;
+  
+  Serial.println("RESET CURRENT COMMAND");
+  command = '-';
+  
 }
 
-void sendData(){
-  Wire.write(state);
+void moveUp(int reqPos){
+  Serial.println("move up");    
+  digitalWrite(dirPin, HIGH);
+  while (currentPos<reqPos){
+    pulse(stepPin);
+    currentPos++;
+  }
+  Serial.println("up");    
 }
 
-//End of the program
+void moveDown(int reqPos){
+  Serial.println("move down");    
+  digitalWrite(dirPin, LOW);
+  while (currentPos>reqPos){
+    pulse(stepPin);
+    currentPos--;
+  }
+  Serial.println("down");    
+}
+
+void home() {
+  arm1State = digitalRead(arm1SensorPin); 
+    Serial.println("\t start homing");
+    if (arm1State==1){
+      // move down
+      Serial.println("\t first move down until not high");
+      digitalWrite(dirPin, LOW);
+      while (digitalRead(arm1SensorPin)){
+        digitalWrite(stepPin, HIGH);
+        delayMicroseconds(stepDelay);
+        digitalWrite(stepPin, LOW);
+        delayMicroseconds(stepDelay);
+      }
+  
+      Serial.println("\t move one extra round");
+      for (int i = 0; i < 1 * stepsPerRevolution; i++) {
+        pulse(stepPin);
+      }
+    }
+  
+    Serial.println("\t moving up");    
+    digitalWrite(dirPin, HIGH);
+    while (!digitalRead(arm1SensorPin)){
+      pulse(stepPin);
+    }    
+  
+    Serial.println("\t homing finished");
+    currentPos = 00;
+
+}
+
+
+
+void pulse(int pin){
+    digitalWrite(pin, HIGH);
+    delayMicroseconds(stepDelay);
+    digitalWrite(pin, LOW);
+    delayMicroseconds(stepDelay);
+}

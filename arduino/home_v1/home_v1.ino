@@ -11,8 +11,8 @@
 
 int button1State = 0;
 int button2State = 0;
-int arm1State = 0;
 
+int arm1State = 0;
 int currentDir = -1;
 int newDir = 0;
 int turn = 0;
