@@ -12,6 +12,7 @@
 #Import the Library Requreid
 import smbus
 import time
+import sys
 
 # for RPI version 1, use "bus = smbus.SMBus(0)"
 bus = smbus.SMBus(1)
@@ -34,17 +35,17 @@ def readNumber():
     number = bus.read_byte_data(address_2, 1)
     return number
 
-while True:
-	#Receives the data from the User
-    data = raw_input("Enter the data to be sent : ")
-    data_list = list(data)
-    for i in data_list:
-    	#Sends to the Slaves
-        writeNumber(int(ord(i)))
-        #time.sleep(.1)
 
-#     writeNumber(int(0x0A))
-    print(readNumber())
+
+print(sys.argv[0])
+data = raw_input("Enter the data to be sent : ")
+data_list = sys.argv[0]
+for i in data_list:
+  #Sends to the Slaves
+    writeNumber(int(ord(i)))
+    #time.sleep(.1)
+
+#    print(readNumber())
 
 #End of the Script
 
