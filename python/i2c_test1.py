@@ -38,7 +38,8 @@ def readNumber():
 
 
 state = readNumber()
-print("state before command:"+state)
+print("state before command:")
+print(state)
 
 print(sys.argv[1])
 data_list = list(sys.argv[1])
