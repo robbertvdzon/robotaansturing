@@ -1,8 +1,8 @@
 import smbus
 
 bus = smbus.SMBus(1)
-address_2 = 0x05
-state = bus.read_byte_data(address_2, 1)
+address = int(sys.argv[1])
+state = bus.read_byte_data(address, 1)
 print(state)
 
 
