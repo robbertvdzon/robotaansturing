@@ -1,6 +1,6 @@
 /*
 
-byte 0 : altijd #
+byte 0 : altijd ^
 byte 1 : command (H = home, M = move)
 byte 2 : to_pos (6 lang, max 999999)
 byte 3 : to_pos 
@@ -42,11 +42,11 @@ send: state + pos
 
 struct Command {
   char command;
-  int requesteedPos;
+  int requestedPos;
   int stepDelay;
-  byte m0;
-  byte m1;
-  byte m2;
+  bool m0;
+  bool m1;
+  bool m2;
 };
 
 char number[50];
@@ -104,7 +104,33 @@ void processCharRead(char c){
 Command parseCommand(){
   Serial.print("parseCommand:"); 
   Serial.println(number);
-  Command command = {number[1],0,0,0,0,0}; 
+
+
+  char buffer[7];
+
+  buffer[0] = number[2];
+  buffer[1] = number[3];
+  buffer[2] = number[4];
+  buffer[3] = number[5];
+  buffer[4] = number[6];
+  buffer[5] = number[7];
+  buffer[6] = '\0';
+  int toPos = atoi(buffer);
+
+  buffer[0] = number[8];
+  buffer[1] = number[9];
+  buffer[2] = number[10];
+  buffer[3] = number[11];
+  buffer[4] = number[12];
+  buffer[5] = number[13];
+  buffer[6] = '\0';
+  int delay = atoi(buffer);
+
+  byte m0 = number[14] == '1';
+  byte m1 = number[15] == '1';
+  byte m2 = number[16] == '1';
+  
+  Command command = {number[1],toPos,delay,m0, m1, m2}; 
   return command; 
 }
 
@@ -116,6 +142,10 @@ void processCommand(Command command ){
 void home(Command command ){
   state = HOMING;
   Serial.println("home");
+  Serial.print("delay:");Serial.println(command.stepDelay);
+  Serial.print("m0:");Serial.println(command.m0);
+  Serial.print("m1:");Serial.println(command.m1);
+  Serial.print("m2:");Serial.println(command.m2);
   delay(5000);
   state = READY;
 }
@@ -123,14 +153,16 @@ void home(Command command ){
 void move(Command command ){
   state = MOVING;
   Serial.println("move");
+  Serial.print("pos:");Serial.println(command.requestedPos);
+  Serial.print("delay:");Serial.println(command.stepDelay);
+  Serial.print("m0:");Serial.println(command.m0);
+  Serial.print("m1:");Serial.println(command.m1);
+  Serial.print("m2:");Serial.println(command.m2);
   delay(5000);
   state = READY;
 }
 
-// callback for sending data
 void sendData(){
-  Serial.print("Sending:");
-  Serial.println(state);
   Wire.write(state);
 }
 
