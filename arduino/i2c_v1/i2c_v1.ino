@@ -44,8 +44,12 @@ send: state + pos
 #define stepPin 3
 #define stepsPerRevolution 200
 #define arm1SensorPin 4
-#define button1Pin 5
-#define button2Pin 6
+#define topSensorPin 5
+#define bottomSensorPin 6
+#define enableMotorPin 7
+#define m0Pin 8
+#define m1Pin 9
+#define m2Pin 10
 //#define home_motor_speed 800
 //#define max_motor_speed 800
 
@@ -60,14 +64,12 @@ char number[50];
 int state = HOMING_NEEDED;
 int readPos = 0;
 int currentPos = 0;
-
-int button1State = 0;
-int button2State = 0;
 int arm1State = 0;
 int currentDir = -1;
 int newDir = 0;
 int turn = 0;
 int homeFinished = 0;
+bool error = 0;
 
 
 
@@ -82,10 +84,19 @@ void setup() {
   Wire.onRequest(sendData);
 
   pinMode(arm1SensorPin, INPUT);
-  pinMode(button1Pin, INPUT);
-  pinMode(button2Pin, INPUT);
+  pinMode(topSensorPin, INPUT);
+  pinMode(bottomSensorPin, INPUT);
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
+  pinMode(enableMotorPin, OUTPUT);
+
+  pinMode(m0Pin, OUTPUT);
+  pinMode(m1Pin, OUTPUT);
+  pinMode(m2Pin, OUTPUT);
+
+  
+  digitalWrite(enableMotorPin, HIGH);
+  
 }
 
 void loop() {
@@ -93,7 +104,12 @@ void loop() {
 } 
 
 void sendData(){
-  Wire.write(state);
+  if (error){
+    Wire.write(IN_ERROR);    
+  }
+  else{
+    Wire.write(state);    
+  }
 }
 
 void receiveData(int byteCount){
@@ -115,17 +131,6 @@ void processCharRead(char c){
   readPos ++;
   if (readPos == NR_OF_BYTES_TO_READ){
     parseCommand();
-//    Command command = parseCommand();
-    //currentCommand = command;
-//    Serial.print("SET CURRENT COMMAND"); 
-//    currentCommand = {
-//      command.command,
-//      command.requestedPos,
-//      command.stepDelay,
-//      command.m0, 
-//      command.m1, 
-//      command.m2
-//      };
   }
 }
 
@@ -144,8 +149,7 @@ void parseCommand(){
   buffer[5] = number[7];
   buffer[6] = '\0';
   int toPos = atoi(buffer);
-//  Serial.println(buffer);
-//  Serial.println(toPos);
+
 
   buffer[0] = number[8];
   buffer[1] = number[9];
@@ -156,30 +160,12 @@ void parseCommand(){
   buffer[6] = '\0';
   int delay = atoi(buffer);
 
-//  int toPos = 2110;
-//  int delay = 1100;
-
-//  Serial.println(buffer);
-//  Serial.println(delay);
-
   m0 = number[14] == '1';
   m1 = number[15] == '1';
   m2 = number[16] == '1';
   stepDelay = delay;
   requestedPos = toPos;
   command = number[1];
-  
-//  Command command = {number[1],toPos,delay,m0, m1, m2}; 
-
-//  Serial.print("- cmd:");Serial.println(command.command);
-//  Serial.print("- pos:");Serial.println(command.requestedPos);
-//  Serial.print("- delay:");Serial.println(command.stepDelay);
-//  Serial.print("- m0:");Serial.println(command.m0);
-//  Serial.print("- m1:");Serial.println(command.m1);
-//  Serial.print("- m2:");Serial.println(command.m2);
-//  Serial.print("- currentPos:");Serial.println(currentPos);  
-//  return command; 
-
 
   Serial.print("- cmd:");Serial.println(command);
   Serial.print("- pos:");Serial.println(requestedPos);
@@ -234,12 +220,51 @@ void move(){
 
   state = READY;
   
-  Serial.println("RESET CURRENT COMMAND");
   command = '-';
   
 }
 
+void checkError(){
+  boolean topPin = digitalRead(topSensorPin);
+  boolean bottomPin = digitalRead(bottomSensorPin);
+
+  if (topPin && bottomPin){
+    if (error){
+      Serial.println("Error fixed");
+      error = false;
+    }
+  }
+  else if (!error){
+    Serial.println("Entering error mode");
+    error = true;    
+    digitalWrite(enableMotorPin, HIGH);
+  }
+}
+
+void setupm012(){
+
+  
+  if (m0==false)
+    digitalWrite(m0Pin, LOW);
+  else  
+    digitalWrite(m0Pin, HIGH);
+  
+  if (m1==false)
+    digitalWrite(m1Pin, LOW);
+  else  
+    digitalWrite(m1Pin, HIGH);
+    
+  if (m2==false)
+    digitalWrite(m2Pin, LOW);
+  else  
+    digitalWrite(m2Pin, HIGH);
+
+}
+
 void moveUp(int reqPos){
+  digitalWrite(enableMotorPin, LOW);
+  setupm012();
+
   Serial.println("move up");    
   digitalWrite(dirPin, HIGH);
   while (currentPos<reqPos){
@@ -247,9 +272,13 @@ void moveUp(int reqPos){
     currentPos++;
   }
   Serial.println("up");    
+  digitalWrite(enableMotorPin, HIGH);
 }
 
 void moveDown(int reqPos){
+  digitalWrite(enableMotorPin, LOW);
+  setupm012();
+
   Serial.println("move down");    
   digitalWrite(dirPin, LOW);
   while (currentPos>reqPos){
@@ -257,44 +286,49 @@ void moveDown(int reqPos){
     currentPos--;
   }
   Serial.println("down");    
+  digitalWrite(enableMotorPin, HIGH);
 }
 
 void home() {
+  digitalWrite(enableMotorPin, LOW);
+  setupm012();
+
   arm1State = digitalRead(arm1SensorPin); 
-    Serial.println("\t start homing");
-    if (arm1State==1){
-      // move down
-      Serial.println("\t first move down until not high");
-      digitalWrite(dirPin, LOW);
-      while (digitalRead(arm1SensorPin)){
-        digitalWrite(stepPin, HIGH);
-        delayMicroseconds(stepDelay);
-        digitalWrite(stepPin, LOW);
-        delayMicroseconds(stepDelay);
-      }
-  
-      Serial.println("\t move one extra round");
-      for (int i = 0; i < 1 * stepsPerRevolution; i++) {
-        pulse(stepPin);
-      }
-    }
-  
-    Serial.println("\t moving up");    
-    digitalWrite(dirPin, HIGH);
-    while (!digitalRead(arm1SensorPin)){
+  Serial.println("\t start homing");
+  if (arm1State==1){
+    // move down
+    Serial.println("\t first move down until not high");
+    digitalWrite(dirPin, LOW);
+    while (digitalRead(arm1SensorPin)){
       pulse(stepPin);
-    }    
-  
-    Serial.println("\t homing finished");
-    currentPos = 00;
+    }
+
+    Serial.println("\t move one extra round");
+    for (int i = 0; i < 1 * stepsPerRevolution; i++) {
+      pulse(stepPin);
+    }
+  }
+
+  Serial.println("\t moving up");    
+  digitalWrite(dirPin, HIGH);
+  while (!digitalRead(arm1SensorPin)){
+    pulse(stepPin);
+  }    
+
+  Serial.println("\t homing finished");
+  currentPos = 00;
+  digitalWrite(enableMotorPin, HIGH);
 
 }
 
 
 
 void pulse(int pin){
-    digitalWrite(pin, HIGH);
-    delayMicroseconds(stepDelay);
-    digitalWrite(pin, LOW);
-    delayMicroseconds(stepDelay);
+    checkError();
+    if (!error){
+      digitalWrite(pin, HIGH);
+      delayMicroseconds(stepDelay);
+      digitalWrite(pin, LOW);
+      delayMicroseconds(stepDelay);
+    }
 }
