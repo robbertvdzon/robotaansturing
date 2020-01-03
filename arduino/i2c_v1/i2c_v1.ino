@@ -29,18 +29,16 @@ send: state + pos
 
 */
 
-//Import the library required
 #include <Wire.h>
 
-//Slave Address for the Communication
 #define SLAVE_ADDRESS 0x05
 #define NR_OF_BYTES_TO_READ 17
 
-char number[50];
-int state = 0;
-int writeState = 0;
-int readPos = 0;
-
+#define HOMING_NEEDED 0
+#define READY 1
+#define MOVING 2
+#define HOMING 3
+#define IN_ERROR 4
 
 struct Command {
   char command;
@@ -50,6 +48,14 @@ struct Command {
   byte m1;
   byte m2;
 };
+
+char number[50];
+int state = HOMING_NEEDED;
+int readPos = 0;
+Command currentCommand = {'-',0,0,0,0,0};
+
+
+
 
 //Code Initialization
 void setup() {
@@ -64,19 +70,16 @@ void setup() {
 }
 
 void loop() {
-  delay(100);
-  if (writeState==1){
-    Serial.print("writing state");
-    writeState = 0;
-  }
-} // end loop
+  delay(1);
+  processCommand(currentCommand);
+  currentCommand = {'-',0,0,0,0,0};
+} 
 
-// callback for received data
 void receiveData(int byteCount){
   while(Wire.available()) {
     processCharRead(Wire.read());
   }
-}  // end while
+}  
 
 void processCharRead(char c){
 
@@ -92,13 +95,15 @@ void processCharRead(char c){
   readPos ++;
   if (readPos == NR_OF_BYTES_TO_READ){
     Command command = parseCommand();
-    processCommand(command);  
+    currentCommand = command;
   }
   
 }
 
+
 Command parseCommand(){
-  Serial.print("parseCommand:"); Serial.println(number);
+  Serial.print("parseCommand:"); 
+  Serial.println(number);
   Command command = {number[1],0,0,0,0,0}; 
   return command; 
 }
@@ -109,11 +114,17 @@ void processCommand(Command command ){
 }
 
 void home(Command command ){
+  state = HOMING;
   Serial.println("home");
+  delay(5000);
+  state = READY;
 }
 
 void move(Command command ){
+  state = MOVING;
   Serial.println("move");
+  delay(5000);
+  state = READY;
 }
 
 // callback for sending data

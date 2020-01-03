@@ -43,7 +43,13 @@ for i in data_list:
     writeNumber(int(ord(i)))
     time.sleep(.01)
 
-print(readNumber())
+done = false
+while not done :
+  state = readNumber()
+  print(state)
+  done = state == 1
+  time.sleep(1)
+
 
 #End of the Script
 
