@@ -43,7 +43,7 @@ while True:
         writeNumber(int(ord(i)))
         #time.sleep(.1)
 
-   /# writeNumber(int(0x0A))
+#     writeNumber(int(0x0A))
     print(readNumber())
 
 #End of the Script
