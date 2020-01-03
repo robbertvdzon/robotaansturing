@@ -31,7 +31,7 @@ def writeNumber(value):
 
 def readNumber():
     # number = bus.read_byte(address)
-    number = bus.read_byte_data(address_2)
+    number = bus.read_byte(address_2)
     return number
 
 while True:
@@ -43,7 +43,7 @@ while True:
         writeNumber(int(ord(i)))
         #time.sleep(.1)
 
-    writeNumber(int(0x0A))
+   /# writeNumber(int(0x0A))
     print(readNumber())
 
 #End of the Script
