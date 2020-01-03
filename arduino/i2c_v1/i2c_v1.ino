@@ -79,10 +79,8 @@ void receiveData(int byteCount){
 }  // end while
 
 void processCharRead(char c){
-  Serial.print("got "); Serial.print(readPos);Serial.print(" ");Serial.println(c);
 
   if (c == '^'){
-    Serial.println("start command");
     readPos = 0;
   }
   
@@ -93,16 +91,16 @@ void processCharRead(char c){
 
   readPos ++;
   if (readPos == NR_OF_BYTES_TO_READ){
-    Serial.println("end command");
     Command command = parseCommand();
     processCommand(command);  
   }
-  Serial.print("done "); Serial.print(readPos);Serial.print(" ");Serial.println(number);
   
 }
 
 Command parseCommand(){
-  Command command = {number[0],0,0,0,0,0};  
+  Serial.print("parseCommand:"); Serial.println(number);
+  Command command = {number[1],0,0,0,0,0}; 
+  return command; 
 }
 
 void processCommand(Command command ){
