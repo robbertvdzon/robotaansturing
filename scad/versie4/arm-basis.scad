@@ -1,27 +1,19 @@
 difference(){
 	union(){
         translate([0,-5,0]){
-           cube([5,10,180], center=false);
+           cube([5,10,210], center=false);
        }
-       translate([0+5+42,-5,0]){
-           cube([5,10,180], center=false);
+       translate([0+5+62,-5,0]){
+           cube([5,10,210], center=false);
+       }
+
+       translate([0,-5,150]){
+           cube([72,10,5], center=false);
        }
 
 
-       translate([42,-5,150]){
-           cube([5,10,60], center=false);
-       }
-       translate([5,-5,150]){
-           cube([5,10,60], center=false);
-       }
-       translate([5,-5,200]){
-           cube([42,10,10], center=false);
-       }
-       translate([42/2,-5,200]){
-           cube([10,15,10], center=false);
-       }
-       translate([-15,-5,00]){
-           cube([82,25,6], center=false);
+       translate([0,-5,00]){
+           cube([72,25,6], center=false);
        }
 
 	}

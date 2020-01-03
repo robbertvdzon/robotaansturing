@@ -1,7 +1,7 @@
 difference(){
 	union(){
-        translate([-4.5,-42/2,0]){
-           cube([9,42,9], center=false);
+        translate([-4.5,-32/2,0]){
+           cube([9,32,9], center=false);
         }	   
        translate([0,0,0]){
             rotate(a = [0,0,0]) {
