@@ -13,6 +13,7 @@ SCL -> A5
 
 char number[50];
 int state = 0;
+int writeState = 0;
 
 //Code Initialization
 void setup() {
@@ -24,11 +25,15 @@ void setup() {
   Wire.begin(SLAVE_ADDRESS);
  // define callbacks for i2c communication
   Wire.onReceive(receiveData);
-//  Wire.onRequest(sendData);
+  Wire.onRequest(sendData);
 }
 
 void loop() {
   delay(100);
+  if (writeState==1){
+    Serial.print("writing state");
+    writeState = 0;
+  }
 } // end loop
 
 // callback for received data
@@ -40,6 +45,9 @@ void receiveData(int byteCount){
   }
   number[i] = '\0';
   Serial.print(number);
+  if (number[0]=='X'){
+        writeState = 1;
+  }
 }  // end while
 
 // callback for sending data
