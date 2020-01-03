@@ -3,16 +3,6 @@ I2C Pinouts
 
 SDA -> A4
 SCL -> A5
-
-- read chars
-- als eerste char een 'X' is: dat write data (in i2c die uitlezen)
-- convert 4 chars naar integer:
-     char tarray[3];
-     zhrs.toCharArray(tarray, sizeof(tarray));
-     dhrs = atoi(tarray);
-- maal protocol structuur
-
-zie: http://dsscircuits.com/articles/arduino-i2c-slave-guide
 */
 
 //Import the library required
@@ -28,6 +18,9 @@ int state = 0;
 void setup() {
   // initialize i2c as slave
   Serial.begin(9600);
+  Serial.print("Slave on adress:");
+  Serial.println(SLAVE_ADDRESS);
+  
   Wire.begin(SLAVE_ADDRESS);
  // define callbacks for i2c communication
   Wire.onReceive(receiveData);
