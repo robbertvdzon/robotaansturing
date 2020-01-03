@@ -38,8 +38,7 @@ def readNumber():
 
 
 print(sys.argv[0])
-data = raw_input("Enter the data to be sent : ")
-data_list = sys.argv[0]
+data_list = list(sys.argv[0])
 for i in data_list:
   #Sends to the Slaves
     writeNumber(int(ord(i)))
