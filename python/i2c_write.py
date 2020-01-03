@@ -9,7 +9,7 @@ data = sys.argv[2]
 
 print("sending "+data+" to address "+str(address))
 
-data_list = list(sys.argv[1])
+data_list = list(data)
 for i in data_list:
     bus.write_byte(address, int(ord(i)))
     time.sleep(.01)
