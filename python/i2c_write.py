@@ -6,7 +6,7 @@ bus = smbus.SMBus(1)
 
 
 
-address_2 = int(ord(sys.argv[1])
+address_2 = int(ord(sys.argv[1]))
 data = sys.argv[2]
 
 print(address_2)
