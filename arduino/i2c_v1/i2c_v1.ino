@@ -9,12 +9,14 @@ byte 5 : to_pos
 byte 6 : to_pos 
 byte 7 : to_pos 
 byte 8 : delay tussen steps (6 lang, max 999999 usec = 1 sec)
-
-
-delay tussen steps: 2 bytes
-m0: 1 byte
-m1: 1 byte
-m2: 1 byte
+byte 9 : delay tussen steps
+byte 10: delay tussen steps
+byte 11: delay tussen steps
+byte 12: delay tussen steps
+byte 13: delay tussen steps
+byte 14: m0
+byte 15: m1
+byte 16: m2
 
 states:
 0: homing needed
@@ -32,10 +34,12 @@ send: state + pos
 
 //Slave Address for the Communication
 #define SLAVE_ADDRESS 0x05
+#define NR_OF_BYTES_TO_READ 17
 
 char number[50];
 int state = 0;
 int writeState = 0;
+int readPos = 0;
 
 
 struct Command {
@@ -69,23 +73,37 @@ void loop() {
 
 // callback for received data
 void receiveData(int byteCount){
-  Serial.print("bytes:");
-  Serial.println(byteCount);
-  int i = 0;
   while(Wire.available()) {
-    number[i] = Wire.read();
-    i++;
+    processCharRead(Wire.read());
   }
-  state++;
-  number[i] = '\0';
-  Serial.print(number);
-  if (number[0]=='X'){
-        writeState = 1;
-  }
-  Command command = {number[0],0,0,0,0,0};
-  Serial.println("process command");
-  processCommand(command);
 }  // end while
+
+void processCharRead(char c){
+  Serial.print("got "); Serial.print(readPos);Serial.print(" ");Serial.println(c);
+
+  if (c == '#'){
+    Serial.println("start command");
+    readPos == 0;
+  }
+  
+  if (readPos < NR_OF_BYTES_TO_READ){
+    number[readPos] == c;    
+    number[readPos+1] == '\0';    
+  }
+
+  readPos ++;
+  if (readPos == NR_OF_BYTES_TO_READ){
+    Serial.println("end command");
+    Command command = parseCommand();
+    processCommand(command);  
+  }
+  //Serial.print("done "); Serial.print(readPos);Serial.print(" ");Serial.println(number);
+  
+}
+
+Command parseCommand(){
+  Command command = {number[0],0,0,0,0,0};  
+}
 
 void processCommand(Command command ){
  if (command.command == 'H') home(command);
@@ -104,7 +122,7 @@ void move(Command command ){
 void sendData(){
   Serial.print("Sending:");
   Serial.println(state);
-  Wire.write('4');
+  Wire.write(state);
 }
 
 //End of the program
