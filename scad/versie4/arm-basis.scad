@@ -1,10 +1,10 @@
 difference(){
 	union(){
         translate([0,-5,0]){
-           cube([5,10,210], center=false);
+           cube([5,25,210], center=false);
        }
        translate([0+5+62,-5,0]){
-           cube([5,10,210], center=false);
+           cube([5,25,210], center=false);
        }
 
        translate([0,-5,150]){
@@ -19,13 +19,13 @@ difference(){
 	}
 	union() {       
 			   
-       translate([-30,0,85]){
+       translate([-30,2.5,85]){
             rotate(a = [0,90,0]) {
                 cylinder(h=600, r=1, $fn=100, center=false);
             }
        }			   
 		   
-       translate([-30,0,205]){
+       translate([-30,2.5,205]){
             rotate(a = [0,90,0]) {
                 cylinder(h=600, r=1, $fn=100, center=false);
             }
@@ -33,11 +33,6 @@ difference(){
 
 
 			
-       translate([5+42/2,10,205]){
-            rotate(a = [90,0,0]) {
-                cylinder(h=600, r=1, $fn=100, center=false);
-            }
-       }			   
    
 
 

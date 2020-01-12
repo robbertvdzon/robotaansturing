@@ -1,3 +1,5 @@
 #!/bin/sh
 #laag
-python i2c_write.py 5 M 002600 000600 000
+./move_p2A.sh &
+./move_p2B.sh &
+

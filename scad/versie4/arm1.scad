@@ -1,10 +1,10 @@
 difference(){
 	union(){
         translate([0,-5,0]){
-           cube([5,10,210], center=false);
+           cube([5,25,210], center=false);
        }
        translate([5+52,-5,0]){
-           cube([5,10,210], center=false);
+           cube([5,25,210], center=false);
        }
 
 

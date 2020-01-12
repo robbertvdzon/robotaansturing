@@ -5,14 +5,12 @@ difference(){
            cube([42,42,4], center=false);
        }
 
-       translate([42-10,42/2-10,0]){
-           cube([10,20,10], center=false);
+       translate([42-10,42/2-8,0]){
+           cube([10,16,10], center=false);
        }
-       translate([0,42/2-10,0]){
-           cube([10,20,10], center=false);
+       translate([0,42/2-8,0]){
+           cube([10,16,10], center=false);
        }
-
- 
 
 	}
 	union() {
@@ -34,22 +32,22 @@ difference(){
             }
        }		   
 
-       translate([5.5,5.5,-10]){
+       translate([8,8,-10]){
             rotate(a = [0,0,90]) {
               cylinder(h=600, r=1.2, $fn=100, center=false);
             }
        }		   
-       translate([5.5+31,5.5,-10]){
+       translate([8+26,8,-10]){
             rotate(a = [0,0,90]) {
               cylinder(h=600, r=1.2, $fn=100, center=false);
             }
        }		   
-       translate([5.5+31,5.5+31,-10]){
+       translate([8+26,8+26,-10]){
             rotate(a = [0,0,90]) {
               cylinder(h=600, r=1.2, $fn=100, center=false);
             }
        }		   
-       translate([5.5,5.5+31,-10]){
+       translate([8,8+26,-10]){
             rotate(a = [0,0,90]) {
               cylinder(h=600, r=1.2, $fn=100, center=false);
             }

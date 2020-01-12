@@ -31,7 +31,6 @@ send: state + pos
 
 #include <Wire.h>
 
-#define SLAVE_ADDRESS 0x05
 #define NR_OF_BYTES_TO_READ 17
 
 #define HOMING_NEEDED 0
@@ -40,18 +39,16 @@ send: state + pos
 #define HOMING 3
 #define IN_ERROR 4
 
-#define dirPin 2
-#define stepPin 3
+#define dirPin 3
+#define stepPin 8
 #define stepsPerRevolution 200
-#define arm1SensorPin 4
-#define topSensorPin 5
-#define bottomSensorPin 6
-#define enableMotorPin 7
-#define m0Pin 8
-#define m1Pin 9
-#define m2Pin 10
-//#define home_motor_speed 800
-//#define max_motor_speed 800
+#define arm1SensorPin 6
+#define topSensorPin 4
+#define bottomSensorPin 7
+#define enableMotorPin 5
+#define errorPin 9
+#define adressPin1 10
+#define adressPin2 11
 
   char command;
   int requestedPos;
@@ -71,10 +68,28 @@ int turn = 0;
 int homeFinished = 0;
 bool error = 0;
 
+int SLAVE_ADDRESS = 5;
 
 
 void setup() {
-  // initialize i2c as slave
+
+  pinMode(arm1SensorPin, INPUT);
+  pinMode(topSensorPin, INPUT);
+  pinMode(bottomSensorPin, INPUT);
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
+  pinMode(enableMotorPin, OUTPUT);
+  pinMode(errorPin, OUTPUT);
+  pinMode(adressPin1, INPUT);
+  pinMode(adressPin1, INPUT);
+
+  boolean addr1 = digitalRead(adressPin1);
+  boolean addr2 = digitalRead(adressPin2);
+
+  if (addr1) SLAVE_ADDRESS = SLAVE_ADDRESS+1;
+  if (addr2) SLAVE_ADDRESS = SLAVE_ADDRESS+2;
+
+    
   Serial.begin(9600);
   Serial.print("Slave on adress:");
   Serial.println(SLAVE_ADDRESS);
@@ -83,16 +98,8 @@ void setup() {
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
 
-  pinMode(arm1SensorPin, INPUT);
-  pinMode(topSensorPin, INPUT);
-  pinMode(bottomSensorPin, INPUT);
-  pinMode(stepPin, OUTPUT);
-  pinMode(dirPin, OUTPUT);
-  pinMode(enableMotorPin, OUTPUT);
 
-  pinMode(m0Pin, OUTPUT);
-  pinMode(m1Pin, OUTPUT);
-  pinMode(m2Pin, OUTPUT);
+
 
   
   digitalWrite(enableMotorPin, HIGH);
@@ -101,6 +108,7 @@ void setup() {
 
 void loop() {
   processCommand();
+  checkError();
 } 
 
 void sendData(){
@@ -239,25 +247,17 @@ void checkError(){
     error = true;    
     digitalWrite(enableMotorPin, HIGH);
   }
+
+  if (error ){
+    digitalWrite(errorPin, HIGH);
+  }
+  else{
+    digitalWrite(errorPin, LOW);    
+  }
+  
 }
 
 void setupm012(){
-
-  
-  if (m0==false)
-    digitalWrite(m0Pin, LOW);
-  else  
-    digitalWrite(m0Pin, HIGH);
-  
-  if (m1==false)
-    digitalWrite(m1Pin, LOW);
-  else  
-    digitalWrite(m1Pin, HIGH);
-    
-  if (m2==false)
-    digitalWrite(m2Pin, LOW);
-  else  
-    digitalWrite(m2Pin, HIGH);
 
 }
 

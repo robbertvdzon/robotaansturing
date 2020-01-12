@@ -5,7 +5,7 @@ difference(){
         }	   
        translate([0,0,0]){
             rotate(a = [0,0,0]) {
-                cylinder(h=3, r=11, $fn=100, center=false);
+                cylinder(h=6, r=11, $fn=100, center=false);
             }
        }
 
