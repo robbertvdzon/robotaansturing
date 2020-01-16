@@ -1,3 +1,3 @@
 #!/bin/sh
 #laag
-python i2c_write.py 5 M 002600 000900 000
+python i2c_write.py 5 M 000200 000900 000
