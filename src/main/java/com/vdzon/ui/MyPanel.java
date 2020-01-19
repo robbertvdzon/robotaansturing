@@ -31,7 +31,7 @@ public class MyPanel extends JPanel {
 
     final JTextField tf=new JTextField();
     tf.setBounds(50,50, 150,20);
-    JButton b=new JButton("Click Here");
+    JButton b=new JButton("Update");
     b.setBounds(50,100,95,30);
     b.addActionListener(e -> button1(tf));
     f.add(b);
