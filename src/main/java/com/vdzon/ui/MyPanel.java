@@ -209,7 +209,7 @@ public class MyPanel extends JPanel {
               System.out.println("word:"+w);
             }
 
-            if (splitWords.length==4){
+            if (splitWords.length>=4){
               String posArm1 =splitWords[0].trim();
               String posArm2 =splitWords[1].trim();
               String posArm3 =splitWords[2].trim();
