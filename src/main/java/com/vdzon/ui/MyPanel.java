@@ -25,13 +25,14 @@ public class MyPanel extends JPanel {
     f.pack();
     f.setLocationByPlatform(true);
 
-    final JTextField tf=new JTextField();
-    tf.setBounds(5,100, 150,20);
+//    final JTextField tf=new JTextField();
+//    tf.setBounds(5,100, 150,20);
+//    f.add(tf);
 
 
     JButton b=new JButton("Restart & Update");
     b.setBounds(5,20,200,40);
-    b.addActionListener(e -> updateAndRestart(tf));
+    b.addActionListener(e -> updateAndRestart());
     f.add(b);
 
     JButton bExit=new JButton("Restart 2");
@@ -62,8 +63,7 @@ public class MyPanel extends JPanel {
 
 
 
-    f.add(tf);
-    f.setSize(400,400);
+//    f.setSize(400,400);
     f.setLayout(null);
 
     f.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -86,7 +86,7 @@ public class MyPanel extends JPanel {
     }
   }
 
-  private void updateAndRestart(JTextField tf) {
+  private void updateAndRestart() {
     try {
       PrintWriter writer = new PrintWriter("/tmp/rebuildui", "UTF-8");
       writer.close();
