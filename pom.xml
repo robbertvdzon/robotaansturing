@@ -109,7 +109,7 @@
                         <addClasspath>true</addClasspath>
                         <classpathPrefix>libs/</classpathPrefix>
                         <mainClass>
-                            com.vdzon.berekenarmen.Main
+                            com.vdzon.ui.Main
                         </mainClass>
                     </manifest>
                 </archive>
