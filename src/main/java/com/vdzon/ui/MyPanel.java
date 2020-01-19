@@ -194,9 +194,13 @@ public class MyPanel extends JPanel {
   }
 
   private void runOnce(String text) {
+    System.out.println("run once:"+text);
     String[] split = text.split("\n");
+    System.out.println("run once:"+split.length);
+
     Arrays.asList(split).forEach(
         row -> {
+          System.out.println("row:"+row);
           if (row != null && !row.startsWith("#")){
             String[] splitWords = text.split(",");
             if (splitWords.length==4){
