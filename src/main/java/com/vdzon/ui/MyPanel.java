@@ -203,46 +203,53 @@ public class MyPanel extends JPanel {
     while(true){
       runOnce(text);
     }
-
   }
 
+  int lastPos1 = 0;
+  int lastPos2 = 0;
+  int lastPos3 = 0;
+  int delayArm1 = 0;
+  int delayArm2 = 0;
+  int delayArm3 = 0;
+
   private void runOnce(String text) {
-    System.out.println("run once:"+text);
+    System.out.println("run once:" + text);
     String[] split = text.split("#");
-    System.out.println("run once:"+split.length);
+    System.out.println("run once:" + split.length);
 
     Arrays.asList(split).forEach(
         row -> {
-          System.out.println("row:"+row);
-          if (row != null && !row.startsWith("#")){
+          System.out.println("row:" + row);
+          if (row != null && !row.startsWith("#")) {
             String[] splitWords = row.split(",");
-            System.out.println("size="+splitWords.length);
+            System.out.println("size=" + splitWords.length);
 
-            for (String w:splitWords){
-              System.out.println("word:"+w);
+            for (String w : splitWords) {
+              System.out.println("word:" + w);
             }
 
-            if (splitWords.length>=4){
-              String posArm1 =splitWords[0].trim();
-              String posArm2 =splitWords[1].trim();
-              String posArm3 =splitWords[2].trim();
-              String delayStr = splitWords[3].trim();
-              System.out.println("arm1="+posArm1+" "+",arm2="+posArm2+" "+",arm3="+posArm3+" "+",delay="+delayStr+" ");
-              try{
+            if (splitWords.length >= 4) {
+              String posArm1 = splitWords[0].trim();
+              String posArm2 = splitWords[1].trim();
+              String posArm3 = splitWords[2].trim();
+              String sleepStr = splitWords[3].trim();
+              System.out.println("arm1=" + posArm1 + " " + ",arm2=" + posArm2 + " " + ",arm3=" + posArm3 + " " + ",delay=" + sleepStr + " ");
+              try {
                 int pos1 = Integer.parseInt(posArm1);
                 int pos2 = Integer.parseInt(posArm2);
                 int pos3 = Integer.parseInt(posArm3);
-                int delay = Integer.parseInt(delayStr);
+                int sleepTime = Integer.parseInt(sleepStr);
 
-                gotoPos(arm1, pos1);
-                gotoPos(arm2, pos2);
-                gotoPos(arm3, pos3);
+                calcDelays(pos1, pos2, pos3);
 
-                System.out.println("sleep "+delay+" sec");
-                Thread.sleep(1000*delay);
+                gotoPos(arm1, pos1, delayArm1);
+                gotoPos(arm2, pos2, delayArm2);
+                gotoPos(arm3, pos3, delayArm3);
+
+                System.out.println("sleep " + sleepTime + " sec");
+                Thread.sleep(1000 * sleepTime);
                 System.out.println("wake up");
-              }
-              catch (Exception ex){
+              } catch (Exception ex) {
                 ex.printStackTrace();
 
               }
@@ -251,7 +258,32 @@ public class MyPanel extends JPanel {
           }
         }
     );
+  }
 
+  public void calcDelays(int pos1, int pos2, int pos3) {
+    int mostPulses = max(pos1, pos2, pos3);
+    int pulses1 = Math.abs(pos1 - lastPos1);
+    int pulses2 = Math.abs(pos2 - lastPos2);
+    int pulses3 = Math.abs(pos3 - lastPos3);
+
+    //
+    long minDelay = 400000;
+    long totalTime = minDelay * mostPulses;
+    double delay1 = totalTime / pulses1;
+    double delay2 = totalTime / pulses2;
+    double delay3 = totalTime / pulses3;
+
+    delayArm1 = (int)Math.round(delay1);
+    delayArm2 = (int)Math.round(delay2);
+    delayArm3 = (int)Math.round(delay3);
+  }
+
+  private int max(int pos1, int pos2, int pos3) {
+    int diff1 = Math.abs(pos1 - lastPos1);
+    int diff2 = Math.abs(pos2 - lastPos2);
+    int diff3 = Math.abs(pos3 - lastPos3);
+    int max1 = Math.max(diff1, diff2);
+    return Math.max(diff3, max1);
 
   }
 
@@ -293,15 +325,20 @@ public class MyPanel extends JPanel {
     int pos = Integer.parseInt(tf.getText());
     int newPos = pos + increment;
     tf.setText("" + newPos);
-    gotoPos(arm, newPos);
+    gotoPos(arm, newPos, 400000);
 
   }
 
-  private void gotoPos(I2CDevice arm, int pos) {
+  private void gotoPos(I2CDevice arm, int pos, int delay) {
     try {
-      String formatted = String.format("%06d", pos);
-      String command = "^M" + formatted + "000400000";
+      String formattedPos = String.format("%06d", pos);
+      String formattedDelay = String.format("%06d", delay);
+      String command = "^M" + formattedPos + formattedDelay;
       if (arm != null) { arm.write(command.getBytes()); }
+      if (arm==arm1) lastPos1 = pos;
+      if (arm==arm2) lastPos2 = pos;
+      if (arm==arm3) lastPos3 = pos;
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -312,6 +349,9 @@ public class MyPanel extends JPanel {
   private void home(I2CDevice arm) {
     try {
       if (arm != null) { arm.write("^H000000000700000".getBytes()); }
+      if (arm==arm1) lastPos1 = 0;
+      if (arm==arm2) lastPos2 = 0;
+      if (arm==arm3) lastPos3 = 0;
     } catch (IOException e) {
       e.printStackTrace();
     }
