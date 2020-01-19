@@ -13,6 +13,9 @@ import com.pi4j.io.i2c.I2CFactory;
 
 public class MyPanel extends JPanel {
 
+  private static int ARM1 = 0x8;
+  private static int ARM2 = 0x7;
+  private static int ARM3 = 0x5;
 
 
   public MyPanel() {
@@ -36,10 +39,26 @@ public class MyPanel extends JPanel {
     bExit.addActionListener(e -> System.exit(0));
     f.add(bExit);
 
-    JButton bHome=new JButton("Home");
-    bHome.setBounds(5,70,200,40);
-    bHome.addActionListener(e -> home());
-    f.add(bHome);
+    {
+      JButton bHome = new JButton("Home 1");
+      bHome.setBounds(5, 70, 200, 40);
+      bHome.addActionListener(e -> home(ARM1));
+      f.add(bHome);
+    }
+
+    {
+      JButton bHome = new JButton("Home 2");
+      bHome.setBounds(210, 70, 200, 40);
+      bHome.addActionListener(e -> home(ARM2));
+      f.add(bHome);
+    }
+
+    {
+      JButton bHome = new JButton("Home 3");
+      bHome.setBounds(415, 70, 200, 40);
+      bHome.addActionListener(e -> home(ARM3));
+      f.add(bHome);
+    }
 
 
 
@@ -48,17 +67,16 @@ public class MyPanel extends JPanel {
     f.setLayout(null);
 
     f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//    f.setUndecorated(true);
     f.setVisible(true);
 
 
 
   }
 
-  private void home() {
+  private void home(int arm) {
     try {
       I2CBus i2c = I2CFactory.getInstance(I2CBus.BUS_1);
-      I2CDevice device = i2c.getDevice(0x7);
+      I2CDevice device = i2c.getDevice(arm);
       device.write("^H000000000700000".getBytes());
 
     } catch (UnsupportedBusNumberException e) {
