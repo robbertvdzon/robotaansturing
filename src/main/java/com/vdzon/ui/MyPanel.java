@@ -202,7 +202,7 @@ public class MyPanel extends JPanel {
         row -> {
           System.out.println("row:"+row);
           if (row != null && !row.startsWith("#")){
-            String[] splitWords = text.split(",");
+            String[] splitWords = row.split(",");
             System.out.println("size="+splitWords.length);
 
             for (String w:splitWords){
