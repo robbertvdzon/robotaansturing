@@ -6,12 +6,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
+import com.pi4j.io.i2c.I2CBus;
+import com.pi4j.io.i2c.I2CDevice;
+import com.pi4j.io.i2c.I2CFactory;
 
 public class MyPanel extends JPanel {
 
-  private static final int PREF_W = 600;
-  private static final int PREF_H = PREF_W;
+
 
   public MyPanel() {
     JFrame f = new JFrame("Schaakrobot");
@@ -29,10 +30,15 @@ public class MyPanel extends JPanel {
     b.addActionListener(e -> updateAndRestart(tf));
     f.add(b);
 
-    JButton bExit=new JButton("Close & Restart");
+    JButton bExit=new JButton("Restart 1");
     bExit.setBounds(210,20,200,40);
     bExit.addActionListener(e -> System.exit(0));
     f.add(bExit);
+
+    JButton bHome=new JButton("Home");
+    bHome.setBounds(5,70,200,40);
+    bHome.addActionListener(e -> home());
+    f.add(bHome);
 
 
 
@@ -45,6 +51,10 @@ public class MyPanel extends JPanel {
     f.setVisible(true);
 
 
+
+  }
+
+  private void home() {
 
   }
 
