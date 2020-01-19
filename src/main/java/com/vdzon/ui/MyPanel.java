@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -48,9 +49,9 @@ public class MyPanel extends JPanel {
   }
 
   private void button1(JTextField tf) {
-    String[] cmd = {"/bin/sh","/home/pi/update.sh"};
     try {
-      Runtime.getRuntime().exec(cmd);
+      PrintWriter writer = new PrintWriter("/tmp/rebuildui", "UTF-8");
+      writer.close();
       System.exit(0);
     } catch (IOException e) {
       e.printStackTrace();
