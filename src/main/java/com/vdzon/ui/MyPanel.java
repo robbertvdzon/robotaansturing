@@ -25,12 +25,12 @@ public class MyPanel extends JPanel {
 
 
     JButton b=new JButton("Restart & Update");
-    b.setBounds(5,20,200,30);
+    b.setBounds(5,20,200,40);
     b.addActionListener(e -> updateAndRestart(tf));
     f.add(b);
 
-    JButton bExit=new JButton("Restart & Update");
-    bExit.setBounds(205,20,200,30);
+    JButton bExit=new JButton("Restart");
+    bExit.setBounds(210,20,200,40);
     bExit.addActionListener(e -> System.exit(0));
     f.add(bExit);
 
