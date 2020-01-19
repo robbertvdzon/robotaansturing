@@ -22,12 +22,16 @@ public class MyPanel extends JPanel {
   private static int ARM1 = 0x8;
   private static int ARM2 = 0x7;
   private static int ARM3 = 0x5;
-
+  int lastPos1 = 0;
+  int lastPos2 = 0;
+  int lastPos3 = 0;
+  int delayArm1 = 0;
+  int delayArm2 = 0;
+  int delayArm3 = 0;
   private I2CDevice arm1 = null;
   private I2CDevice arm2 = null;
   private I2CDevice arm3 = null;
-
-
+  private Thread currentLoopThread = null;
   public MyPanel() {
     init();
 
@@ -181,10 +185,8 @@ public class MyPanel extends JPanel {
     f.setVisible(true);
   }
 
-  private Thread currentLoopThread = null;
-
   private void stopLoop() {
-    if (currentLoopThread!=null){
+    if (currentLoopThread != null) {
       currentLoopThread.stop();
     }
   }
@@ -194,23 +196,15 @@ public class MyPanel extends JPanel {
     currentLoopThread.start();
   }
 
-
   private void runOnceInThread(String text) {
     new Thread(() -> runOnce(text)).start();
   }
 
   private void runInLoop(String text) {
-    while(true){
+    while (true) {
       runOnce(text);
     }
   }
-
-  int lastPos1 = 0;
-  int lastPos2 = 0;
-  int lastPos3 = 0;
-  int delayArm1 = 0;
-  int delayArm2 = 0;
-  int delayArm3 = 0;
 
   private void runOnce(String text) {
     System.out.println("run once:" + text);
@@ -269,13 +263,13 @@ public class MyPanel extends JPanel {
     //
     long minDelay = 400000;
     long totalTime = minDelay * mostPulses;
-    double delay1 = totalTime / pulses1;
-    double delay2 = totalTime / pulses2;
-    double delay3 = totalTime / pulses3;
+    double delay1 = pulses1 == 0 ? 400000 : totalTime / pulses1;
+    double delay2 = pulses2 == 0 ? 400000 :totalTime / pulses2;
+    double delay3 = pulses3 == 0 ? 400000 :totalTime / pulses3;
 
-    delayArm1 = (int)Math.round(delay1);
-    delayArm2 = (int)Math.round(delay2);
-    delayArm3 = (int)Math.round(delay3);
+    delayArm1 = (int) Math.round(delay1);
+    delayArm2 = (int) Math.round(delay2);
+    delayArm3 = (int) Math.round(delay3);
   }
 
   private int max(int pos1, int pos2, int pos3) {
@@ -335,9 +329,9 @@ public class MyPanel extends JPanel {
       String formattedDelay = String.format("%06d", delay);
       String command = "^M" + formattedPos + formattedDelay;
       if (arm != null) { arm.write(command.getBytes()); }
-      if (arm==arm1) lastPos1 = pos;
-      if (arm==arm2) lastPos2 = pos;
-      if (arm==arm3) lastPos3 = pos;
+      if (arm == arm1) { lastPos1 = pos; }
+      if (arm == arm2) { lastPos2 = pos; }
+      if (arm == arm3) { lastPos3 = pos; }
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -349,9 +343,9 @@ public class MyPanel extends JPanel {
   private void home(I2CDevice arm) {
     try {
       if (arm != null) { arm.write("^H000000000700000".getBytes()); }
-      if (arm==arm1) lastPos1 = 0;
-      if (arm==arm2) lastPos2 = 0;
-      if (arm==arm3) lastPos3 = 0;
+      if (arm == arm1) { lastPos1 = 0; }
+      if (arm == arm2) { lastPos2 = 0; }
+      if (arm == arm3) { lastPos3 = 0; }
     } catch (IOException e) {
       e.printStackTrace();
     }
