@@ -48,7 +48,7 @@ public class MyPanel extends JPanel {
   }
 
   private void button1(JTextField tf) {
-    String[] cmd = {"sh","/home/pi/update.sh"};
+    String[] cmd = {"/bin/sh","/home/pi/update.sh"};
     try {
       Runtime.getRuntime().exec(cmd);
       System.exit(0);
