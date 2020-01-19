@@ -225,7 +225,9 @@ public class MyPanel extends JPanel {
                 gotoPos(arm2, pos2);
                 gotoPos(arm3, pos3);
 
+                System.out.println("sleep "+delay+" sec");
                 Thread.sleep(1000*delay);
+                System.out.println("wake up");
               }
               catch (Exception ex){
                 ex.printStackTrace();
