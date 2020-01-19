@@ -180,6 +180,7 @@ public class MyPanel extends JPanel {
   }
 
   private void home(I2CDevice arm) {
+    init();
     try {
       arm.write("^H000000000700000".getBytes());
     } catch (IOException e) {
