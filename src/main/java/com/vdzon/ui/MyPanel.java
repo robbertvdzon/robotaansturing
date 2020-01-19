@@ -181,16 +181,29 @@ public class MyPanel extends JPanel {
     f.setVisible(true);
   }
 
-  private void stopLoop() {
+  private Thread currentLoopThread = null;
 
+  private void stopLoop() {
+    if (currentLoopThread!=null){
+      currentLoopThread.stop();
+    }
   }
 
   private void startLoop(String text) {
-
+    currentLoopThread = new Thread(() -> runInLoop(text));
+    currentLoopThread.start();
   }
+
 
   private void runOnceInThread(String text) {
     new Thread(() -> runOnce(text)).start();
+  }
+
+  private void runInLoop(String text) {
+    while(true){
+      runOnce(text);
+    }
+
   }
 
   private void runOnce(String text) {
