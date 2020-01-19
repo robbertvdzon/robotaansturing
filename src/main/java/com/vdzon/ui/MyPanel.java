@@ -195,7 +195,7 @@ public class MyPanel extends JPanel {
 
   private void runOnce(String text) {
     System.out.println("run once:"+text);
-    String[] split = text.split("\r");
+    String[] split = text.split("#");
     System.out.println("run once:"+split.length);
 
     Arrays.asList(split).forEach(
@@ -205,10 +205,10 @@ public class MyPanel extends JPanel {
             String[] splitWords = text.split(",");
             System.out.println("size="+splitWords.length);
             if (splitWords.length==4){
-              String posArm1 =splitWords[0];
-              String posArm2 =splitWords[1];
-              String posArm3 =splitWords[2];
-              String delayStr = splitWords[3];
+              String posArm1 =splitWords[0].trim();
+              String posArm2 =splitWords[1].trim();
+              String posArm3 =splitWords[2].trim();
+              String delayStr = splitWords[3].trim();
               System.out.println("arm1="+posArm1+" "+",arm2="+posArm2+" "+",arm3="+posArm3+" "+",delay="+delayStr+" ");
               try{
                 int pos1 = Integer.parseInt(posArm1);
