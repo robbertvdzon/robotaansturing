@@ -39,6 +39,8 @@ public class MyPanel extends JPanel {
 
 
   public MyPanel() {
+    init();
+
     JFrame f = new JFrame("Schaakrobot");
     f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     f.getContentPane().add(this);
@@ -160,7 +162,6 @@ public class MyPanel extends JPanel {
   }
 
   private void gotoPos(JTextField tf, I2CDevice arm, int increment) {
-    init();
     int pos = Integer.parseInt(tf.getText());
     int newPos = pos + increment;
     tf.setText(""+newPos);
@@ -180,7 +181,6 @@ public class MyPanel extends JPanel {
   }
 
   private void home(I2CDevice arm) {
-    init();
     try {
       arm.write("^H000000000700000".getBytes());
     } catch (IOException e) {
