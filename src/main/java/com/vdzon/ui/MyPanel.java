@@ -270,6 +270,10 @@ public class MyPanel extends JPanel {
     delayArm1 = (int) Math.round(delay1);
     delayArm2 = (int) Math.round(delay2);
     delayArm3 = (int) Math.round(delay3);
+
+    if (delayArm1>999999) delayArm1 = 999999;
+    if (delayArm2>999999) delayArm2 = 999999;
+    if (delayArm3>999999) delayArm3 = 999999;
   }
 
   private int max(int pos1, int pos2, int pos3) {
