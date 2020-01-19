@@ -203,6 +203,7 @@ public class MyPanel extends JPanel {
           System.out.println("row:"+row);
           if (row != null && !row.startsWith("#")){
             String[] splitWords = text.split(",");
+            System.out.println("size="+splitWords.length);
             if (splitWords.length==4){
               String posArm1 =splitWords[0];
               String posArm2 =splitWords[1];
