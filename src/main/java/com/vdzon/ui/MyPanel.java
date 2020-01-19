@@ -1,5 +1,6 @@
 package com.vdzon.ui;
 
+import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.JButton;
@@ -30,7 +31,7 @@ public class MyPanel extends JPanel {
     b.addActionListener(e -> updateAndRestart(tf));
     f.add(b);
 
-    JButton bExit=new JButton("Restart 1");
+    JButton bExit=new JButton("Restart 2");
     bExit.setBounds(210,20,200,40);
     bExit.addActionListener(e -> System.exit(0));
     f.add(bExit);
@@ -55,7 +56,16 @@ public class MyPanel extends JPanel {
   }
 
   private void home() {
+    try {
+      I2CBus i2c = I2CFactory.getInstance(I2CBus.BUS_1);
+      I2CDevice device = i2c.getDevice(0x7);
+      device.write("^H000000000700000".getBytes());
 
+    } catch (UnsupportedBusNumberException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private void updateAndRestart(JTextField tf) {
