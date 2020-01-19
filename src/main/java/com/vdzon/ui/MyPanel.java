@@ -29,7 +29,7 @@ public class MyPanel extends JPanel {
     b.addActionListener(e -> updateAndRestart(tf));
     f.add(b);
 
-    JButton bExit=new JButton("Restart");
+    JButton bExit=new JButton("Close & Restart");
     bExit.setBounds(210,20,200,40);
     bExit.addActionListener(e -> System.exit(0));
     f.add(bExit);
