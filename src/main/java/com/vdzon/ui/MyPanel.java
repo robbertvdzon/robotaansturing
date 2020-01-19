@@ -195,7 +195,7 @@ public class MyPanel extends JPanel {
 
   private void runOnce(String text) {
     System.out.println("run once:"+text);
-    String[] split = text.split("\n");
+    String[] split = text.split("\r");
     System.out.println("run once:"+split.length);
 
     Arrays.asList(split).forEach(
