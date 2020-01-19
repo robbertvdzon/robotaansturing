@@ -21,7 +21,7 @@ public class MyPanel extends JPanel {
     f.setLocationByPlatform(true);
 
     final JTextField tf=new JTextField();
-    tf.setBounds(50,100, 150,20);
+    tf.setBounds(5,100, 150,20);
 
 
     JButton b=new JButton("Restart & Update");
