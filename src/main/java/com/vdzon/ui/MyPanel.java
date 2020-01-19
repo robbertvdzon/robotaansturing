@@ -328,6 +328,7 @@ public class MyPanel extends JPanel {
       String formattedPos = String.format("%06d", pos);
       String formattedDelay = String.format("%06d", delay);
       String command = "^M" + formattedPos + formattedDelay;
+      System.out.println("command:"+command);
       if (arm != null) { arm.write(command.getBytes()); }
       if (arm == arm1) { lastPos1 = pos; }
       if (arm == arm2) { lastPos2 = pos; }
