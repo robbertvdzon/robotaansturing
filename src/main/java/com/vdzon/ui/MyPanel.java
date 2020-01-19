@@ -6,6 +6,10 @@ import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -154,17 +158,17 @@ public class MyPanel extends JPanel {
       {
         JButton button = new JButton("run once");
         button.setBounds(315, 320, 100, 40);
-        button.addActionListener(e -> runOnce(textArea.getText()));
+        button.addActionListener(e -> runOnceInThread(textArea.getText()));
         f.add(button);
       }
       {
-        JButton button = new JButton("start loop");
+        JButton button = new JButton("loop");
         button.setBounds(315, 370, 100, 40);
         button.addActionListener(e -> startLoop(textArea.getText()));
         f.add(button);
       }
       {
-        JButton button = new JButton("stop loop");
+        JButton button = new JButton("stop");
         button.setBounds(420, 370, 100, 40);
         button.addActionListener(e -> stopLoop());
         f.add(button);
@@ -185,16 +189,63 @@ public class MyPanel extends JPanel {
 
   }
 
+  private void runOnceInThread(String text) {
+    new Thread(() -> runOnce(text)).start();
+  }
+
   private void runOnce(String text) {
+    String[] split = text.split("\n");
+    Arrays.asList(split).forEach(
+        row -> {
+          if (row != null && !row.startsWith("#")){
+            String[] splitWords = text.split(",");
+            if (splitWords.length==4){
+              String posArm1 =splitWords[0];
+              String posArm2 =splitWords[1];
+              String posArm3 =splitWords[2];
+              String delayStr = splitWords[3];
+              System.out.println("arm1="+posArm1+" "+",arm2="+posArm2+" "+",arm3="+posArm3+" "+",delay="+delayStr+" ");
+              try{
+                int pos1 = Integer.parseInt(posArm1);
+                int pos2 = Integer.parseInt(posArm2);
+                int pos3 = Integer.parseInt(posArm3);
+                int delay = Integer.parseInt(delayStr);
+
+                gotoPos(arm1, pos1);
+                gotoPos(arm2, pos2);
+                gotoPos(arm3, pos3);
+
+                Thread.sleep(1000*delay);
+              }
+              catch (Exception ex){
+                ex.printStackTrace();
+
+              }
+            }
+
+          }
+        }
+    );
+
 
   }
 
   private void saveToFile(String text) {
-
+    Path path = Paths.get("/home/pi/loop.data");
+    byte[] strToBytes = text.getBytes();
+    try {
+      Files.write(path, strToBytes);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private String loadFile() {
-
+    try {
+      return new String(Files.readAllBytes(Paths.get("/home/pi/loop.data")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     return "123";
   }
 
@@ -217,9 +268,13 @@ public class MyPanel extends JPanel {
     int pos = Integer.parseInt(tf.getText());
     int newPos = pos + increment;
     tf.setText("" + newPos);
+    gotoPos(arm, newPos);
 
+  }
+
+  private void gotoPos(I2CDevice arm, int pos) {
     try {
-      String formatted = String.format("%06d", newPos);
+      String formatted = String.format("%06d", pos);
       String command = "^M" + formatted + "000900000";
       if (arm != null) { arm.write(command.getBytes()); }
     } catch (IOException e) {
