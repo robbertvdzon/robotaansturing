@@ -300,7 +300,7 @@ public class MyPanel extends JPanel {
   private void gotoPos(I2CDevice arm, int pos) {
     try {
       String formatted = String.format("%06d", pos);
-      String command = "^M" + formatted + "000500000";
+      String command = "^M" + formatted + "000400000";
       if (arm != null) { arm.write(command.getBytes()); }
     } catch (IOException e) {
       e.printStackTrace();
