@@ -12,10 +12,10 @@ import javax.swing.JPanel;
 
 public class MyPanel extends JPanel {
 
-  private static final int PREF_W = 600;
-  private static final int PREF_H = PREF_W;
-  private static final int OFFSET_X = 300;
-  private static final int OFFSET_Y = 300;
+  private static final int PREF_W = 900;
+  private static final int PREF_H = 600;
+  private static final int OFFSET_X = 100;
+  private static final int OFFSET_Y = PREF_H;
 
 
   private double lastX = 0;
@@ -23,13 +23,21 @@ public class MyPanel extends JPanel {
   private double lastAngle = 0;
   private List<DoubleLine> lines = new ArrayList<>();
 
-  public MyPanel() {
-    JFrame frame = new JFrame("Path2DExample");
-    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    frame.getContentPane().add(this);
-    frame.pack();
-    frame.setLocationByPlatform(true);
-    frame.setVisible(true);
+  public MyPanel(boolean display) {
+    if (display) {
+      JFrame frame = new JFrame("Path2DExample");
+      frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      frame.getContentPane().add(this);
+      frame.pack();
+      frame.setLocationByPlatform(true);
+      frame.setVisible(true);
+    }
+  }
+
+  public void reset(){
+    lastX = 0;
+    lastY = 0;
+    lastAngle = 0;
   }
 
   public void addLine(Segment segment){
@@ -77,5 +85,9 @@ public class MyPanel extends JPanel {
   public void printPos() {
     System.out.println("X="+lastX);
     System.out.println("Y="+lastY);
+  }
+
+  public double[] getPos(){
+    return new double[]{lastX, lastY};
   }
 }
