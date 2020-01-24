@@ -5,25 +5,21 @@ import javax.swing.SwingUtilities;
 
 public class Main {
 
-  private static final double HOEK_BASIS = 75;
-  private static final double LENGTE_BASIS = 120;
-  private static final double LENGTE_ARM_1 = 360;
+  private static final double HOEK_BASIS = 55;
+  private static final double LENGTE_BASIS = 140;
+  private static final double LENGTE_ARM_1 = 340;
   private static final double LENGTE_ARM_2 = 340;
 
   private static double MIN_X = 155;
   private static double MAX_X = 550;
-  private static double MIN_Y = -180;
-  private static double MAX_Y = -250;
+  private static double MIN_Y = -180;// 3+15  (laatste arm is 7cm, en blijft 3 cm boven de tafel)
+  private static double MAX_Y = -300;// 15+15 (laatste arm is 7cm, en blijft 15 cm boven de tafel)
 
   public static void main(String[] args) {
 
 
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        MyPanel mainPanel = new MyPanel(true);
-
-
-
         berekenHoekVoor(MIN_Y, MIN_X);
         double p1Hoek1 = bestHoek1;
         double p1Hoek2 = bestHoek2;
@@ -49,26 +45,28 @@ public class Main {
         System.out.println("3:hoek1:"+p3Hoek1+" hoek2:"+p3Hoek2+"  diff="+p3Diff);
         System.out.println("4:hoek1:"+p4Hoek1+" hoek2:"+p4Hoek2+"  diff="+p4Diff);
 
-        mainPanel.reset();
-        mainPanel.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
-        mainPanel.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ p1Hoek1)));
-        mainPanel.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ p1Hoek2)));
+        LineContainer lineContainer = new LineContainer();
+        lineContainer.reset();
+        lineContainer.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
+        lineContainer.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ p1Hoek1)));
+        lineContainer.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ p1Hoek2)));
 
-        mainPanel.reset();
-        mainPanel.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
-        mainPanel.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ p2Hoek1)));
-        mainPanel.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ p2Hoek2)));
+        lineContainer.reset();
+        lineContainer.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
+        lineContainer.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ p2Hoek1)));
+        lineContainer.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ p2Hoek2)));
 
-        mainPanel.reset();
-        mainPanel.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
-        mainPanel.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ p3Hoek1)));
-        mainPanel.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ p3Hoek2)));
+        lineContainer.reset();
+        lineContainer.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
+        lineContainer.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ p3Hoek1)));
+        lineContainer.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ p3Hoek2)));
 
-        mainPanel.reset();
-        mainPanel.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
-        mainPanel.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ p4Hoek1)));
-        mainPanel.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ p4Hoek2)));
+        lineContainer.reset();
+        lineContainer.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
+        lineContainer.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ p4Hoek1)));
+        lineContainer.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ p4Hoek2)));
 
+        MyPanel mainPanel = new MyPanel(lineContainer);
 
       }
 
@@ -85,20 +83,20 @@ public class Main {
     bestHoek2 = 0;
     bestDiff = Double.MAX_VALUE;
 
-    IntStream.range(0,180).forEach( tryHoekArm1->{
-      IntStream.range(0,180).forEach( tryHoekArm2->{
-        tryHoeken(y, x, tryHoekArm1, tryHoekArm2);
+    IntStream.range(0,1800).forEach( tryHoekArm1->{
+      IntStream.range(0,1800).forEach( tryHoekArm2->{
+        tryHoeken(y, x, ((double)tryHoekArm1)/10, ((double)tryHoekArm2)/10);
       });
     });
 
   }
 
-  private static void tryHoeken(double y, double x, int tryHoekArm1, int tryHoekArm2) {
-    MyPanel tryPanel = new MyPanel(false);
-    tryPanel.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
-    tryPanel.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ tryHoekArm1)));
-    tryPanel.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ tryHoekArm2)));
-    double[] pos = tryPanel.getPos();
+  private static void tryHoeken(double y, double x, double tryHoekArm1, double tryHoekArm2) {
+    LineContainer lineContainer = new LineContainer();
+    lineContainer.addLine(new Segment(LENGTE_BASIS,Math.toRadians(180- HOEK_BASIS)));
+    lineContainer.addLine(new Segment(LENGTE_ARM_1,Math.toRadians(180+ tryHoekArm1)));
+    lineContainer.addLine(new Segment(LENGTE_ARM_2,Math.toRadians(180+ tryHoekArm2)));
+    double[] pos = lineContainer.getPos();
     double calculatedX = pos[0];
     double calculatedY = pos[1];
     double diff = Math.abs(x-calculatedX)+Math.abs(y-calculatedY);

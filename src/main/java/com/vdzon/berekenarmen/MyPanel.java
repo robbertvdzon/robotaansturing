@@ -18,43 +18,17 @@ public class MyPanel extends JPanel {
   private static final int OFFSET_Y = PREF_H;
 
 
-  private double lastX = 0;
-  private double lastY = 0;
-  private double lastAngle = 0;
-  private List<DoubleLine> lines = new ArrayList<>();
+  private LineContainer lineContainer;
 
-  public MyPanel(boolean display) {
-    if (display) {
+  public MyPanel(LineContainer lineContainer) {
       JFrame frame = new JFrame("Path2DExample");
       frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
       frame.getContentPane().add(this);
       frame.pack();
       frame.setLocationByPlatform(true);
       frame.setVisible(true);
-    }
+      this.lineContainer = lineContainer;
   }
-
-  public void reset(){
-    lastX = 0;
-    lastY = 0;
-    lastAngle = 0;
-  }
-
-  public void addLine(Segment segment){
-    double realAngle = lastAngle + segment.getAngle();
-    double x = segment.getLength() * Math.cos(realAngle);
-    double y = segment.getLength() * Math.sin(realAngle);
-    double newX = lastX + x;
-    double newY = lastY - y;
-    DoubleLine line = new DoubleLine(lastX, lastY, newX, newY);
-
-    lines.add(line);
-
-    lastX = newX;
-    lastY = newY;
-    lastAngle = realAngle;
-  }
-
 
   @Override
   protected void paintComponent(Graphics g) {
@@ -63,7 +37,7 @@ public class MyPanel extends JPanel {
 
     g2.drawOval(-2+OFFSET_X, -2+OFFSET_Y, 4, 4);
 
-    lines.forEach(line->{
+    lineContainer.getLines().forEach(line->{
       g2.drawLine(
           OFFSET_X+(int)Math.round(line.getX1()),
           OFFSET_Y+(int)Math.round(line.getY1()),
@@ -82,12 +56,4 @@ public class MyPanel extends JPanel {
   }
 
 
-  public void printPos() {
-    System.out.println("X="+lastX);
-    System.out.println("Y="+lastY);
-  }
-
-  public double[] getPos(){
-    return new double[]{lastX, lastY};
-  }
 }
