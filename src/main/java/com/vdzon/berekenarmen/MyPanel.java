@@ -14,7 +14,7 @@ public class MyPanel extends JPanel {
 
   private static final int PREF_W = 900;
   private static final int PREF_H = 600;
-  private static final int OFFSET_X = 100;
+  private static final int OFFSET_X = 200;
   private static final int OFFSET_Y = PREF_H;
 
 

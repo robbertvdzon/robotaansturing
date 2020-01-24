@@ -5,9 +5,9 @@ import javax.swing.SwingUtilities;
 
 public class Main {
 
-  private static final double HOEK_BASIS = 65;
-  private static final double LENGTE_BASIS = 180;
-  private static final double LENGTE_ARM_1 = 340;
+  private static final double HOEK_BASIS = 75;
+  private static final double LENGTE_BASIS = 120;
+  private static final double LENGTE_ARM_1 = 360;
   private static final double LENGTE_ARM_2 = 340;
 
   private static double MIN_X = 155;
@@ -102,12 +102,10 @@ public class Main {
     double calculatedX = pos[0];
     double calculatedY = pos[1];
     double diff = Math.abs(x-calculatedX)+Math.abs(y-calculatedY);
-//    System.out.println("diff:"+diff+" x="+calculatedX+"  y="+calculatedY);
     if (diff< bestDiff){
       bestHoek1 = tryHoekArm1;
       bestHoek2 = tryHoekArm2;
       bestDiff = diff;
-//      System.out.println("best diff:"+diff+" x="+calculatedX+"  y="+calculatedY);
     }
   }
 
