@@ -4,7 +4,7 @@ difference(){
        translate([0,5.5,0]){
            cube([4,30,15], center=false);
        }
-       translate([30,5.5,0]){
+       translate([0,5.5,0]){
            cube([6,3,30], center=false);
        }
 
