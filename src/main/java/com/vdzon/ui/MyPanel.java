@@ -96,6 +96,18 @@ public class MyPanel extends JPanel {
         button.addActionListener(e -> gotoPos(tf, arm1, +100));
         f.add(button);
       }
+      {
+        JButton button = new JButton("-500");
+        button.setBounds(425, 120, 100, 40);
+        button.addActionListener(e -> gotoPos(tf, arm1, -500));
+        f.add(button);
+      }
+      {
+        JButton button = new JButton("+500");
+        button.setBounds(530, 120, 100, 40);
+        button.addActionListener(e -> gotoPos(tf, arm1, +500));
+        f.add(button);
+      }
     }
     {
       final JTextField tf = new JTextField();
