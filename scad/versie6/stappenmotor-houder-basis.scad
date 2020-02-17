@@ -2,31 +2,33 @@ difference(){
 	union(){
         
        translate([0,0,0]){
-           cube([74,41,12], center=false);
+           cube([74,41,14], center=false);
        }
 
-
+	
 	}
 	union() {
-       translate([74/2,41/2,-1]){
-            rotate(a = [0,0,90]) {
-              cylinder(h=600, r=4, $fn=100, center=false);
-            }
-       }	
+        
        translate([74/2,41/2,10]){
             rotate(a = [0,0,90]) {
               cylinder(h=600, r=13, $fn=100, center=false);
             }
        }	
- 
-       translate([74/2-23,41/2,-1]){
+        
+       translate([74/2,41/2,-1]){
             rotate(a = [0,0,90]) {
-              cylinder(h=600, r=7.2, $fn=100, center=false);
+              cylinder(h=600, r=4, $fn=100, center=false);
             }
        }	
-       translate([74/2+23,41/2,-1]){
+ 
+       translate([74/2-23,41/2,-2]){
             rotate(a = [0,0,90]) {
-              cylinder(h=600, r=7.2, $fn=100, center=false);
+              cylinder(h=600, r=4, $fn=100, center=false);
+            }
+       }	
+       translate([74/2+23,41/2,-2]){
+            rotate(a = [0,0,90]) {
+              cylinder(h=600, r=4, $fn=100, center=false);
             }
        }	
        
@@ -65,7 +67,5 @@ difference(){
               cylinder(h=600, r=1.8, $fn=100, center=false);
             }
        }	
-
-        
 	}
 }

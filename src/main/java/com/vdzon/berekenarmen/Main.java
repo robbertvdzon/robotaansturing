@@ -5,15 +5,19 @@ import javax.swing.SwingUtilities;
 
 public class Main {
 
-  private static final double HOEK_BASIS = 55;
-  private static final double LENGTE_BASIS = 140;
-  private static final double LENGTE_ARM_1 = 340;
-  private static final double LENGTE_ARM_2 = 340;
+  // basis: 3 cm langer (tot 270cm) en andere hoek (65 graden)
 
-  private static double MIN_X = 155;
-  private static double MAX_X = 550;
-  private static double MIN_Y = -180;// 3+15  (laatste arm is 7cm, en blijft 3 cm boven de tafel)
-  private static double MAX_Y = -300;// 15+15 (laatste arm is 7cm, en blijft 15 cm boven de tafel)
+
+  private static final double HOEK_BASIS = 65;
+  private static final double LENGTE_BASIS = 270;
+  private static final double LENGTE_ARM_1 = 270;
+  private static final double LENGTE_ARM_2 = 270;
+
+  private static double MIN_X = 155+0;
+//  private static double MAX_X = 150+400;
+  private static double MAX_X = 150+250;
+  private static double MIN_Y = -180-30;// 3+15  (laatste arm is 7cm, en blijft 3 cm boven de tafel)
+  private static double MAX_Y = -300-30;// 15+15 (laatste arm is 7cm, en blijft 15 cm boven de tafel)
 
   public static void main(String[] args) {
 
