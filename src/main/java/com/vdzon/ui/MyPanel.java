@@ -134,7 +134,7 @@ public class MyPanel extends JPanel {
       }
       {
         JButton button = new JButton("-500");
-        button.setBounds(425, 170, 100, 40);
+        button.setBounds(525, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tf, arm2, -500));
         f.add(button);
       }

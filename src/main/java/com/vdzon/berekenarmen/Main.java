@@ -12,12 +12,13 @@ public class Main {
   private static final double LENGTE_BASIS = 270;
   private static final double LENGTE_ARM_1 = 270;
   private static final double LENGTE_ARM_2 = 270;
+  private static final double LENGTE_ARM_3 = 150;
 
   private static double MIN_X = 155+0;
 //  private static double MAX_X = 150+400;
   private static double MAX_X = 150+250;
-  private static double MIN_Y = -180-30;// 3+15  (laatste arm is 7cm, en blijft 3 cm boven de tafel)
-  private static double MAX_Y = -300-30;// 15+15 (laatste arm is 7cm, en blijft 15 cm boven de tafel)
+  private static double MIN_Y = -1*LENGTE_ARM_3-30;// 3+15  (laatste arm is 15cm, en blijft 3 cm boven de tafel)
+  private static double MAX_Y = -1*LENGTE_ARM_3-150;// 15+15 (laatste arm is 15cm, en blijft 15 cm boven de tafel)
 
   public static void main(String[] args) {
 
