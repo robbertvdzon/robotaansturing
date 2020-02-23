@@ -25,9 +25,9 @@ public class MyPanel extends JPanel {
   int lastPos1 = 0;
   int lastPos2 = 0;
   int lastPos3 = 0;
-  int delayArm1 = 0;
-  int delayArm2 = 0;
-  int delayArm3 = 0;
+  int delayArm1 = 400000;
+  int delayArm2 = 400000;
+  int delayArm3 = 400000;
   private I2CDevice arm1 = null;
   private I2CDevice arm2 = null;
   private I2CDevice arm3 = null;
@@ -270,7 +270,7 @@ public class MyPanel extends JPanel {
                 int pos3 = Integer.parseInt(posArm3);
                 int sleepTime = Integer.parseInt(sleepStr);
 
-                calcDelays(pos1, pos2, pos3);
+              //  calcDelays(pos1, pos2, pos3);
 
                 gotoPos(arm1, pos1, delayArm1);
                 gotoPos(arm2, pos2, delayArm2);
