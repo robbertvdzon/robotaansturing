@@ -25,9 +25,9 @@ public class MyPanel extends JPanel {
   int lastPos1 = 0;
   int lastPos2 = 0;
   int lastPos3 = 0;
-  int delayArm1 = 400000;
-  int delayArm2 = 400000;
-  int delayArm3 = 400000;
+  int delayArm1 = 700000;
+  int delayArm2 = 700000;
+  int delayArm3 = 700000;
   private I2CDevice arm1 = null;
   private I2CDevice arm2 = null;
   private I2CDevice arm3 = null;
@@ -297,11 +297,11 @@ public class MyPanel extends JPanel {
     int pulses3 = Math.abs(pos3 - lastPos3);
 
     //
-    long minDelay = 400000;
+    long minDelay = 700000;
     long totalTime = minDelay * mostPulses;
-    double delay1 = pulses1 == 0 ? 400000 : totalTime / pulses1;
-    double delay2 = pulses2 == 0 ? 400000 :totalTime / pulses2;
-    double delay3 = pulses3 == 0 ? 400000 :totalTime / pulses3;
+    double delay1 = pulses1 == 0 ? 700000 : totalTime / pulses1;
+    double delay2 = pulses2 == 0 ? 700000 :totalTime / pulses2;
+    double delay3 = pulses3 == 0 ? 700000 :totalTime / pulses3;
 
     delayArm1 = (int) Math.round(delay1);
     delayArm2 = (int) Math.round(delay2);
@@ -359,7 +359,7 @@ public class MyPanel extends JPanel {
     int pos = Integer.parseInt(tf.getText());
     int newPos = pos + increment;
     tf.setText("" + newPos);
-    gotoPos(arm, newPos, 400000);
+    gotoPos(arm, newPos, 700000);
 
   }
 
