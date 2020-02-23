@@ -25,7 +25,7 @@ public class MyPanel extends JPanel {
   int lastPos1 = 0;
   int lastPos2 = 0;
   int lastPos3 = 0;
-  int delayArm1 = 400000;
+  int delayArm1 = 700000;
   int delayArm2 = 400000;
   int delayArm3 = 400000;
   private I2CDevice arm1 = null;
