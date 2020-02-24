@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 public class MyPanel extends JPanel {
 
 
-  private static int SLOW = 1700000;
+  private static int SLOW = 700000;
   private static int FAST = 400000;
   private static int ARM1 = 0x8;
   private static int ARM2 = 0x7;
