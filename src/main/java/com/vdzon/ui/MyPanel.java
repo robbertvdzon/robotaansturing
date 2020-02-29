@@ -20,21 +20,21 @@ import javax.swing.JTextField;
 public class MyPanel extends JPanel {
 
 
-  private static int SLOW = 300000;
-  private static int FAST = 400000;
   private static int ARM1 = 0x8;
   private static int ARM2 = 0x7;
   private static int ARM3 = 0x5;
   int lastPos1 = 0;
   int lastPos2 = 0;
   int lastPos3 = 0;
-  int delayArm1 = SLOW;
-  int delayArm2 = SLOW;
-  int delayArm3 = SLOW;
+  int delayArm1 = 0;
+  int delayArm2 = 0;
+  int delayArm3 = 0;
   private I2CDevice arm1 = null;
   private I2CDevice arm2 = null;
   private I2CDevice arm3 = null;
   private Thread currentLoopThread = null;
+  JTextField snelheidTextfield = new JTextField();
+
   public MyPanel() {
     init();
 
@@ -54,6 +54,13 @@ public class MyPanel extends JPanel {
     bExit.setBounds(210, 20, 200, 40);
     bExit.addActionListener(e -> System.exit(0));
     f.add(bExit);
+
+
+    snelheidTextfield = new JTextField();
+    snelheidTextfield.setBounds(310, 20, 100, 40);
+    snelheidTextfield.setText("300000");
+    f.add(snelheidTextfield);
+
 
     {
       JButton bHome = new JButton("Home 1");
@@ -224,6 +231,10 @@ public class MyPanel extends JPanel {
     f.setVisible(true);
   }
 
+  private int getSnelheid(){
+    return Integer.parseInt(snelheidTextfield.getText());
+  }
+
   private void stopLoop() {
     if (currentLoopThread != null) {
       currentLoopThread.stop();
@@ -275,9 +286,9 @@ public class MyPanel extends JPanel {
 
               //  calcDelays(pos1, pos2, pos3);
 
-                gotoPos(arm1, pos1, delayArm1);
-                gotoPos(arm2, pos2, delayArm2);
-                gotoPos(arm3, pos3, delayArm3);
+                gotoPos(arm1, pos1, getSnelheid());
+                gotoPos(arm2, pos2, getSnelheid());
+                gotoPos(arm3, pos3, getSnelheid());
 
                 System.out.println("sleep " + sleepTime + " sec");
                 Thread.sleep(1000 * sleepTime);
@@ -300,11 +311,11 @@ public class MyPanel extends JPanel {
     int pulses3 = Math.abs(pos3 - lastPos3);
 
     //
-    long minDelay = SLOW;
+    long minDelay = getSnelheid();
     long totalTime = minDelay * mostPulses;
-    double delay1 = pulses1 == 0 ? SLOW : totalTime / pulses1;
-    double delay2 = pulses2 == 0 ? SLOW :totalTime / pulses2;
-    double delay3 = pulses3 == 0 ? SLOW :totalTime / pulses3;
+    double delay1 = pulses1 == 0 ? minDelay : totalTime / pulses1;
+    double delay2 = pulses2 == 0 ? minDelay :totalTime / pulses2;
+    double delay3 = pulses3 == 0 ? minDelay :totalTime / pulses3;
 
     delayArm1 = (int) Math.round(delay1);
     delayArm2 = (int) Math.round(delay2);
@@ -362,7 +373,7 @@ public class MyPanel extends JPanel {
     int pos = Integer.parseInt(tf.getText());
     int newPos = pos + increment;
     tf.setText("" + newPos);
-    gotoPos(arm, newPos, SLOW);
+    gotoPos(arm, newPos, getSnelheid());
 
   }
 
