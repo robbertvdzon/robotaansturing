@@ -38,7 +38,7 @@ public class MyPanel extends JPanel {
   public MyPanel() {
     init();
 
-    JFrame f = new JFrame("Schaakrobot");
+    JFrame f = new JFrame("Schaakrobot v1.0");
 
     f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     f.getContentPane().add(this);
