@@ -56,7 +56,7 @@ public class MyPanel extends JPanel {
     f.add(bExit);
 
 
-    JTextField snelheidTextfield = new JTextField();
+    snelheidTextfield = new JTextField();
     snelheidTextfield.setBounds(410, 20, 100, 40);
     snelheidTextfield.setText("300000");
     f.add(snelheidTextfield);
