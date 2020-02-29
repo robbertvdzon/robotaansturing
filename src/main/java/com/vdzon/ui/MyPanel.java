@@ -33,7 +33,7 @@ public class MyPanel extends JPanel {
   private I2CDevice arm2 = null;
   private I2CDevice arm3 = null;
   private Thread currentLoopThread = null;
-  JTextField snelheidTextfield = new JTextField();
+  JTextField snelheidTextfield;
 
   public MyPanel() {
     init();
@@ -56,8 +56,8 @@ public class MyPanel extends JPanel {
     f.add(bExit);
 
 
-    snelheidTextfield = new JTextField();
-    snelheidTextfield.setBounds(310, 20, 100, 40);
+    JTextField snelheidTextfield = new JTextField();
+    snelheidTextfield.setBounds(410, 20, 100, 40);
     snelheidTextfield.setText("300000");
     f.add(snelheidTextfield);
 
