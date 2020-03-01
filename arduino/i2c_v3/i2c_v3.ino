@@ -180,7 +180,7 @@ void parseCommand(){
 
   stepDelay = delay;
   if (vertraginsfactor>100){ // alleen vertraginsfactor doen als hij ook echt vertraagd en niet versneld
-    stepDelay = delay*(vertraginsfactor/100);
+    stepDelay = (delay*vertraginsfactor)/100;
   }
   requestedPos = toPos;
   command = number[1];
