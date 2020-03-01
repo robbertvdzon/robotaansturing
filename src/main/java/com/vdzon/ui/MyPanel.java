@@ -256,27 +256,18 @@ public class MyPanel extends JPanel {
   }
 
   private void runOnce(String text) {
-    System.out.println("run once:" + text);
     String[] split = text.split("#");
-    System.out.println("run once:" + split.length);
 
     Arrays.asList(split).forEach(
         row -> {
-          System.out.println("row:" + row);
           if (row != null && !row.startsWith("#")) {
             String[] splitWords = row.split(",");
-            System.out.println("size=" + splitWords.length);
-
-            for (String w : splitWords) {
-              System.out.println("word:" + w);
-            }
 
             if (splitWords.length >= 4) {
               String posArm1 = splitWords[0].trim();
               String posArm2 = splitWords[1].trim();
               String posArm3 = splitWords[2].trim();
               String sleepStr = splitWords[3].trim();
-              System.out.println("arm1=" + posArm1 + " " + ",arm2=" + posArm2 + " " + ",arm3=" + posArm3 + " " + ",delay=" + sleepStr + " ");
               try {
                 int pos1 = Integer.parseInt(posArm1);
                 int pos2 = Integer.parseInt(posArm2);
@@ -285,13 +276,13 @@ public class MyPanel extends JPanel {
 
                 calcDelays(pos1, pos2, pos3);
 
+                System.out.println("MOVE: arm1=" + posArm1 + "/" + formattedDelayFactor1 + "   amr2="+posArm2 + "/" + formattedDelayFactor2);
+
                 gotoPos(arm1, pos1, 30, formattedDelayFactor1);
                 gotoPos(arm2, pos2, 30, formattedDelayFactor2);
                 gotoPos(arm3, pos3, 30, formattedDelayFactor3);
 
-                System.out.println("sleep " + sleepTime + " sec");
                 Thread.sleep(1000 * sleepTime);
-                System.out.println("wake up");
               } catch (Exception ex) {
                 ex.printStackTrace();
 
