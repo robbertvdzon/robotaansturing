@@ -264,17 +264,17 @@ public class MyPanel extends JPanel {
             String[] splitWords = row.split(",");
 
             if (splitWords.length >= 4) {
-              String posArm1 = splitWords[0].trim();
+//              String posArm1 = splitWords[0].trim();
               String posArm2 = splitWords[1].trim();
               String posArm3 = splitWords[2].trim();
               String sleepStr = splitWords[3].trim();
               try {
-                int pos1 = Integer.parseInt(posArm1);
+//                int pos1 = Integer.parseInt(posArm1);
                 int pos2 = Integer.parseInt(posArm2);
                 int pos3 = Integer.parseInt(posArm3);
                 int sleepTime = Integer.parseInt(sleepStr);
 
-                calcDelays(pos1, pos2, pos3);
+                calcDelays(pos2, pos3);
 
                 System.out.println("MOVE: arm2=" + posArm2 + "/" + formattedDelayFactor2 + "   amr3="+posArm2 + "/" + formattedDelayFactor3);
 
@@ -294,32 +294,32 @@ public class MyPanel extends JPanel {
     );
   }
 
-  public void calcDelays(int pos1, int pos2, int pos3) {
-    int pulses1 = Math.abs(pos1 - lastPos1);
+  public void calcDelays(int pos2, int pos3) {
+//    int pulses1 = Math.abs(pos1 - lastPos1);
     int pulses2 = Math.abs(pos2 - lastPos2);
     int pulses3 = Math.abs(pos3 - lastPos3);
-    int mostPulses = max(pulses1, pulses2, pulses3);
+    int mostPulses = max(pulses2, pulses3);
 
     //
-    double delayFactor1 = pulses1 == 0 ? 1  : 100*mostPulses / pulses1;
+//    double delayFactor1 = pulses1 == 0 ? 1  : 100*mostPulses / pulses1;
     double delayFactor2 = pulses2 == 0 ? 1  : 100*mostPulses / pulses2;
     double delayFactor3 = pulses3 == 0 ? 1  : 100*mostPulses / pulses3;
 
-    if (delayFactor1>9999) delayFactor1 = 9999;
+//    if (delayFactor1>9999) delayFactor1 = 9999;
     if (delayFactor2>9999) delayFactor2 = 9999;
     if (delayFactor3>9999) delayFactor3 = 9999;
 
-    formattedDelayFactor1 = String.format("%04d", (int)delayFactor1);
+//    formattedDelayFactor1 = String.format("%04d", (int)delayFactor1);
     formattedDelayFactor2 = String.format("%04d", (int)delayFactor2);
     formattedDelayFactor3 = String.format("%04d", (int)delayFactor3);
   }
 
-  private int max(int pos1, int pos2, int pos3) {
-    int diff1 = Math.abs(pos1 - lastPos1);
+  private int max(int pos2, int pos3) {
+//    int diff1 = Math.abs(pos1 - lastPos1);
     int diff2 = Math.abs(pos2 - lastPos2);
     int diff3 = Math.abs(pos3 - lastPos3);
-    int max1 = Math.max(diff1, diff2);
-    return Math.max(diff3, max1);
+//    int max1 = Math.max(diff1, diff2);
+    return Math.max(diff2, diff3);
 
   }
 
