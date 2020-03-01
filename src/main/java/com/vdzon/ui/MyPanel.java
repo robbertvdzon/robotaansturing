@@ -279,8 +279,8 @@ public class MyPanel extends JPanel {
                 System.out.println("MOVE: arm2=" + posArm2 + "/" + formattedDelayFactor2 + "   amr3="+posArm2 + "/" + formattedDelayFactor3);
 
 //                gotoPos(arm1, pos1, 30, formattedDelayFactor1);
-                gotoPos(arm2, pos2, 100, formattedDelayFactor2);
-                gotoPos(arm3, pos3, 100, formattedDelayFactor3);
+                gotoPos(arm2, pos2, 30, formattedDelayFactor2);
+                gotoPos(arm3, pos3, 30, formattedDelayFactor3);
 
                 Thread.sleep(1000 * sleepTime);
               } catch (Exception ex) {

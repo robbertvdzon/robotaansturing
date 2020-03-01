@@ -178,16 +178,29 @@ void parseCommand(){
   buffer[4] = '\0';
   int vertraginsfactor = atoi(buffer);
 
-  stepDelay = delay;
-  if (vertraginsfactor>100){ // alleen vertraginsfactor doen als hij ook echt vertraagd en niet versneld
-    stepDelay = (delay*vertraginsfactor)/100;
-  }
+  long vLong =vertraginsfactor;
+  if (vLong<100) vLong = 100;
+  long delayLong = delay;
+  long tmp1 = vLong*delayLong;
+  long tmp2 = tmp1/100;
+
+  Serial.print("- vLong:");Serial.println(vLong);
+    Serial.print("- delayLong:");Serial.println(delayLong);
+      Serial.print("- tmp1:");Serial.println(tmp1);
+        Serial.print("- tmp2:");Serial.println(tmp2);
+
+//  stepDelay = delay;
+//  if (vertraginsfactor>100){ // alleen vertraginsfactor doen als hij ook echt vertraagd en niet versneld
+//    stepDelay = (delay*vertraginsfactor)/100;
+//  }
+  stepDelay = tmp2;
   requestedPos = toPos;
   command = number[1];
 
   Serial.print("- cmd:");Serial.println(command);
   Serial.print("- pos:");Serial.println(requestedPos);
-  Serial.print("- delay:");Serial.println(stepDelay);
+  Serial.print("- delay:");Serial.println(delay);
+  Serial.print("- stepDelay:");Serial.println(stepDelay);
   Serial.print("- vertraginsfactor:");Serial.println(vertraginsfactor);
   Serial.print("- currentPos:");Serial.println(currentPos);
 }
