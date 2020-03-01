@@ -179,20 +179,11 @@ void parseCommand(){
   int vertraginsfactor = atoi(buffer);
 
   long vLong =vertraginsfactor;
-  if (vLong<100) vLong = 100;
+  if (vLong<100) vLong = 100;// alleen vertraginsfactor doen als hij ook echt vertraagd en niet versneld
   long delayLong = delay;
   long tmp1 = vLong*delayLong;
   long tmp2 = tmp1/100;
 
-  Serial.print("- vLong:");Serial.println(vLong);
-    Serial.print("- delayLong:");Serial.println(delayLong);
-      Serial.print("- tmp1:");Serial.println(tmp1);
-        Serial.print("- tmp2:");Serial.println(tmp2);
-
-//  stepDelay = delay;
-//  if (vertraginsfactor>100){ // alleen vertraginsfactor doen als hij ook echt vertraagd en niet versneld
-//    stepDelay = (delay*vertraginsfactor)/100;
-//  }
   stepDelay = tmp2;
   requestedPos = toPos;
   command = number[1];
@@ -273,10 +264,18 @@ void moveUp(int reqPos){
 
   Serial.println("move up");    
   digitalWrite(dirPin, HIGH);
+
+  long time = 0;
+  long delay = stepDelay;
+  
   while (currentPos<reqPos){
-    pulse(stepPin);
+    time = time + delay;
+    pulse(stepPin, stepDelay);
     currentPos++;
   }
+  Serial.print("time:");Serial.println(time);  
+  Serial.print("delay:");Serial.println(delay);  
+
   Serial.println("up");    
   digitalWrite(enableMotorPin, HIGH);
 }
@@ -287,7 +286,7 @@ void moveDown(int reqPos){
   Serial.println("move down");    
   digitalWrite(dirPin, LOW);
   while (currentPos>reqPos){
-    pulse(stepPin);
+    pulse(stepPin, stepDelay);
     currentPos--;
   }
   Serial.println("down");    
@@ -305,7 +304,7 @@ void home() {
   Serial.println("\t move fast down until high");
   digitalWrite(dirPin, LOW);
   while (!digitalRead(arm1SensorPin)){
-    pulse(stepPin);
+    pulse(stepPin,stepDelay);
   }
 
   // move up until not high   
@@ -313,12 +312,12 @@ void home() {
   stepDelay = stepDelay*1;
   digitalWrite(dirPin, HIGH);
   while (digitalRead(arm1SensorPin)){
-    pulse(stepPin);
+    pulse(stepPin,stepDelay);
   }
 
   Serial.println("\t move one extra round");
     for (int i = 0; i < 1 * stepsPerRevolution; i++) {
-      pulse(stepPin);
+      pulse(stepPin,stepDelay);
   } 
   
   Serial.println("\t homing finished");
@@ -329,12 +328,12 @@ void home() {
 
 
 
-void pulse(int pin){
+void pulse(int pin, long delay){
     checkError();
     if (!error){
       digitalWrite(pin, HIGH);
-      delayMicroseconds(stepDelay);
+      delayMicroseconds(delay);
       digitalWrite(pin, LOW);
-      delayMicroseconds(stepDelay);
+      delayMicroseconds(delay);
     }
 }
