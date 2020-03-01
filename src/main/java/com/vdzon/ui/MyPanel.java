@@ -310,17 +310,17 @@ public class MyPanel extends JPanel {
     int mostPulses = max(pulses1, pulses2, pulses3);
 
     //
-    double delayFactor1 = pulses1 == 0 ? 1  : mostPulses / pulses1;
-    double delayFactor2 = pulses2 == 0 ? 1  : mostPulses / pulses2;
-    double delayFactor3 = pulses3 == 0 ? 1  : mostPulses / pulses3;
+    double delayFactor1 = pulses1 == 0 ? 1  : 100*mostPulses / pulses1;
+    double delayFactor2 = pulses2 == 0 ? 1  : 100*mostPulses / pulses2;
+    double delayFactor3 = pulses3 == 0 ? 1  : 100*mostPulses / pulses3;
 
-    if (delayFactor1>99) delayFactor1 = 99;
-    if (delayFactor2>99) delayFactor2 = 99;
-    if (delayFactor3>99) delayFactor3 = 99;
+    if (delayFactor1>9999) delayFactor1 = 9999;
+    if (delayFactor2>9999) delayFactor2 = 9999;
+    if (delayFactor3>9999) delayFactor3 = 9999;
 
-    formattedDelayFactor1 = String.format("%.2f", delayFactor1);
-    formattedDelayFactor2 = String.format("%.2f", delayFactor2);
-    formattedDelayFactor3 = String.format("%.2f", delayFactor3);
+    formattedDelayFactor1 = String.format("%04d", (int)delayFactor1);
+    formattedDelayFactor2 = String.format("%04d", (int)delayFactor2);
+    formattedDelayFactor3 = String.format("%04d", (int)delayFactor3);
   }
 
   private int max(int pos1, int pos2, int pos3) {
