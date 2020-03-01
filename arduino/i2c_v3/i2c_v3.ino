@@ -49,7 +49,7 @@ send: state + pos
 
 #define dirPin 3
 #define stepPin 8
-#define stepsPerRevolution 200
+#define stepsPerRevolution 2000
 #define arm1SensorPin 6
 // #define topSensorPin 4 : NOT USED ANYMORE
 // #define bottomSensorPin 7 : NOT USED ANYMORE

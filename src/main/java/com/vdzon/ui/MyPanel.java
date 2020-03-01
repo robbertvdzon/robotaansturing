@@ -26,9 +26,11 @@ public class MyPanel extends JPanel {
   int lastPos1 = 0;
   int lastPos2 = 0;
   int lastPos3 = 0;
-  int delayArm1 = 0;
-  int delayArm2 = 0;
-  int delayArm3 = 0;
+
+  String formattedDelayFactor1 = "0100";
+  String formattedDelayFactor2 = "0100";
+  String formattedDelayFactor3 = "0100";
+
   private I2CDevice arm1 = null;
   private I2CDevice arm2 = null;
   private I2CDevice arm3 = null;
@@ -280,11 +282,11 @@ public class MyPanel extends JPanel {
                 int pos3 = Integer.parseInt(posArm3);
                 int sleepTime = Integer.parseInt(sleepStr);
 
-              //  calcDelays(pos1, pos2, pos3);
+                calcDelays(pos1, pos2, pos3);
 
-                gotoPos(arm1, pos1, 30);
-                gotoPos(arm2, pos2, 30);
-                gotoPos(arm3, pos3, 30);
+                gotoPos(arm1, pos1, 30, formattedDelayFactor1);
+                gotoPos(arm2, pos2, 30, formattedDelayFactor2);
+                gotoPos(arm3, pos3, 30, formattedDelayFactor3);
 
                 System.out.println("sleep " + sleepTime + " sec");
                 Thread.sleep(1000 * sleepTime);
@@ -301,25 +303,23 @@ public class MyPanel extends JPanel {
   }
 
   public void calcDelays(int pos1, int pos2, int pos3) {
-    int mostPulses = max(pos1, pos2, pos3);
     int pulses1 = Math.abs(pos1 - lastPos1);
     int pulses2 = Math.abs(pos2 - lastPos2);
     int pulses3 = Math.abs(pos3 - lastPos3);
+    int mostPulses = max(pulses1, pulses2, pulses3);
 
     //
-    long minDelay = 30;
-    long totalTime = minDelay * mostPulses;
-    double delay1 = pulses1 == 0 ? minDelay : totalTime / pulses1;
-    double delay2 = pulses2 == 0 ? minDelay :totalTime / pulses2;
-    double delay3 = pulses3 == 0 ? minDelay :totalTime / pulses3;
+    double delayFactor1 = pulses1 == 0 ? 1  : mostPulses / pulses1;
+    double delayFactor2 = pulses2 == 0 ? 1  : mostPulses / pulses2;
+    double delayFactor3 = pulses3 == 0 ? 1  : mostPulses / pulses3;
 
-    delayArm1 = (int) Math.round(delay1);
-    delayArm2 = (int) Math.round(delay2);
-    delayArm3 = (int) Math.round(delay3);
+    if (delayFactor1>99) delayFactor1 = 99;
+    if (delayFactor2>99) delayFactor2 = 99;
+    if (delayFactor3>99) delayFactor3 = 99;
 
-    if (delayArm1>999999) delayArm1 = 999999;
-    if (delayArm2>999999) delayArm2 = 999999;
-    if (delayArm3>999999) delayArm3 = 999999;
+    formattedDelayFactor1 = String.format("%.2f", delayFactor1);
+    formattedDelayFactor2 = String.format("%.2f", delayFactor2);
+    formattedDelayFactor3 = String.format("%.2f", delayFactor3);
   }
 
   private int max(int pos1, int pos2, int pos3) {
@@ -374,10 +374,14 @@ public class MyPanel extends JPanel {
   }
 
   private void gotoPos(I2CDevice arm, int pos, int delay) {
+    gotoPos(arm, pos, delay, "0100");
+  }
+
+  private void gotoPos(I2CDevice arm, int pos, int delay, String vertraging) {
     try {
       String formattedPos = String.format("%06d", pos);
       String formattedDelay = String.format("%06d", delay);
-      String command = "^M" + formattedPos + formattedDelay + vertragingTextfield.getText();
+      String command = "^M" + formattedPos + formattedDelay + vertraging;
       System.out.println("command:"+command);
       if (arm != null) { arm.write(command.getBytes()); }
       if (arm == arm1) { lastPos1 = pos; }
