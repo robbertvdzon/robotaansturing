@@ -76,7 +76,10 @@ bool error = 0;
 
 int SLAVE_ADDRESS = 5;
 
-
+// onderstaande 3 consts in gegenereerd in java
+static const int delayList[] = {412,302,250,218,196,179,166,156,147,140,133,128,123,118,114,111,107,104,102,99,97,94,92,90,89,87,85,84,82,81,80,78,77,76,75,74,73,72,71,70,69,68,68,67,66,65,65,64,63,63,62,61,61,60,60,59,59,58,58,57,57,56,56,55,55,54,54,54,53,53,52,52,52,51,51,51,50,50,50,49,49,49,49,48,48,48,47,47,47,47,46,46,46,46,45,45,45,45,44,44,44,44,44,43,43,43,43,42,42,42,42,42,42,41,41,41,41,41,40,40,40,40,40,40};
+static const int delayArraySize = 124;
+static const int indexSteps = 20;
 void setup() {
 
   pinMode(arm1SensorPin, INPUT);
@@ -176,7 +179,11 @@ void parseCommand(){
   buffer[2] = number[16];
   buffer[3] = number[17];
   buffer[4] = '\0';
-  int vertraginsfactor = atoi(buffer);
+  vertraginsfactor = atoi(buffer);
+  if (vertraginsfactor<100){
+    vertraginsfactor = 100;
+  }
+  
 
   long vLong =vertraginsfactor;
   if (vLong<100) vLong = 100;// alleen vertraginsfactor doen als hij ook echt vertraagd en niet versneld
@@ -265,16 +272,8 @@ void moveUp(int reqPos){
   Serial.println("move up");    
   digitalWrite(dirPin, HIGH);
 
-  long time = 0;
-  long delay = stepDelay;
-  
-  while (currentPos<reqPos){
-    time = time + delay;
-    pulse(stepPin, stepDelay);
-    currentPos++;
-  }
-  Serial.print("time:");Serial.println(time);  
-  Serial.print("delay:");Serial.println(delay);  
+  moveNrSteps(reqPos - currentPos, +1);
+
 
   Serial.println("up");    
   digitalWrite(enableMotorPin, HIGH);
@@ -285,12 +284,44 @@ void moveDown(int reqPos){
 
   Serial.println("move down");    
   digitalWrite(dirPin, LOW);
-  while (currentPos>reqPos){
-    pulse(stepPin, stepDelay);
-    currentPos--;
-  }
+
+  moveNrSteps(currentPos - reqPos, -1);
+
+  
+//  while (currentPos>reqPos){
+//    pulse(stepPin, stepDelay);
+//    currentPos--;
+//  }
   Serial.println("down");    
   digitalWrite(enableMotorPin, HIGH);
+}
+
+void moveNrSteps(int totalSteps, int direction){
+  long halfway = totalSteps/2;
+  int delayIndex = 0;
+  int remainingDelayIndex = 0;
+  int remainingSteps;
+  double delay = 0;
+  double calculatedDelay = 0;
+     Serial.println("vertraginsfactor:");
+     Serial.println(vertraginsfactor);
+
+  for (int i = 0; i < totalSteps; i++) {    
+    int remainingSteps = totalSteps - i;
+    delayIndex = i/indexSteps;
+    remainingDelayIndex = remainingSteps/indexSteps;
+    if (i==0 || i%indexSteps==0){
+      if (i<halfway && delayIndex<delayArraySize) delay = delayList[delayIndex];
+      if (i>halfway && remainingDelayIndex<delayArraySize) delay = delayList[remainingDelayIndex];
+      float tmp = delay;
+      tmp = tmp * vertraginsfactor;
+      tmp = tmp / 100;
+      calculatedDelay = (int) tmp;
+    }
+    pulse(stepPin, calculatedDelay); // verreken verstaging!
+//     Serial.println(vertraginsfactor);
+    currentPos+=direction;    
+  }
 }
 
 void home() {
