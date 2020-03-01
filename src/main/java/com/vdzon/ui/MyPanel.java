@@ -298,7 +298,7 @@ public class MyPanel extends JPanel {
 //    int pulses1 = Math.abs(pos1 - lastPos1);
     int pulses2 = Math.abs(pos2 - lastPos2);
     int pulses3 = Math.abs(pos3 - lastPos3);
-    int mostPulses = max(pulses2, pulses3);
+    int mostPulses = Math.max(pulses2, pulses3);
 
     //
 //    double delayFactor1 = pulses1 == 0 ? 1  : 100*mostPulses / pulses1;
@@ -365,11 +365,11 @@ public class MyPanel extends JPanel {
 
   }
 
-  private void gotoPos(I2CDevice arm, int pos, int delay) {
+  public void gotoPos(I2CDevice arm, int pos, int delay) {
     gotoPos(arm, pos, delay, "0100");
   }
 
-  private void gotoPos(I2CDevice arm, int pos, int delay, String vertraging) {
+  public void gotoPos(I2CDevice arm, int pos, int delay, String vertraging) {
     try {
       String formattedPos = String.format("%06d", pos);
       String formattedDelay = String.format("%06d", delay);

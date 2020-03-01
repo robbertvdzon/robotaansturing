@@ -7,18 +7,12 @@ public class MyPanelTest {
   @Test
   public void testSpeed(){
     MyPanel panel = new MyPanel();
-//    panel.calcDelays(0,200,50);
-//    System.out.println(panel.delayArm1 + ","+panel.delayArm2 + ","+panel.delayArm3);
-//    panel.calcDelays(100,200,50);
-//    System.out.println(panel.delayArm1 + ","+panel.delayArm2 + ","+panel.delayArm3);
-//    panel.calcDelays(102,202,52);
-//    System.out.println(panel.delayArm1 + ","+panel.delayArm2 + ","+panel.delayArm3);
-//    panel.calcDelays(100,-200,50);
-//    System.out.println(panel.delayArm1 + ","+panel.delayArm2 + ","+panel.delayArm3);
-//    panel.calcDelays(100,200,50);
-//    System.out.println(panel.delayArm1 + ","+panel.delayArm2 + ","+panel.delayArm3);
-//    panel.calcDelays(100,200,50);
-//    System.out.println(panel.delayArm1 + ","+panel.delayArm2 + ","+panel.delayArm3);
+    panel.calcDelays(24000,5000);
+    System.out.println(panel.formattedDelayFactor2 + ","+panel.formattedDelayFactor3);
+    panel.calcDelays(9000,15000);
+    System.out.println(panel.formattedDelayFactor2 + ","+panel.formattedDelayFactor3);
+    panel.calcDelays(10000,10000);
+    System.out.println(panel.formattedDelayFactor2 + ","+panel.formattedDelayFactor3);
   }
 
 
