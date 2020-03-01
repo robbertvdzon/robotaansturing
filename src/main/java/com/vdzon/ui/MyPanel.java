@@ -276,9 +276,9 @@ public class MyPanel extends JPanel {
 
                 calcDelays(pos1, pos2, pos3);
 
-                System.out.println("MOVE: arm1=" + posArm1 + "/" + formattedDelayFactor1 + "   amr2="+posArm2 + "/" + formattedDelayFactor2);
+                System.out.println("MOVE: arm2=" + posArm2 + "/" + formattedDelayFactor1 + "   amr3="+posArm2 + "/" + formattedDelayFactor3);
 
-                gotoPos(arm1, pos1, 30, formattedDelayFactor1);
+//                gotoPos(arm1, pos1, 30, formattedDelayFactor1);
                 gotoPos(arm2, pos2, 30, formattedDelayFactor2);
                 gotoPos(arm3, pos3, 30, formattedDelayFactor3);
 
