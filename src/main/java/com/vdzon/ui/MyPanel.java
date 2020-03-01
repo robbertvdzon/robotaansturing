@@ -38,9 +38,10 @@ public class MyPanel extends JPanel {
   JTextField vertragingTextfield;
 
   public MyPanel() {
+    System.out.println("Starting");
     init();
 
-    JFrame f = new JFrame("Schaakrobot v1.1");
+    JFrame f = new JFrame("Schaakrobot v1.2");
 
     f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     f.getContentPane().add(this);
