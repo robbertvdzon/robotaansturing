@@ -393,7 +393,7 @@ public class MyPanel extends JPanel {
 
   private void home(I2CDevice arm) {
     try {
-      if (arm != null) { arm.write("^H0000000000300000".getBytes()); }
+      if (arm != null) { arm.write("^H0000000000600000".getBytes()); }
       if (arm == arm1) { lastPos1 = 0; }
       if (arm == arm2) { lastPos2 = 0; }
       if (arm == arm3) { lastPos3 = 0; }
