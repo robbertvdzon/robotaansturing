@@ -33,7 +33,7 @@ public class MyPanel extends JPanel {
   private I2CDevice arm2 = null;
   private I2CDevice arm3 = null;
   private Thread currentLoopThread = null;
-  JTextField snelheidTextfield;
+  JTextField vertragingTextfield;
 
   public MyPanel() {
     init();
@@ -56,10 +56,10 @@ public class MyPanel extends JPanel {
     f.add(bExit);
 
 
-    snelheidTextfield = new JTextField();
-    snelheidTextfield.setBounds(410, 20, 100, 40);
-    snelheidTextfield.setText("300000");
-    f.add(snelheidTextfield);
+    vertragingTextfield = new JTextField();
+    vertragingTextfield.setBounds(410, 20, 100, 40);
+    vertragingTextfield.setText("0100");
+    f.add(vertragingTextfield);
 
 
     {
@@ -95,27 +95,27 @@ public class MyPanel extends JPanel {
         f.add(button);
       }
       {
-        JButton button = new JButton("-100");
+        JButton button = new JButton("-1000");
         button.setBounds(315, 120, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm1, -100));
+        button.addActionListener(e -> gotoPos(tf, arm1, -1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+100");
+        JButton button = new JButton("+1000");
         button.setBounds(420, 120, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm1, +100));
+        button.addActionListener(e -> gotoPos(tf, arm1, +1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("-500");
+        JButton button = new JButton("-5000");
         button.setBounds(525, 120, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm1, -500));
+        button.addActionListener(e -> gotoPos(tf, arm1, -5000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+500");
+        JButton button = new JButton("+5000");
         button.setBounds(630, 120, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm1, +500));
+        button.addActionListener(e -> gotoPos(tf, arm1, +5000));
         f.add(button);
       }
     }
@@ -131,27 +131,27 @@ public class MyPanel extends JPanel {
         f.add(button);
       }
       {
-        JButton button = new JButton("-100");
+        JButton button = new JButton("-1000");
         button.setBounds(315, 170, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm2, -100));
+        button.addActionListener(e -> gotoPos(tf, arm2, -1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+100");
+        JButton button = new JButton("+1000");
         button.setBounds(420, 170, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm2, +100));
+        button.addActionListener(e -> gotoPos(tf, arm2, +1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("-500");
+        JButton button = new JButton("-5000");
         button.setBounds(525, 170, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm2, -500));
+        button.addActionListener(e -> gotoPos(tf, arm2, -5000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+500");
+        JButton button = new JButton("+5000");
         button.setBounds(630, 170, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm2, +500));
+        button.addActionListener(e -> gotoPos(tf, arm2, +5000));
         f.add(button);
       }
     }
@@ -167,27 +167,27 @@ public class MyPanel extends JPanel {
         f.add(button);
       }
       {
-        JButton button = new JButton("-100");
+        JButton button = new JButton("-1000");
         button.setBounds(315, 220, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm3, -100));
+        button.addActionListener(e -> gotoPos(tf, arm3, -1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+100");
+        JButton button = new JButton("+1000");
         button.setBounds(420, 220, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm3, +100));
+        button.addActionListener(e -> gotoPos(tf, arm3, +1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("-500");
+        JButton button = new JButton("-5000");
         button.setBounds(525, 220, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm3, -500));
+        button.addActionListener(e -> gotoPos(tf, arm3, -5000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+500");
+        JButton button = new JButton("+5000");
         button.setBounds(630, 220, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm3, +500));
+        button.addActionListener(e -> gotoPos(tf, arm3, +5000));
         f.add(button);
       }
     }
@@ -229,10 +229,6 @@ public class MyPanel extends JPanel {
 
     f.setExtendedState(JFrame.MAXIMIZED_BOTH);
     f.setVisible(true);
-  }
-
-  private int getSnelheid(){
-    return Integer.parseInt(snelheidTextfield.getText());
   }
 
   private void stopLoop() {
@@ -286,9 +282,9 @@ public class MyPanel extends JPanel {
 
               //  calcDelays(pos1, pos2, pos3);
 
-                gotoPos(arm1, pos1, getSnelheid());
-                gotoPos(arm2, pos2, getSnelheid());
-                gotoPos(arm3, pos3, getSnelheid());
+                gotoPos(arm1, pos1, 30);
+                gotoPos(arm2, pos2, 30);
+                gotoPos(arm3, pos3, 30);
 
                 System.out.println("sleep " + sleepTime + " sec");
                 Thread.sleep(1000 * sleepTime);
@@ -311,7 +307,7 @@ public class MyPanel extends JPanel {
     int pulses3 = Math.abs(pos3 - lastPos3);
 
     //
-    long minDelay = getSnelheid();
+    long minDelay = 30;
     long totalTime = minDelay * mostPulses;
     double delay1 = pulses1 == 0 ? minDelay : totalTime / pulses1;
     double delay2 = pulses2 == 0 ? minDelay :totalTime / pulses2;
@@ -373,7 +369,7 @@ public class MyPanel extends JPanel {
     int pos = Integer.parseInt(tf.getText());
     int newPos = pos + increment;
     tf.setText("" + newPos);
-    gotoPos(arm, newPos, getSnelheid());
+    gotoPos(arm, newPos, 30);
 
   }
 
@@ -381,7 +377,7 @@ public class MyPanel extends JPanel {
     try {
       String formattedPos = String.format("%06d", pos);
       String formattedDelay = String.format("%06d", delay);
-      String command = "^M" + formattedPos + "000"+formattedDelay;
+      String command = "^M" + formattedPos + formattedDelay + vertragingTextfield.getText();
       System.out.println("command:"+command);
       if (arm != null) { arm.write(command.getBytes()); }
       if (arm == arm1) { lastPos1 = pos; }

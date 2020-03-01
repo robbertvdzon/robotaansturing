@@ -47,12 +47,12 @@ difference(){
             }
        }	
        
-       translate([-10,41/2+6,6]){
+       translate([-10,41/2+8,6]){
             rotate(a = [0,90,0]) {
               cylinder(h=600, r=1.8, $fn=100, center=false);
             }
        }	
-       translate([-10,41/2-6,6]){
+       translate([-10,41/2-8,6]){
             rotate(a = [0,90,0]) {
               cylinder(h=600, r=1.8, $fn=100, center=false);
             }

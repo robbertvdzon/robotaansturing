@@ -3,22 +3,22 @@ difference(){
 	union(){
        translate([breedte/2+10,30-6,7.5]){
             rotate(a = [0,90,0]) {
-              cylinder(h=breedte/2-10, r=2, $fn=100, center=false);
+              cylinder(h=breedte/2-15, r=2, $fn=100, center=false);
             }
        }	
        translate([breedte/2+10,30+6,7.5]){
             rotate(a = [0,90,0]) {
-              cylinder(h=breedte/2-10, r=2, $fn=100, center=false);
+              cylinder(h=breedte/2-15, r=2, $fn=100, center=false);
             }
        }	
-       translate([0,30-6,7.5]){
+       translate([5,30-6,7.5]){
             rotate(a = [0,90,0]) {
-              cylinder(h=breedte/2-10, r=2, $fn=100, center=false);
+              cylinder(h=breedte/2-15, r=2, $fn=100, center=false);
             }
        }	
-       translate([0,30+6,7.5]){
+       translate([5,30+6,7.5]){
             rotate(a = [0,90,0]) {
-              cylinder(h=breedte/2-10, r=2, $fn=100, center=false);
+              cylinder(h=breedte/2-15, r=2, $fn=100, center=false);
             }
        }	
 
@@ -33,6 +33,16 @@ difference(){
 
 	}
 	union() {
+
+       translate([-1,10,-1]){
+           cube([3,40,17], center=false);
+       }
+       translate([breedte-3,10,-1]){
+           cube([6,40,17], center=false);
+       }
+       translate([-1,47,-1]){
+           cube([breedte+2,20,17], center=false);
+       }        
 
        translate([breedte/2-20,60/2,-1]){
             rotate(a = [0,0,90]) {
