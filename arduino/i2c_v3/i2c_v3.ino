@@ -15,16 +15,10 @@ byte 4 : to_pos
 byte 5 : to_pos 
 byte 6 : to_pos 
 byte 7 : to_pos 
-byte 8 : min_delay tussen steps (6 lang, max 999999 usec = 1 sec)
-byte 9 : min_delay tussen steps
-byte 10: min_delay tussen steps
-byte 11: min_delay tussen steps
-byte 12: min_delay tussen steps
-byte 13: min_delay tussen steps
-byte 14: vertragings_factor (in percentage, dus 0135 = 1,35 keer zo snel, dus alle delays vermenigvuldigen met 1,35)
-byte 15: vertragings_factor
-byte 16: vertragings_factor
-byte 17: vertragings_factor
+byte 8: vertragings_factor (in percentage, dus 0135 = 1,35 keer zo snel, dus alle delays vermenigvuldigen met 1,35)
+byte 9: vertragings_factor
+byte 10: vertragings_factor
+byte 11: vertragings_factor
 
 states:
 0: homing needed
@@ -39,13 +33,15 @@ send: state + pos
 
 #include <Wire.h>
 
-#define NR_OF_BYTES_TO_READ 18
+#define NR_OF_BYTES_TO_READ 12
 
 #define HOMING_NEEDED 0
 #define READY 1
 #define MOVING 2
 #define HOMING 3
 #define IN_ERROR 4
+
+#define HOME_SPEED 120
 
 #define dirPin 3
 #define stepPin 8
@@ -60,7 +56,6 @@ send: state + pos
 
 char command;
 int requestedPos;
-int stepDelay;
 int vertraginsfactor;
 
 char number[50];
@@ -163,21 +158,10 @@ void parseCommand(){
   buffer[6] = '\0';
   int toPos = atoi(buffer);
 
-
   buffer[0] = number[8];
   buffer[1] = number[9];
   buffer[2] = number[10];
   buffer[3] = number[11];
-  buffer[4] = number[12];
-  buffer[5] = number[13];
-  buffer[6] = '\0';
-  int delay = atoi(buffer);
-
-
-  buffer[0] = number[14];
-  buffer[1] = number[15];
-  buffer[2] = number[16];
-  buffer[3] = number[17];
   buffer[4] = '\0';
   vertraginsfactor = atoi(buffer);
   if (vertraginsfactor<100){
@@ -185,20 +169,11 @@ void parseCommand(){
   }
   
 
-  long vLong =vertraginsfactor;
-  if (vLong<100) vLong = 100;// alleen vertraginsfactor doen als hij ook echt vertraagd en niet versneld
-  long delayLong = delay;
-  long tmp1 = vLong*delayLong;
-  long tmp2 = tmp1/100;
-
-  stepDelay = tmp2;
   requestedPos = toPos;
   command = number[1];
 
   Serial.print("- cmd:");Serial.println(command);
   Serial.print("- pos:");Serial.println(requestedPos);
-  Serial.print("- delay:");Serial.println(delay);
-  Serial.print("- stepDelay:");Serial.println(stepDelay);
   Serial.print("- vertraginsfactor:");Serial.println(vertraginsfactor);
   Serial.print("- currentPos:");Serial.println(currentPos);
 }
@@ -213,7 +188,6 @@ void home1(){
   Serial.println("home");
   Serial.print("cmd:");Serial.println(command);
   Serial.print("pos:");Serial.println(requestedPos);
-  Serial.print("delay:");Serial.println(stepDelay);
   home();
   state = READY;
   Serial.println("RESET CURRENT COMMAND");
@@ -222,11 +196,6 @@ void home1(){
 
 void move(){
   state = MOVING;
-  Serial.println("move");
-  Serial.print("cmd:");Serial.println(command);
-  Serial.print("pos:");Serial.println(requestedPos);
-  Serial.print("delay:");Serial.println(stepDelay);
-  Serial.print("currentPos:");Serial.println(currentPos);
 
   if (requestedPos>currentPos){
     moveUp(requestedPos);
@@ -335,20 +304,19 @@ void home() {
   Serial.println("\t move fast down until high");
   digitalWrite(dirPin, LOW);
   while (!digitalRead(arm1SensorPin)){
-    pulse(stepPin,stepDelay);
+    pulse(stepPin,HOME_SPEED);
   }
 
   // move up until not high   
   Serial.println("\t move slow up until not high");
-  stepDelay = stepDelay*1;
   digitalWrite(dirPin, HIGH);
   while (digitalRead(arm1SensorPin)){
-    pulse(stepPin,stepDelay);
+    pulse(stepPin,HOME_SPEED);
   }
 
   Serial.println("\t move one extra round");
     for (int i = 0; i < 1 * stepsPerRevolution; i++) {
-      pulse(stepPin,stepDelay);
+      pulse(stepPin,HOME_SPEED);
   } 
   
   Serial.println("\t homing finished");

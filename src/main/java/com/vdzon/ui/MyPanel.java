@@ -278,9 +278,9 @@ public class MyPanel extends JPanel {
 
                 System.out.println("MOVE: arm2=" + posArm2 + "/" + formattedDelayFactor2 + "   amr3="+posArm2 + "/" + formattedDelayFactor3);
 
-//                gotoPos(arm1, pos1, 30, formattedDelayFactor1);
-                gotoPos(arm2, pos2, 30, formattedDelayFactor2);
-                gotoPos(arm3, pos3, 30, formattedDelayFactor3);
+//                gotoPos(arm1, pos1, formattedDelayFactor1);
+                gotoPos(arm2, pos2, formattedDelayFactor2);
+                gotoPos(arm3, pos3, formattedDelayFactor3);
 
                 Thread.sleep(1000 * sleepTime);
               } catch (Exception ex) {
@@ -361,19 +361,18 @@ public class MyPanel extends JPanel {
     int pos = Integer.parseInt(tf.getText());
     int newPos = pos + increment;
     tf.setText("" + newPos);
-    gotoPos(arm, newPos, 30);
+    gotoPos(arm, newPos);
 
   }
 
-  public void gotoPos(I2CDevice arm, int pos, int delay) {
-    gotoPos(arm, pos, delay, "0100");
+  public void gotoPos(I2CDevice arm, int pos) {
+    gotoPos(arm, pos, "0100");
   }
 
-  public void gotoPos(I2CDevice arm, int pos, int delay, String vertraging) {
+  public void gotoPos(I2CDevice arm, int pos, String vertraging) {
     try {
       String formattedPos = String.format("%06d", pos);
-      String formattedDelay = String.format("%06d", delay);
-      String command = "^M" + formattedPos + formattedDelay + vertraging;
+      String command = "^M" + formattedPos + vertraging;
       System.out.println("command:"+command);
       if (arm != null) { arm.write(command.getBytes()); }
       if (arm == arm1) { lastPos1 = pos; }
