@@ -34,11 +34,12 @@ public class MyPanel extends JPanel {
   private I2CDevice arm3 = null;
   private Thread currentLoopThread = null;
   JTextField vertragingTextfield;
+  JFrame f;
 
   public MyPanel() {
     init();
 
-    JFrame f = new JFrame("Schaakrobot v1.0");
+    f = new JFrame("Schaakrobot v1.1");
 
     f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     f.getContentPane().add(this);
@@ -378,6 +379,7 @@ public class MyPanel extends JPanel {
       String formattedPos = String.format("%06d", pos);
       String formattedDelay = String.format("%06d", delay);
       String command = "^M" + formattedPos + formattedDelay + vertragingTextfield.getText();
+      f.setTitle(command);
       System.out.println("command:"+command);
       if (arm != null) { arm.write(command.getBytes()); }
       if (arm == arm1) { lastPos1 = pos; }

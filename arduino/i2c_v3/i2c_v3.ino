@@ -179,8 +179,8 @@ void parseCommand(){
   int vertraginsfactor = atoi(buffer);
 
   stepDelay = delay;
-  if (vertraginsfactor>1){ // alleen vertraginsfactor doen als hij ook echt vertraagd en niet versneld
-    stepDelay = delay*vertraginsfactor;
+  if (vertraginsfactor>100){ // alleen vertraginsfactor doen als hij ook echt vertraagd en niet versneld
+    stepDelay = delay*(vertraginsfactor/100);
   }
   requestedPos = toPos;
   command = number[1];
