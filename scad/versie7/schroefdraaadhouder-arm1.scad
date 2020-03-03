@@ -36,7 +36,7 @@ difference(){
 
 
        translate([-1,47,-1]){
-       //    cube([breedte+2,20,17], center=false);
+           cube([breedte+2,20,17], center=false);
        }        
 
        translate([breedte/2-20,60/2,-1]){
@@ -83,12 +83,12 @@ difference(){
        
        translate([breedte/2-55/2,60,7.5]){
             rotate(a = [90,0,0]) {
-              //  cylinder(h=600, r=1.2, $fn=100, center=false);
+                cylinder(h=600, r=1.2, $fn=100, center=false);
             }
        }   
        translate([breedte/2+55/2,60,7.5]){
             rotate(a = [90,0,0]) {
-              //  cylinder(h=600, r=1.2, $fn=100, center=false);
+                cylinder(h=600, r=1.2, $fn=100, center=false);
             }
        }   
 

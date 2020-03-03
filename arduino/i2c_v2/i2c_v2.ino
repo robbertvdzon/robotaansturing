@@ -261,13 +261,20 @@ void checkError(){
 void moveUp(int reqPos){
   digitalWrite(enableMotorPin, LOW);
 
-  Serial.println("move up");    
+  Serial.println("move up");
+
+  long startTime = millis();
+
   digitalWrite(dirPin, HIGH);
   while (currentPos<reqPos){
     pulse(stepPin);
     currentPos++;
   }
   Serial.println("up");    
+  long totalTime = millis() - startTime;
+  Serial.print("Totaltime:");
+  Serial.println(totalTime);
+
   digitalWrite(enableMotorPin, HIGH);
 }
 

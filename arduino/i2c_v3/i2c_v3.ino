@@ -240,9 +240,14 @@ void moveUp(int reqPos){
 
   Serial.println("move up");    
   digitalWrite(dirPin, HIGH);
+  long startTime = millis();
 
   moveNrSteps(reqPos - currentPos, +1);
 
+  long totalTime = millis() - startTime;
+  
+  Serial.print("totalTime:");   
+  Serial.println(totalTime);   
 
   Serial.println("up");    
   digitalWrite(enableMotorPin, HIGH);
@@ -272,11 +277,9 @@ void moveNrSteps(int totalSteps, int direction){
   int remainingSteps;
   double delay = 0;
   double calculatedDelay = 0;
-     Serial.println("vertraginsfactor:");
-     Serial.println(vertraginsfactor);
 
   for (int i = 0; i < totalSteps; i++) {    
-    int remainingSteps = totalSteps - i;
+    remainingSteps = totalSteps - i;
     delayIndex = i/indexSteps;
     remainingDelayIndex = remainingSteps/indexSteps;
     if (i==0 || i%indexSteps==0){
@@ -288,8 +291,7 @@ void moveNrSteps(int totalSteps, int direction){
       calculatedDelay = (int) tmp;
     }
     pulse(stepPin, calculatedDelay); // verreken verstaging!
-//     Serial.println(vertraginsfactor);
-    currentPos+=direction;    
+    currentPos+=direction;
   }
 }
 
