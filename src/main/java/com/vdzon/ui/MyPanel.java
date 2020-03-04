@@ -4,6 +4,7 @@ import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
+import com.vdzon.BerekenVersnelling;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -295,33 +296,23 @@ public class MyPanel extends JPanel {
   }
 
   public void calcDelays(int pos2, int pos3) {
-//    int pulses1 = Math.abs(pos1 - lastPos1);
     int pulses2 = Math.abs(pos2 - lastPos2);
     int pulses3 = Math.abs(pos3 - lastPos3);
-    int mostPulses = Math.max(pulses2, pulses3);
 
-    //
-//    double delayFactor1 = pulses1 == 0 ? 1  : 100*mostPulses / pulses1;
-    double delayFactor2 = pulses2 == 0 ? 1  : 100*mostPulses / pulses2;
-    double delayFactor3 = pulses3 == 0 ? 1  : 100*mostPulses / pulses3;
+    double tijd2 = BerekenVersnelling.berekenTijd(pulses2);
+    double tijd3 = BerekenVersnelling.berekenTijd(pulses3);
+    double tijd = Math.max(tijd2, tijd3);
 
-//    if (delayFactor1>9999) delayFactor1 = 9999;
+    double delayFactor2 = pulses2 == 0 ? 1  : 100*tijd / tijd2;
+    double delayFactor3 = pulses3 == 0 ? 1  : 100*tijd / tijd3;
+
     if (delayFactor2>9999) delayFactor2 = 9999;
     if (delayFactor3>9999) delayFactor3 = 9999;
 
-//    formattedDelayFactor1 = String.format("%04d", (int)delayFactor1);
     formattedDelayFactor2 = String.format("%04d", (int)delayFactor2);
     formattedDelayFactor3 = String.format("%04d", (int)delayFactor3);
   }
 
-  private int max(int pos2, int pos3) {
-//    int diff1 = Math.abs(pos1 - lastPos1);
-    int diff2 = Math.abs(pos2 - lastPos2);
-    int diff3 = Math.abs(pos3 - lastPos3);
-//    int max1 = Math.max(diff1, diff2);
-    return Math.max(diff2, diff3);
-
-  }
 
   private void saveToFile(String text) {
     Path path = Paths.get("/home/pi/loop.data");

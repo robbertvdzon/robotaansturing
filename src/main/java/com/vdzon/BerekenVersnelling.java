@@ -5,6 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BerekenVersnelling {
+  /*
+  100: 65
+  1000: 335
+  2000: 525
+  10.000 1576
+  15.000 2201
+   */
 
   static final double MAX_SNELHEID = 1000000/40; // pulsen per sec
   static final double VERSNELLINGSTIJD = 200000; // in microsec
@@ -17,11 +24,21 @@ public class BerekenVersnelling {
     System.out.println("static const int delayArraySize = " + snelheidList.size() + ";");
     System.out.println("static const int indexSteps = " + INDEX_STEPS + ";");
 
-    long time1 = berekenTijd(3750);
-    System.out.println("time1 = "+time1);
+    double time1 = berekenTijd(100);
+    System.out.println("100:"+berekenTijd(100));
+    System.out.println("1000:"+berekenTijd(1000));
+    System.out.println("2000:"+berekenTijd(2000));
+    System.out.println("10000:"+berekenTijd(10000));
+    System.out.println("15000:"+berekenTijd(15000));
+
+    System.out.println("100 = "+(berekenTijd(100)-65)/100);
+    System.out.println("1000 = "+(berekenTijd(1000)-335)/1000);
+    System.out.println("2000 = "+(berekenTijd(2000)-525)/2000);
+    System.out.println("10000 = "+(berekenTijd(10000)-1565)/10000);
+    System.out.println("15000 = "+(berekenTijd(15000)-2201)/15000);
   }
 
-  public static long berekenTijd(int totalSteps) {
+  public static double berekenTijd(int totalSteps) {
     List<Integer> snelheidList = getSnelheidList();
     long time = 0;
 
@@ -42,9 +59,9 @@ public class BerekenVersnelling {
         if (i > halfway && remainingDelayIndex < delayArraySize)
           delay = snelheidList.get(remainingDelayIndex);
       }
-      time += delay*2;
+      time += delay*2+45;
     }
-    return time;
+    return time/1000;
   }
 
 
