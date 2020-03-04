@@ -302,6 +302,9 @@ public class MyPanel extends JPanel {
     double tijd2 = BerekenVersnelling.berekenTijd(pulses2);
     double tijd3 = BerekenVersnelling.berekenTijd(pulses3);
     double tijd = Math.max(tijd2, tijd3);
+    if (tijd<2000){
+      tijd = 2000;
+    }
 
     double delayFactor2 = pulses2 == 0 ? 1  : 100*tijd / tijd2;
     double delayFactor3 = pulses3 == 0 ? 1  : 100*tijd / tijd3;
