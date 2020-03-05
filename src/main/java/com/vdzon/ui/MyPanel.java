@@ -1,10 +1,13 @@
 package com.vdzon.ui;
 
+import static com.vdzon.BerekenVersnelling.calcDelays;
+
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
 import com.vdzon.BerekenVersnelling;
+import com.vdzon.Delays;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -299,15 +302,10 @@ public class MyPanel extends JPanel {
     int pulses2 = Math.abs(pos2 - lastPos2);
     int pulses3 = Math.abs(pos3 - lastPos3);
 
-    double tijd2 = BerekenVersnelling.berekenTijd(pulses2);
-    double tijd3 = BerekenVersnelling.berekenTijd(pulses3);
-    double tijd = Math.max(tijd2, tijd3);
-    if (tijd<2000){
-      tijd = 2000;
-    }
+    Delays delays = BerekenVersnelling.calcDelays(pulses2, pulses3);
 
-    double delayFactor2 = pulses2 == 0 ? 1  : 100*tijd / tijd2;
-    double delayFactor3 = pulses3 == 0 ? 1  : 100*tijd / tijd3;
+    double delayFactor2 = pulses2 == 0 ? 1  : delays.delay2;
+    double delayFactor3 = pulses3 == 0 ? 1  : delays.delay3;
 
     if (delayFactor2>9999) delayFactor2 = 9999;
     if (delayFactor3>9999) delayFactor3 = 9999;

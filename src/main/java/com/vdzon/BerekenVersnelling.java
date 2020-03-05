@@ -16,6 +16,7 @@ public class BerekenVersnelling {
   static final double MAX_SNELHEID = 1000000/40; // pulsen per sec
   static final double VERSNELLINGSTIJD = 200000; // in microsec
   static final int INDEX_STEPS = 20;
+  private static final int CALCULATION_PROCESSOR_TIME = 45;
 
 
   public static void main(String args[]) {
@@ -24,21 +25,65 @@ public class BerekenVersnelling {
     System.out.println("static const int delayArraySize = " + snelheidList.size() + ";");
     System.out.println("static const int indexSteps = " + INDEX_STEPS + ";");
 
-    double time1 = berekenTijd(100);
-    System.out.println("100:"+berekenTijd(100));
-    System.out.println("1000:"+berekenTijd(1000));
-    System.out.println("2000:"+berekenTijd(2000));
-    System.out.println("10000:"+berekenTijd(10000));
-    System.out.println("15000:"+berekenTijd(15000));
 
-    System.out.println("100 = "+(berekenTijd(100)-65)/100);
-    System.out.println("1000 = "+(berekenTijd(1000)-335)/1000);
-    System.out.println("2000 = "+(berekenTijd(2000)-525)/2000);
-    System.out.println("10000 = "+(berekenTijd(10000)-1565)/10000);
-    System.out.println("15000 = "+(berekenTijd(15000)-2201)/15000);
+    System.out.println("10000:"+berekenTijd(10000));
+    System.out.println("20000:"+berekenTijd(20000));
+    Delays delays = calcDelays(10000,20000);
+    System.out.println("delay 2="+delays.delay2);
+    System.out.println("delay 3="+delays.delay3);
+
+    System.out.println("10000:"+berekenTijd(10000, (int)delays.delay2, CALCULATION_PROCESSOR_TIME));
+    System.out.println("20000:"+berekenTijd(20000, (int)delays.delay3, CALCULATION_PROCESSOR_TIME));
+
+
+//    System.out.println("100:"+berekenTijd(100));
+//    System.out.println("1000:"+berekenTijd(1000));
+//    System.out.println("2000:"+berekenTijd(2000));
+//    System.out.println("10000:"+berekenTijd(10000));
+//    System.out.println("15000:"+berekenTijd(15000));
+//
+//    System.out.println("100 = "+(berekenTijd(100)-65)/100);
+//    System.out.println("1000 = "+(berekenTijd(1000)-335)/1000);
+//    System.out.println("2000 = "+(berekenTijd(2000)-525)/2000);
+//    System.out.println("10000 = "+(berekenTijd(10000)-1565)/10000);
+//    System.out.println("15000 = "+(berekenTijd(15000)-2201)/15000);
   }
 
+  public static Delays calcDelays(int pulses2, int pulses3) {
+
+    double tijd2 = berekenTijd(pulses2);
+    double tijd3 = berekenTijd(pulses3);
+    double tijd = Math.max(tijd2, tijd3);
+    if (tijd<2000){
+      tijd = 2000;
+    }
+
+    double doubleDiff2 = tijd-tijd2;
+    double doubleDiff3 = tijd-tijd3;
+    double sleepTijd2 = berekenTijd(pulses2, 100,0);
+    double sleepTijd3 = berekenTijd(pulses3, 100,0);
+    double newSleepTime2 = sleepTijd2+doubleDiff2;
+    double newSleepTime3 = sleepTijd3+doubleDiff3;
+
+
+//    double delayFactor2 = pulses2 == 0 ? 1  : 100*tijd / tijd2;
+//    double delayFactor3 = pulses3 == 0 ? 1  : 100*tijd / tijd3;
+    double delayFactor2 = pulses2 == 0 ? 1  : 100*newSleepTime2/sleepTijd2;
+    double delayFactor3 = pulses3 == 0 ? 1  : 100*newSleepTime3/sleepTijd3;
+
+    Delays delays = new Delays();
+    delays.delay1 = 100;
+    delays.delay2 = delayFactor2;
+    delays.delay3 = delayFactor3;
+    return delays;
+  }
+
+
   public static double berekenTijd(int totalSteps) {
+    return berekenTijd(totalSteps, 100, CALCULATION_PROCESSOR_TIME);
+  }
+
+  public static double berekenTijd(int totalSteps, double vertraging, int calculationProcessorTime) {
     List<Integer> snelheidList = getSnelheidList();
     long time = 0;
 
@@ -59,7 +104,10 @@ public class BerekenVersnelling {
         if (i > halfway && remainingDelayIndex < delayArraySize)
           delay = snelheidList.get(remainingDelayIndex);
       }
-      time += delay*2+45;
+      double tmpDelay = delay;
+      tmpDelay*=vertraging/100;
+      int tmpDelayInt = (int)tmpDelay;
+      time += tmpDelayInt*2+ calculationProcessorTime;
     }
     return time/1000;
   }
