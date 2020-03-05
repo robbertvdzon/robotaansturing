@@ -10,6 +10,7 @@ import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
+import java.util.stream.IntStream;
 
 public class Servo {
 
@@ -19,69 +20,31 @@ public class Servo {
 
   @SuppressWarnings("resource")
   public static void main(String args[]) throws Exception {
-    System.out.println("<--Pi4J--> PCA9685 PWM Example ... started.");
-    // This would theoretically lead into a resolution of 5 microseconds per step:
-    // 4096 Steps (12 Bit)
-    // T = 4096 * 0.000005s = 0.02048s
-    // f = 1 / T = 48.828125
     BigDecimal frequency = new BigDecimal("48.828");
-    // Correction factor: actualFreq / targetFreq
-    // e.g. measured actual frequency is: 51.69 Hz
-    // Calculate correction factor: 51.65 / 48.828 = 1.0578
-    // --> To measure actual frequency set frequency without correction factor(or set to 1)
     BigDecimal frequencyCorrectionFactor = new BigDecimal("1.0578");
-    // Create custom PCA9685 GPIO provider
     I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
     final PCA9685GpioProvider provider = new PCA9685GpioProvider(bus, 0x40, frequency, frequencyCorrectionFactor);
-    // Define outputs in use for this example
     GpioPinPwmOutput[] myOutputs = provisionPwmOutputs(provider);
-    // Reset outputs
     provider.reset();
-    //
-    // Set various PWM patterns for outputs 0..9
-    final int offset = 400;
-    final int pulseDuration = 600;
 
-    provider.setPwm(PCA9685Pin.PWM_00, SERVO_DURATION_MIN);
-    Thread.sleep(2000);
-    provider.setPwm(PCA9685Pin.PWM_00, SERVO_DURATION_MAX);
-
-//
-//    for (int i = 0; i < 10; i++) {
-//      Pin pin = PCA9685Pin.ALL[i];
-//      int onPosition = checkForOverflow(offset * i);
-//      int offPosition = checkForOverflow(pulseDuration * (i + 1));
-//      provider.setPwm(pin, onPosition, offPosition);
-//    }
-//    // Set full ON
-//    provider.setAlwaysOn(PCA9685Pin.PWM_10);
-//    // Set full OFF
-//    provider.setAlwaysOff(PCA9685Pin.PWM_11);
-//    // Set 0.9ms pulse (R/C Servo minimum position)
-//    provider.setPwm(PCA9685Pin.PWM_12, SERVO_DURATION_MIN);
-//    // Set 1.5ms pulse (R/C Servo neutral position)
-//    provider.setPwm(PCA9685Pin.PWM_13, SERVO_DURATION_NEUTRAL);
-//    // Set 2.1ms pulse (R/C Servo maximum position)
-//    provider.setPwm(PCA9685Pin.PWM_14, SERVO_DURATION_MAX);
-//    //
-//    // Show PWM values for outputs 0..14
-//    for (GpioPinPwmOutput output : myOutputs) {
-//      int[] onOffValues = provider.getPwmOnOffValues(output.getPin());
-//      System.out.println(output.getPin().getName() + " (" + output.getName() + "): ON value [" + onOffValues[0] + "], OFF value [" + onOffValues[1] + "]");
-//    }
-//    System.out.println("Press <Enter> to terminate...");
-//    new Scanner(System.in).nextLine();
-//
-//    System.out.println("Exiting PCA9685GpioExample");
+    IntStream.range(900,2100).forEach(duration->{
+      provider.setPwm(PCA9685Pin.PWM_00, duration);
+      sleep(10);
+    });
+    IntStream.range(2100,900).forEach(duration->{
+      provider.setPwm(PCA9685Pin.PWM_00, duration);
+      sleep(10);
+    });
   }
 
-//  private static int checkForOverflow(int position) {
-//    int result = position;
-//    if (position > PCA9685GpioProvider.PWM_STEPS - 1) {
-//      result = position - PCA9685GpioProvider.PWM_STEPS - 1;
-//    }
-//    return result;
-//  }
+  private static void sleep(long time) {
+    try {
+      Thread.sleep(time);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
 
   private static GpioPinPwmOutput[] provisionPwmOutputs(final PCA9685GpioProvider gpioProvider) {
     GpioController gpio = GpioFactory.getInstance();
