@@ -41,32 +41,38 @@ public class Servo {
     // Set various PWM patterns for outputs 0..9
     final int offset = 400;
     final int pulseDuration = 600;
-    for (int i = 0; i < 10; i++) {
-      Pin pin = PCA9685Pin.ALL[i];
-      int onPosition = checkForOverflow(offset * i);
-      int offPosition = checkForOverflow(pulseDuration * (i + 1));
-      provider.setPwm(pin, onPosition, offPosition);
-    }
-    // Set full ON
-    provider.setAlwaysOn(PCA9685Pin.PWM_10);
-    // Set full OFF
-    provider.setAlwaysOff(PCA9685Pin.PWM_11);
-    // Set 0.9ms pulse (R/C Servo minimum position)
-    provider.setPwm(PCA9685Pin.PWM_12, SERVO_DURATION_MIN);
-    // Set 1.5ms pulse (R/C Servo neutral position)
-    provider.setPwm(PCA9685Pin.PWM_13, SERVO_DURATION_NEUTRAL);
-    // Set 2.1ms pulse (R/C Servo maximum position)
-    provider.setPwm(PCA9685Pin.PWM_14, SERVO_DURATION_MAX);
-    //
-    // Show PWM values for outputs 0..14
-    for (GpioPinPwmOutput output : myOutputs) {
-      int[] onOffValues = provider.getPwmOnOffValues(output.getPin());
-      System.out.println(output.getPin().getName() + " (" + output.getName() + "): ON value [" + onOffValues[0] + "], OFF value [" + onOffValues[1] + "]");
-    }
-    System.out.println("Press <Enter> to terminate...");
-    new Scanner(System.in).nextLine();
 
-    System.out.println("Exiting PCA9685GpioExample");
+    provider.setPwm(PCA9685Pin.PWM_00, SERVO_DURATION_MIN);
+    Thread.sleep(2000);
+    provider.setPwm(PCA9685Pin.PWM_00, SERVO_DURATION_MAX);
+
+//
+//    for (int i = 0; i < 10; i++) {
+//      Pin pin = PCA9685Pin.ALL[i];
+//      int onPosition = checkForOverflow(offset * i);
+//      int offPosition = checkForOverflow(pulseDuration * (i + 1));
+//      provider.setPwm(pin, onPosition, offPosition);
+//    }
+//    // Set full ON
+//    provider.setAlwaysOn(PCA9685Pin.PWM_10);
+//    // Set full OFF
+//    provider.setAlwaysOff(PCA9685Pin.PWM_11);
+//    // Set 0.9ms pulse (R/C Servo minimum position)
+//    provider.setPwm(PCA9685Pin.PWM_12, SERVO_DURATION_MIN);
+//    // Set 1.5ms pulse (R/C Servo neutral position)
+//    provider.setPwm(PCA9685Pin.PWM_13, SERVO_DURATION_NEUTRAL);
+//    // Set 2.1ms pulse (R/C Servo maximum position)
+//    provider.setPwm(PCA9685Pin.PWM_14, SERVO_DURATION_MAX);
+//    //
+//    // Show PWM values for outputs 0..14
+//    for (GpioPinPwmOutput output : myOutputs) {
+//      int[] onOffValues = provider.getPwmOnOffValues(output.getPin());
+//      System.out.println(output.getPin().getName() + " (" + output.getName() + "): ON value [" + onOffValues[0] + "], OFF value [" + onOffValues[1] + "]");
+//    }
+//    System.out.println("Press <Enter> to terminate...");
+//    new Scanner(System.in).nextLine();
+//
+//    System.out.println("Exiting PCA9685GpioExample");
   }
 
   private static int checkForOverflow(int position) {
