@@ -27,14 +27,14 @@ public class Servo {
     GpioPinPwmOutput[] myOutputs = provisionPwmOutputs(provider);
     provider.reset();
 
-    IntStream.range(900,2100).forEach(duration->{
+    for (int duration = 900; duration<=2100;  duration++){
       provider.setPwm(PCA9685Pin.PWM_00, duration);
-      sleep(10);
-    });
-    IntStream.range(2100,900).forEach(duration->{
+      sleep(2);
+    };
+    for (int duration = 2100; duration<=900;  duration--){
       provider.setPwm(PCA9685Pin.PWM_00, duration);
-      sleep(10);
-    });
+      sleep(2);
+    };
   }
 
   private static void sleep(long time) {
