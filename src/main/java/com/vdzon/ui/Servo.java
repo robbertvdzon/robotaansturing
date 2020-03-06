@@ -100,7 +100,6 @@ public class Servo {
     System.out.println("finalTime=" + finalTime);
 
     for (int p = startPos; p != eindPos; p += step) {
-      System.out.println("process "+p);
       if (p % skipSteps == 0) {
         provider.setPwm(PCA9685Pin.PWM_00, p);
         if (extraDelay > 0) {
