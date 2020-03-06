@@ -53,6 +53,7 @@ public class Servo {
   public void moveToInThread(int oldPos, int newPos, long time) {
     int startPos = Math.max(oldPos, 900);
     int eindPos = Math.min(newPos, 2100);
+    if (startPos==eindPos) return;
     int step = eindPos > startPos ? 1 : -1;
     int totalSteps = Math.abs(eindPos - startPos);
     int skipSteps = 1;
