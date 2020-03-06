@@ -62,10 +62,19 @@ public class Servo {
   }
 
   public void moveTo(int oldPos, int newPos, long time) {
+    System.out.println("oldPos=" + oldPos);
+    System.out.println("newPos=" + newPos);
+
+
     int startPos = oldPos < 900 ? 900 : oldPos;
     int eindPos = newPos > 2100 ? 2100 : newPos;
-
     int step = startPos > eindPos ? 1 : -1;
+
+    System.out.println("startPos=" + startPos);
+    System.out.println("eindPos=" + eindPos);
+    System.out.println("step=" + step);
+
+
     int totalSteps = Math.abs(eindPos - startPos);
     long start = System.currentTimeMillis();
     int skipSteps = 1;
@@ -99,9 +108,7 @@ public class Servo {
       }
     }
     long realTotalTime = System.currentTimeMillis() - start;
-    double timePerStep = totalTime / totalSteps;
     System.out.println("time = " + realTotalTime);
-//    System.out.println("time per step = "+timePerStep);
   }
 
   public void home() {
