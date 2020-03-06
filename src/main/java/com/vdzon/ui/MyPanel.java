@@ -1,7 +1,5 @@
 package com.vdzon.ui;
 
-import static com.vdzon.BerekenVersnelling.calcDelays;
-
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
@@ -26,22 +24,21 @@ public class MyPanel extends JPanel {
 
   private static int ARM1 = 0x5;
   private static int ARM2 = 0x7;
-  private static int ARM3 = 0x8;
   int lastPos1 = 0;
   int lastPos2 = 0;
   int lastPos3 = 0;
 
   String formattedDelayFactor1 = "0100";
   String formattedDelayFactor2 = "0100";
-  String formattedDelayFactor3 = "0100";
 
   private I2CDevice arm1 = null;
   private I2CDevice arm2 = null;
-  private I2CDevice arm3 = null;
   private Thread currentLoopThread = null;
   JTextField vertragingTextfield;
+  private Servo servo;
 
-  public MyPanel() {
+  public MyPanel(Servo servo) {
+    this.servo = servo;
     System.out.println("Starting");
     init();
 
@@ -86,7 +83,7 @@ public class MyPanel extends JPanel {
     {
       JButton bHome = new JButton("Home 3");
       bHome.setBounds(415, 70, 200, 40);
-      bHome.addActionListener(e -> home(arm3));
+      bHome.addActionListener(e -> homeArm3());
       f.add(bHome);
     }
 
@@ -165,36 +162,36 @@ public class MyPanel extends JPanel {
     {
       final JTextField tf = new JTextField();
       tf.setBounds(5, 220, 100, 40);
-      tf.setText("0");
+      tf.setText("900");
       f.add(tf);
       {
         JButton button = new JButton("Goto");
         button.setBounds(210, 220, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm3, 0));
+        button.addActionListener(e -> gotoPosArm3(tf, 0, 1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("-1000");
+        JButton button = new JButton("-50");
         button.setBounds(315, 220, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm3, -1000));
+        button.addActionListener(e -> gotoPosArm3(tf, -50, 1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+1000");
+        JButton button = new JButton("+50");
         button.setBounds(420, 220, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm3, +1000));
+        button.addActionListener(e -> gotoPosArm3(tf, +50, 1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("-5000");
+        JButton button = new JButton("-300");
         button.setBounds(525, 220, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm3, -5000));
+        button.addActionListener(e -> gotoPosArm3(tf, -300, 1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+5000");
+        JButton button = new JButton("+300");
         button.setBounds(630, 220, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm3, +5000));
+        button.addActionListener(e -> gotoPosArm3(tf, +300, 1000));
         f.add(button);
       }
     }
@@ -278,13 +275,11 @@ public class MyPanel extends JPanel {
                 int pos3 = Integer.parseInt(posArm3);
                 int sleepTime = Integer.parseInt(sleepStr);
 
-                calcDelays(pos1, pos2);
-
-                System.out.println("MOVE: arm2=" + posArm2 + "/" + formattedDelayFactor2 + "   amr3="+posArm2 + "/" + formattedDelayFactor3);
+                long totalTime = calcDelays(pos1, pos2);
 
                 gotoPos(arm1, pos1, formattedDelayFactor1);
                 gotoPos(arm2, pos2, formattedDelayFactor2);
-                gotoPos(arm3, pos3, formattedDelayFactor3);
+                gotoPosArm3(pos3, totalTime);
 
                 Thread.sleep(1000 * sleepTime);
               } catch (Exception ex) {
@@ -298,20 +293,21 @@ public class MyPanel extends JPanel {
     );
   }
 
-  public void calcDelays(int pos2, int pos3) {
+  public long calcDelays(int pos1, int pos2) {
+    int pulses1 = Math.abs(pos1 - lastPos1);
     int pulses2 = Math.abs(pos2 - lastPos2);
-    int pulses3 = Math.abs(pos3 - lastPos3);
 
-    Delays delays = BerekenVersnelling.calcDelays(pulses2, pulses3);
+    Delays delays = BerekenVersnelling.calcDelays(pulses1, pulses2);
 
+    double delayFactor1 = pulses1 == 0 ? 1  : delays.delay1;
     double delayFactor2 = pulses2 == 0 ? 1  : delays.delay2;
-    double delayFactor3 = pulses3 == 0 ? 1  : delays.delay3;
 
+    if (delayFactor1>9999) delayFactor1 = 9999;
     if (delayFactor2>9999) delayFactor2 = 9999;
-    if (delayFactor3>9999) delayFactor3 = 9999;
 
+    formattedDelayFactor1 = String.format("%04d", (int)delayFactor1);
     formattedDelayFactor2 = String.format("%04d", (int)delayFactor2);
-    formattedDelayFactor3 = String.format("%04d", (int)delayFactor3);
+    return delays.totalTime;
   }
 
 
@@ -340,7 +336,6 @@ public class MyPanel extends JPanel {
       I2CBus i2c = I2CFactory.getInstance(I2CBus.BUS_1);
       arm1 = i2c.getDevice(ARM1);
       arm2 = i2c.getDevice(ARM2);
-      arm3 = i2c.getDevice(ARM3);
     } catch (UnsupportedBusNumberException e) {
       System.out.println("ERROR, UnsupportedBusNumberException in init");
     } catch (IOException e) {
@@ -354,8 +349,21 @@ public class MyPanel extends JPanel {
     int newPos = pos + increment;
     tf.setText("" + newPos);
     gotoPos(arm, newPos);
-
   }
+
+  private void gotoPosArm3(JTextField tf, int increment, long time) {
+    int pos = Integer.parseInt(tf.getText());
+    int newPos = pos + increment;
+    tf.setText("" + newPos);
+    gotoPosArm3(newPos, time);
+  }
+
+  public void gotoPosArm3(int pos, long delay) {
+    int oldPos = lastPos3;
+    servo.moveTo(oldPos, pos, delay);
+    lastPos3 = pos;
+  }
+
 
   public void gotoPos(I2CDevice arm, int pos) {
     gotoPos(arm, pos, "0100");
@@ -369,7 +377,6 @@ public class MyPanel extends JPanel {
       if (arm != null) { arm.write(command.getBytes()); }
       if (arm == arm1) { lastPos1 = pos; }
       if (arm == arm2) { lastPos2 = pos; }
-      if (arm == arm3) { lastPos3 = pos; }
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -383,10 +390,14 @@ public class MyPanel extends JPanel {
       if (arm != null) { arm.write("^H0000000000600000".getBytes()); }
       if (arm == arm1) { lastPos1 = 0; }
       if (arm == arm2) { lastPos2 = 0; }
-      if (arm == arm3) { lastPos3 = 0; }
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  private void homeArm3() {
+    servo.home();
+    lastPos3 = 900;
   }
 
   private void updateAndRestart() {

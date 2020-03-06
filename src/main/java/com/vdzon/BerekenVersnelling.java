@@ -66,8 +66,6 @@ public class BerekenVersnelling {
     double newSleepTime3 = sleepTijd3+doubleDiff3;
 
 
-//    double delayFactor2 = pulses2 == 0 ? 1  : 100*tijd / tijd2;
-//    double delayFactor3 = pulses3 == 0 ? 1  : 100*tijd / tijd3;
     double delayFactor2 = pulses2 == 0 ? 1  : 100*newSleepTime2/sleepTijd2;
     double delayFactor3 = pulses3 == 0 ? 1  : 100*newSleepTime3/sleepTijd3;
 
@@ -75,6 +73,7 @@ public class BerekenVersnelling {
     delays.delay1 = 100;
     delays.delay2 = delayFactor2;
     delays.delay3 = delayFactor3;
+    delays.totalTime = (long)tijd;
     return delays;
   }
 

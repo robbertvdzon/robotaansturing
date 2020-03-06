@@ -18,15 +18,24 @@ public class Servo {
   private static final int SERVO_DURATION_NEUTRAL = 1500;
   private static final int SERVO_DURATION_MAX = 2100;
 
-  @SuppressWarnings("resource")
-  public static void main(String args[]) throws Exception {
-    BigDecimal frequency = new BigDecimal("48.828");
-    BigDecimal frequencyCorrectionFactor = new BigDecimal("1.0578");
-    I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
-    final PCA9685GpioProvider provider = new PCA9685GpioProvider(bus, 0x40, frequency, frequencyCorrectionFactor);
-    GpioPinPwmOutput[] myOutputs = provisionPwmOutputs(provider);
-    provider.reset();
+  private PCA9685GpioProvider provider = null;
 
+  public Servo() {
+    try {
+      BigDecimal frequency = new BigDecimal("48.828");
+      BigDecimal frequencyCorrectionFactor = new BigDecimal("1.0578");
+      I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
+      provider = new PCA9685GpioProvider(bus, 0x40, frequency, frequencyCorrectionFactor);
+      GpioPinPwmOutput[] myOutputs = provisionPwmOutputs(provider);
+      provider.reset();
+    }
+    catch (Exception ex){
+      ex.printStackTrace();
+    }
+
+  }
+
+  public void demo()  {
     for (int duration = 900; duration<=2100;  duration++){
       provider.setPwm(PCA9685Pin.PWM_00, duration);
 //      sleep(2);
@@ -66,5 +75,16 @@ public class Servo {
         gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_14, "Servo pulse MAX"),
         gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_15, "not used")};
     return myOutputs;
+  }
+
+  public void moveTo(int oldPos, int newPos, long delay) {
+    int step = newPos>oldPos ? 1 : -1;
+    for (int p = oldPos; p!=newPos; p+=step){
+      provider.setPwm(PCA9685Pin.PWM_00, p);
+    }
+  }
+
+  public void home() {
+    provider.setPwm(PCA9685Pin.PWM_00, 900);
   }
 }
