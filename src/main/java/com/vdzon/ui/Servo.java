@@ -112,7 +112,6 @@ public class Servo {
     System.out.println("time = " + realTotalTime);
   }
 
-  private
 
   public void home() {
     provider.setPwm(PCA9685Pin.PWM_00, 900);
