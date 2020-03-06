@@ -268,21 +268,21 @@ public class MyPanel extends JPanel {
             String[] splitWords = row.split(",");
 
             if (splitWords.length >= 4) {
-//              String posArm1 = splitWords[0].trim();
+              String posArm1 = splitWords[0].trim();
               String posArm2 = splitWords[1].trim();
               String posArm3 = splitWords[2].trim();
               String sleepStr = splitWords[3].trim();
               try {
-//                int pos1 = Integer.parseInt(posArm1);
+                int pos1 = Integer.parseInt(posArm1);
                 int pos2 = Integer.parseInt(posArm2);
                 int pos3 = Integer.parseInt(posArm3);
                 int sleepTime = Integer.parseInt(sleepStr);
 
-                calcDelays(pos2, pos3);
+                calcDelays(pos1, pos2);
 
                 System.out.println("MOVE: arm2=" + posArm2 + "/" + formattedDelayFactor2 + "   amr3="+posArm2 + "/" + formattedDelayFactor3);
 
-//                gotoPos(arm1, pos1, formattedDelayFactor1);
+                gotoPos(arm1, pos1, formattedDelayFactor1);
                 gotoPos(arm2, pos2, formattedDelayFactor2);
                 gotoPos(arm3, pos3, formattedDelayFactor3);
 
