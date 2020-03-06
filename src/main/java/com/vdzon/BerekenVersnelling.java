@@ -49,30 +49,29 @@ public class BerekenVersnelling {
 //    System.out.println("15000 = "+(berekenTijd(15000)-2201)/15000);
   }
 
-  public static Delays calcDelays(int pulses2, int pulses3) {
+  public static Delays calcDelays(int pulses1, int pulses2) {
 
+    double tijd1 = berekenTijd(pulses1);
     double tijd2 = berekenTijd(pulses2);
-    double tijd3 = berekenTijd(pulses3);
-    double tijd = Math.max(tijd2, tijd3);
+    double tijd = Math.max(tijd1, tijd2);
     if (tijd<2000){
       tijd = 2000;
     }
 
+    double doubleDiff1 = tijd-tijd1;
     double doubleDiff2 = tijd-tijd2;
-    double doubleDiff3 = tijd-tijd3;
+    double sleepTijd1 = berekenTijd(pulses1, 100,0);
     double sleepTijd2 = berekenTijd(pulses2, 100,0);
-    double sleepTijd3 = berekenTijd(pulses3, 100,0);
+    double newSleepTime1 = sleepTijd1+doubleDiff1;
     double newSleepTime2 = sleepTijd2+doubleDiff2;
-    double newSleepTime3 = sleepTijd3+doubleDiff3;
 
 
-    double delayFactor2 = pulses2 == 0 ? 1  : 100*newSleepTime2/sleepTijd2;
-    double delayFactor3 = pulses3 == 0 ? 1  : 100*newSleepTime3/sleepTijd3;
+    double delayFactor1 = pulses1 == 0 ? 100  : 100*newSleepTime1/sleepTijd1;
+    double delayFactor2 = pulses2 == 0 ? 100  : 100*newSleepTime2/sleepTijd2;
 
     Delays delays = new Delays();
-    delays.delay1 = 100;
+    delays.delay1 = delayFactor1;
     delays.delay2 = delayFactor2;
-    delays.delay3 = delayFactor3;
     delays.totalTime = (long)tijd;
     return delays;
   }
