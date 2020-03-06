@@ -66,6 +66,11 @@ public class Servo {
     long totalTimeWithSkip = realSteps * STUUR_TIME_PER_STEP_IN_MSEC;
     long timeDiff = time - totalTimeWithSkip;
     extraDelay = timeDiff / realSteps;
+    System.out.println("startPos="+startPos);
+    System.out.println("eindPos="+eindPos);
+    System.out.println("step="+step);
+    System.out.println("skipSteps="+skipSteps);
+    System.out.println("extraDelay="+extraDelay);
     for (int p = startPos; p != eindPos; p += step) {
       if (p % skipSteps == 0) {
         provider.setPwm(PCA9685Pin.PWM_00, p);
