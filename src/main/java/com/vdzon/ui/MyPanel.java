@@ -361,7 +361,7 @@ public class MyPanel extends JPanel {
 
   public void gotoPosArm3(int pos, long delay) {
     int oldPos = lastPos3;
-    servo.moveTo(oldPos, pos, delay);
+    servo.setRequest(oldPos, pos, delay);
     lastPos3 = pos;
   }
 

@@ -17,9 +17,14 @@ public class Servo {
   private static final int SERVO_DURATION_MAX = 2100;
   private PCA9685GpioProvider provider = null;
   private boolean busy = false;
+  private ServoRequest currentRequest = null;
 
 
   public Servo() {
+    runThread();
+  }
+
+  private void init(){
     try {
       BigDecimal frequency = new BigDecimal("48.828");
       BigDecimal frequencyCorrectionFactor = new BigDecimal("1.0578");
@@ -32,15 +37,40 @@ public class Servo {
     }
   }
 
+  private synchronized void clearRequest(){
+    currentRequest = null;
+  }
 
-  public void moveTo(int oldPos, int newPos, long time) {
-    while (busy){
-      sleep(100);
-    }
+  public synchronized void setRequest(int startPos, int eindPos, long time){
+    ServoRequest servoRequest = new ServoRequest();
+    servoRequest.startPos = startPos;
+    servoRequest.eindPos = eindPos;
+    servoRequest.time = time;
+    currentRequest = servoRequest;
+  }
+
+
+  private synchronized ServoRequest getRequest(){
+    return currentRequest;
+  }
+
+
+  public void runThread(){
     Thread thread = new Thread(() -> {
       busy = true;
       try {
-        moveToInThread(oldPos, newPos, time);
+        System.out.println("Start init in thread");
+        init();
+        while (true) {
+          ServoRequest request = getRequest();
+          if (request==null){
+            sleep(5);
+          }
+          else{
+            clearRequest();
+            moveTo(request.startPos, request.eindPos, request.time);
+          }
+        }
       }
       catch (Exception ex){
         ex.printStackTrace();
@@ -48,9 +78,11 @@ public class Servo {
       busy = false;
     });
     thread.start();
+
   }
 
-  public void moveToInThread(int oldPos, int newPos, long time) {
+
+  private void moveTo(int oldPos, int newPos, long time) {
     int startPos = Math.max(oldPos, 900);
     int eindPos = Math.min(newPos, 2100);
     if (startPos==eindPos) return;
