@@ -68,7 +68,7 @@ public class Servo {
 
     int startPos = oldPos < 900 ? 900 : oldPos;
     int eindPos = newPos > 2100 ? 2100 : newPos;
-    int step = startPos > eindPos ? 1 : -1;
+    int step = eindPos > startPos ? 1 : -1;
 
     System.out.println("startPos=" + startPos);
     System.out.println("eindPos=" + eindPos);
@@ -111,6 +111,8 @@ public class Servo {
     long realTotalTime = System.currentTimeMillis() - start;
     System.out.println("time = " + realTotalTime);
   }
+
+  private
 
   public void home() {
     provider.setPwm(PCA9685Pin.PWM_00, 900);
