@@ -73,7 +73,12 @@ public class Servo {
     System.out.println("extraDelay="+extraDelay);
     for (int p = startPos; p != eindPos; p += step) {
       if (p % skipSteps == 0) {
-        provider.setPwm(PCA9685Pin.PWM_00, p);
+        try {
+          provider.setPwm(PCA9685Pin.PWM_00, p);
+        }
+        catch (Exception ex){
+          System.out.println("ERROR writing "+p+" : "+ ex.getMessage());
+        }
         if (extraDelay > 0) {
           sleep(extraDelay);
         }
