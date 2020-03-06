@@ -274,11 +274,15 @@ public class MyPanel extends JPanel {
                 int pos3 = Integer.parseInt(posArm3);
                 long totalTime = calcDelays(pos1, pos2);
 
+                System.out.println("totalTime="+totalTime);
+                System.out.println("formattedDelayFactor1="+formattedDelayFactor1);
+                System.out.println("formattedDelayFactor2="+formattedDelayFactor2);
+
                 gotoPos(arm1, pos1, formattedDelayFactor1);
                 gotoPos(arm2, pos2, formattedDelayFactor2);
                 gotoPosArm3(pos3, totalTime);
 
-                Thread.sleep(totalTime + 500);
+                Thread.sleep(totalTime + 2000);
               } catch (Exception ex) {
                 ex.printStackTrace();
 
