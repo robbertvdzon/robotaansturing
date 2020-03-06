@@ -197,6 +197,20 @@ public class MyPanel extends JPanel {
     }
 
     {
+      JButton button = new JButton("Magn. aan");
+      button.setBounds(525, 270, 100, 40);
+      button.addActionListener(e -> magneet(true));
+      f.add(button);
+    }
+    {
+      JButton button = new JButton("Magn. uit");
+      button.setBounds(630, 270, 100, 40);
+      button.addActionListener(e -> magneet(false));
+      f.add(button);
+    }
+
+
+    {
       JTextArea textArea = new JTextArea(5, 20);
       JScrollPane scrollPane = new JScrollPane(textArea);
       scrollPane.setBounds(5, 270, 300, 80);
@@ -233,6 +247,17 @@ public class MyPanel extends JPanel {
 
     f.setExtendedState(JFrame.MAXIMIZED_BOTH);
     f.setVisible(true);
+  }
+
+  private void magneet(boolean aan){
+    try {
+      if (aan)
+        arm2.write("^C0000000000000000".getBytes());
+      else
+        arm2.write("^R0000000000000000".getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private void stopLoop() {
