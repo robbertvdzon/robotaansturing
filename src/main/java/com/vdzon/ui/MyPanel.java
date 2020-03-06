@@ -24,9 +24,9 @@ import javax.swing.JTextField;
 public class MyPanel extends JPanel {
 
 
-  private static int ARM1 = 0x8;
+  private static int ARM1 = 0x5;
   private static int ARM2 = 0x7;
-  private static int ARM3 = 0x5;
+  private static int ARM3 = 0x8;
   int lastPos1 = 0;
   int lastPos2 = 0;
   int lastPos3 = 0;
