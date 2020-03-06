@@ -26,7 +26,7 @@ public class MyPanel extends JPanel {
   private static int ARM2 = 0x7;
   int lastPos1 = 0;
   int lastPos2 = 0;
-  int lastPos3 = 0;
+  int lastPos3 = 900;
 
   String formattedDelayFactor1 = "0100";
   String formattedDelayFactor2 = "0100";
@@ -264,24 +264,21 @@ public class MyPanel extends JPanel {
           if (row != null && !row.startsWith("#")) {
             String[] splitWords = row.split(",");
 
-            if (splitWords.length >= 4) {
+            if (splitWords.length >= 3) {
               String posArm1 = splitWords[0].trim();
               String posArm2 = splitWords[1].trim();
               String posArm3 = splitWords[2].trim();
-              String sleepStr = splitWords[3].trim();
               try {
                 int pos1 = Integer.parseInt(posArm1);
                 int pos2 = Integer.parseInt(posArm2);
                 int pos3 = Integer.parseInt(posArm3);
-                int sleepTime = Integer.parseInt(sleepStr);
-
                 long totalTime = calcDelays(pos1, pos2);
 
                 gotoPos(arm1, pos1, formattedDelayFactor1);
                 gotoPos(arm2, pos2, formattedDelayFactor2);
                 gotoPosArm3(pos3, totalTime);
 
-                Thread.sleep(1000 * sleepTime);
+                Thread.sleep(totalTime + 500);
               } catch (Exception ex) {
                 ex.printStackTrace();
 

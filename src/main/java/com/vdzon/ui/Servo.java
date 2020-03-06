@@ -16,6 +16,7 @@ public class Servo {
   private static final int SERVO_DURATION_NEUTRAL = 1500;
   private static final int SERVO_DURATION_MAX = 2100;
   private PCA9685GpioProvider provider = null;
+  private boolean busy = false;
 
 
   public Servo() {
@@ -28,6 +29,49 @@ public class Servo {
       provider.reset();
     } catch (Exception ex) {
       ex.printStackTrace();
+    }
+  }
+
+
+  public void moveTo(int oldPos, int newPos, long time) {
+    while (busy){
+      sleep(100);
+    }
+    Thread thread = new Thread(() -> {
+      busy = true;
+      try {
+        moveToInThread(oldPos, newPos, time);
+      }
+      catch (Exception ex){
+        ex.printStackTrace();
+      }
+      busy = false;
+    });
+    thread.start();
+  }
+
+  public void moveToInThread(int oldPos, int newPos, long time) {
+    int startPos = Math.max(oldPos, 900);
+    int eindPos = Math.min(newPos, 2100);
+    int step = eindPos > startPos ? 1 : -1;
+    int totalSteps = Math.abs(eindPos - startPos);
+    int skipSteps = 1;
+    long extraDelay = 0;
+    long totalTime = totalSteps * STUUR_TIME_PER_STEP_IN_MSEC;
+    if (totalTime > time) {
+      skipSteps = (int) Math.ceil(totalTime / time);
+    }
+    int realSteps = totalSteps / skipSteps;
+    long totalTimeWithSkip = realSteps * STUUR_TIME_PER_STEP_IN_MSEC;
+    long timeDiff = time - totalTimeWithSkip;
+    extraDelay = timeDiff / realSteps;
+    for (int p = startPos; p != eindPos; p += step) {
+      if (p % skipSteps == 0) {
+        provider.setPwm(PCA9685Pin.PWM_00, p);
+        if (extraDelay > 0) {
+          sleep(extraDelay);
+        }
+      }
     }
   }
 
@@ -60,57 +104,6 @@ public class Servo {
         gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_15, "not used")};
     return myOutputs;
   }
-
-  public void moveTo(int oldPos, int newPos, long time) {
-    System.out.println("oldPos=" + oldPos);
-    System.out.println("newPos=" + newPos);
-
-
-    int startPos = oldPos < 900 ? 900 : oldPos;
-    int eindPos = newPos > 2100 ? 2100 : newPos;
-    int step = eindPos > startPos ? 1 : -1;
-
-    System.out.println("startPos=" + startPos);
-    System.out.println("eindPos=" + eindPos);
-    System.out.println("step=" + step);
-
-
-    int totalSteps = Math.abs(eindPos - startPos);
-    long start = System.currentTimeMillis();
-    int skipSteps = 1;
-    long extraDelay = 0;
-    // calc delay and skips
-    long totalTime = totalSteps * STUUR_TIME_PER_STEP_IN_MSEC;
-    System.out.println("totaltime=" + totalTime);
-    System.out.println("time=" + time);
-    if (totalTime > time) {
-      System.out.println("total time to large");
-      skipSteps = (int) Math.ceil(totalTime / time);
-      System.out.println("skipSteps=" + skipSteps);
-    }
-
-    int realSteps = totalSteps / skipSteps;
-    System.out.println("realSteps=" + realSteps);
-    long totalTimeWithSkip = realSteps * STUUR_TIME_PER_STEP_IN_MSEC;
-    System.out.println("totalTimeWithSkip=" + totalTimeWithSkip);
-    long timeDiff = time - totalTimeWithSkip;
-    extraDelay = timeDiff / realSteps;
-    System.out.println("extraDelay=" + extraDelay);
-    long finalTime = realSteps * (STUUR_TIME_PER_STEP_IN_MSEC + extraDelay);
-    System.out.println("finalTime=" + finalTime);
-
-    for (int p = startPos; p != eindPos; p += step) {
-      if (p % skipSteps == 0) {
-        provider.setPwm(PCA9685Pin.PWM_00, p);
-        if (extraDelay > 0) {
-          sleep(extraDelay);
-        }
-      }
-    }
-    long realTotalTime = System.currentTimeMillis() - start;
-    System.out.println("time = " + realTotalTime);
-  }
-
 
   public void home() {
     provider.setPwm(PCA9685Pin.PWM_00, 900);
