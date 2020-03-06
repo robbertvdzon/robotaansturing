@@ -1,24 +1,22 @@
 package com.vdzon.ui;
-import java.math.BigDecimal;
-import java.util.Scanner;
 
 import com.pi4j.gpio.extension.pca.PCA9685GpioProvider;
 import com.pi4j.gpio.extension.pca.PCA9685Pin;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
-import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
-import java.util.stream.IntStream;
+import java.math.BigDecimal;
 
 public class Servo {
 
+  static final int STUUR_TIME_PER_STEP_IN_MSEC = 2;
   private static final int SERVO_DURATION_MIN = 900;
   private static final int SERVO_DURATION_NEUTRAL = 1500;
   private static final int SERVO_DURATION_MAX = 2100;
-
   private PCA9685GpioProvider provider = null;
+
 
   public Servo() {
     try {
@@ -28,13 +26,10 @@ public class Servo {
       provider = new PCA9685GpioProvider(bus, 0x40, frequency, frequencyCorrectionFactor);
       GpioPinPwmOutput[] myOutputs = provisionPwmOutputs(provider);
       provider.reset();
-    }
-    catch (Exception ex){
+    } catch (Exception ex) {
       ex.printStackTrace();
     }
   }
-
-
 
   private static void sleep(long time) {
     try {
@@ -43,7 +38,6 @@ public class Servo {
       e.printStackTrace();
     }
   }
-
 
   private static GpioPinPwmOutput[] provisionPwmOutputs(final PCA9685GpioProvider gpioProvider) {
     GpioController gpio = GpioFactory.getInstance();
@@ -67,16 +61,47 @@ public class Servo {
     return myOutputs;
   }
 
-  public void moveTo(int oldPos, int newPos, long delay) {
-    int step = newPos>oldPos ? 1 : -1;
+  public void moveTo(int oldPos, int newPos, long time) {
+    int startPos = oldPos < 900 ? 900 : oldPos;
+    int eindPos = newPos > 2100 ? 2100 : newPos;
+
+    int step = startPos > eindPos ? 1 : -1;
+    int totalSteps = Math.abs(eindPos - startPos);
     long start = System.currentTimeMillis();
-    for (int p = oldPos; p!=newPos; p+=step){
-      provider.setPwm(PCA9685Pin.PWM_00, p);
+    int skipSteps = 1;
+    long extraDelay = 0;
+    // calc delay and skips
+    long totalTime = totalSteps * STUUR_TIME_PER_STEP_IN_MSEC;
+    System.out.println("totaltime=" + totalTime);
+    System.out.println("time=" + time);
+    if (totalTime > time) {
+      System.out.println("total time to large");
+      skipSteps = (int) Math.ceil(totalTime / time);
+      System.out.println("skipSteps=" + skipSteps);
     }
-    long totalTime = System.currentTimeMillis() - start;
-    double timePerStep = totalTime / (newPos - oldPos);
-    System.out.println("time = "+totalTime);
-    System.out.println("time per step = "+timePerStep);
+
+    int realSteps = totalSteps / skipSteps;
+    System.out.println("realSteps=" + realSteps);
+    long totalTimeWithSkip = realSteps * STUUR_TIME_PER_STEP_IN_MSEC;
+    System.out.println("totalTimeWithSkip=" + totalTimeWithSkip);
+    long timeDiff = time - totalTimeWithSkip;
+    extraDelay = timeDiff / realSteps;
+    System.out.println("extraDelay=" + extraDelay);
+    long finalTime = realSteps * (STUUR_TIME_PER_STEP_IN_MSEC + extraDelay);
+    System.out.println("finalTime=" + finalTime);
+
+    for (int p = startPos; p != eindPos; p += step) {
+      if (p % skipSteps == 0) {
+        provider.setPwm(PCA9685Pin.PWM_00, p);
+        if (extraDelay > 0) {
+          sleep(extraDelay);
+        }
+      }
+    }
+    long realTotalTime = System.currentTimeMillis() - start;
+    double timePerStep = totalTime / totalSteps;
+    System.out.println("time = " + realTotalTime);
+//    System.out.println("time per step = "+timePerStep);
   }
 
   public void home() {

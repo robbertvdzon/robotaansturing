@@ -6,6 +6,8 @@ public class MyPanelTest {
 
   @Test
   public void testSpeed(){
+
+
     Servo servo = new Servo();
     MyPanel panel = new MyPanel(servo);
     panel.calcDelays(24000,5000);
