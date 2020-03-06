@@ -32,19 +32,9 @@ public class Servo {
     catch (Exception ex){
       ex.printStackTrace();
     }
-
   }
 
-  public void demo()  {
-    for (int duration = 900; duration<=2100;  duration++){
-      provider.setPwm(PCA9685Pin.PWM_00, duration);
-//      sleep(2);
-    };
-    for (int duration = 2100; duration>900;  duration--){
-      provider.setPwm(PCA9685Pin.PWM_00, duration);
-//      sleep(2);
-    };
-  }
+
 
   private static void sleep(long time) {
     try {
@@ -79,9 +69,14 @@ public class Servo {
 
   public void moveTo(int oldPos, int newPos, long delay) {
     int step = newPos>oldPos ? 1 : -1;
+    long start = System.currentTimeMillis();
     for (int p = oldPos; p!=newPos; p+=step){
       provider.setPwm(PCA9685Pin.PWM_00, p);
     }
+    long totalTime = System.currentTimeMillis() - start;
+    double timePerStep = totalTime / (newPos - oldPos);
+    System.out.println("time = "+totalTime);
+    System.out.println("time per step = "+timePerStep);
   }
 
   public void home() {
