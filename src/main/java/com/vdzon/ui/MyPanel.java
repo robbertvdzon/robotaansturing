@@ -252,9 +252,9 @@ public class MyPanel extends JPanel {
   private void magneet(boolean aan){
     try {
       if (aan)
-        arm2.write("^C0000000000000000".getBytes());
+        arm2.write("^S0000000000000000".getBytes());
       else
-        arm2.write("^R0000000000000000".getBytes());
+        arm2.write("^S0000000000000000".getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
