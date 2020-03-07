@@ -259,6 +259,7 @@ public class MyPanel extends JPanel {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    System.out.println("done");
   }
 
   private void stopLoop() {
