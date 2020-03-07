@@ -9,7 +9,7 @@ public class MyPanelTest {
 
 
     Servo servo = new Servo();
-    MyPanel panel = new MyPanel(servo);
+    MyPanel panel = new MyPanel();
     panel.calcDelays(24000,5000);
     System.out.println(panel.formattedDelayFactor1 + ","+panel.formattedDelayFactor2);
     panel.calcDelays(9000,15000);

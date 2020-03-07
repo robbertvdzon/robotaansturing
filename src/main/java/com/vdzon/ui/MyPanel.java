@@ -24,25 +24,25 @@ public class MyPanel extends JPanel {
 
   private static int ARM1 = 0x5;
   private static int ARM2 = 0x7;
+  private static int ARM3 = 0x8;
   int lastPos1 = 0;
   int lastPos2 = 0;
-  int lastPos3 = 900;
+  int lastPos3 = 0;
 
   String formattedDelayFactor1 = "0100";
   String formattedDelayFactor2 = "0100";
 
   private I2CDevice arm1 = null;
   private I2CDevice arm2 = null;
+  private I2CDevice arm3 = null;
   private Thread currentLoopThread = null;
   JTextField vertragingTextfield;
-  private Servo servo;
 
-  public MyPanel(Servo servo) {
-    this.servo = servo;
+  public MyPanel() {
     System.out.println("Starting");
     init();
 
-    JFrame f = new JFrame("Schaakrobot v1.5");
+    JFrame f = new JFrame("Schaakrobot v1.6");
 
     f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     f.getContentPane().add(this);
@@ -171,27 +171,27 @@ public class MyPanel extends JPanel {
         f.add(button);
       }
       {
-        JButton button = new JButton("-50");
+        JButton button = new JButton("-10");
         button.setBounds(315, 220, 100, 40);
+        button.addActionListener(e -> gotoPosArm3(tf, -10, 1000));
+        f.add(button);
+      }
+      {
+        JButton button = new JButton("+10");
+        button.setBounds(420, 220, 100, 40);
+        button.addActionListener(e -> gotoPosArm3(tf, +10, 1000));
+        f.add(button);
+      }
+      {
+        JButton button = new JButton("-50");
+        button.setBounds(525, 220, 100, 40);
         button.addActionListener(e -> gotoPosArm3(tf, -50, 1000));
         f.add(button);
       }
       {
         JButton button = new JButton("+50");
-        button.setBounds(420, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, +50, 1000));
-        f.add(button);
-      }
-      {
-        JButton button = new JButton("-300");
-        button.setBounds(525, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, -300, 1000));
-        f.add(button);
-      }
-      {
-        JButton button = new JButton("+300");
         button.setBounds(630, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, +300, 1000));
+        button.addActionListener(e -> gotoPosArm3(tf, +50, 1000));
         f.add(button);
       }
     }
@@ -252,9 +252,9 @@ public class MyPanel extends JPanel {
   private void magneet(boolean aan){
     try {
       if (aan)
-        arm2.write("^S0000000000000000".getBytes());
+        arm3.write("^S0000000000000000".getBytes());
       else
-        arm2.write("^S0000000000000000".getBytes());
+        arm3.write("^S0000000000000000".getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -362,6 +362,7 @@ public class MyPanel extends JPanel {
       I2CBus i2c = I2CFactory.getInstance(I2CBus.BUS_1);
       arm1 = i2c.getDevice(ARM1);
       arm2 = i2c.getDevice(ARM2);
+      arm3 = i2c.getDevice(ARM3);
     } catch (UnsupportedBusNumberException e) {
       System.out.println("ERROR, UnsupportedBusNumberException in init");
     } catch (IOException e) {
@@ -386,7 +387,12 @@ public class MyPanel extends JPanel {
 
   public void gotoPosArm3(int pos, long delay) {
     int oldPos = lastPos3;
-    servo.setRequest(oldPos, pos, delay);
+    try {
+      arm3.write("^S0000000000600000".getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
     lastPos3 = pos;
   }
 
@@ -422,7 +428,7 @@ public class MyPanel extends JPanel {
   }
 
   private void homeArm3() {
-    servo.home();
+
     lastPos3 = 900;
   }
 
