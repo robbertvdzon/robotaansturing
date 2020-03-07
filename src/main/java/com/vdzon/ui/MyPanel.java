@@ -250,6 +250,7 @@ public class MyPanel extends JPanel {
   }
 
   private void magneet(boolean aan){
+    System.out.println("write arm3");
     try {
       if (aan)
         arm3.write("^S0000000000000000".getBytes());
