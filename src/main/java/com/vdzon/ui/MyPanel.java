@@ -388,6 +388,17 @@ public class MyPanel extends JPanel {
   }
 
   public void gotoPosArm3(int pos, long delay) {
+    try {
+      String formattedPos = String.format("%06d", pos);
+      String time = String.format("%04d", delay);
+      String command = "^S" + formattedPos + time;
+      System.out.println("command:"+command);
+      arm3.write(command.getBytes());
+      lastPos3 = pos;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
     int oldPos = lastPos3;
     try {
       arm3.write("^S0000000000600000".getBytes());
@@ -430,8 +441,15 @@ public class MyPanel extends JPanel {
   }
 
   private void homeArm3() {
-
-    lastPos3 = 900;
+    try {
+      String formattedPos = String.format("%06d", 0);
+      String command = "^S" + formattedPos + "1000";
+      System.out.println("command:"+command);
+      arm3.write(command.getBytes());
+      lastPos3 = 0;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private void updateAndRestart() {
