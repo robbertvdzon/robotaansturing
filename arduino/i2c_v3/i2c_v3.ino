@@ -32,6 +32,7 @@ send: state + pos
 */
 
 #include <Wire.h>
+#include <Servo.h> 
 
 #define NR_OF_BYTES_TO_READ 12
 
@@ -47,7 +48,7 @@ send: state + pos
 #define stepPin 8
 #define stepsPerRevolution 2000
 #define arm1SensorPin 6
-// #define topSensorPin 4 : NOT USED ANYMORE
+#define topSensorPin 4 
 // #define bottomSensorPin 7 : NOT USED ANYMORE
 #define enableMotorPin 5
 #define errorPin 9
@@ -56,7 +57,8 @@ send: state + pos
 
 char command;
 int requestedPos;
-int vertraginsfactor;
+int vertraginsfactor; // for arm1 en arm2
+int movementTime; // only for arm3
 
 char number[50];
 int state = HOMING_NEEDED;
@@ -68,6 +70,7 @@ int newDir = 0;
 int turn = 0;
 int homeFinished = 0;
 bool error = 0;
+Servo servoLeft;
 
 int SLAVE_ADDRESS = 5;
 
@@ -78,12 +81,13 @@ static const int indexSteps = 20;
 void setup() {
 
   pinMode(arm1SensorPin, INPUT);
-//  pinMode(topSensorPin, INPUT);
+  pinMode(topSensorPin, OUTPUT);
 //  pinMode(bottomSensorPin, INPUT);
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
   pinMode(enableMotorPin, OUTPUT);
-  pinMode(errorPin, OUTPUT);
+//  pinMode(errorPin, OUTPUT);
+  servoLeft.attach(errorPin);
   pinMode(adressPin1, INPUT);
   pinMode(adressPin1, INPUT);
 
@@ -103,6 +107,8 @@ void setup() {
   Wire.onRequest(sendData);
 
   digitalWrite(enableMotorPin, HIGH);
+  digitalWrite(topSensorPin, LOW);
+
   
 }
 
@@ -163,6 +169,7 @@ void parseCommand(){
   buffer[2] = number[10];
   buffer[3] = number[11];
   buffer[4] = '\0';
+  movementTime = atoi(buffer);
   vertraginsfactor = atoi(buffer);
   if (vertraginsfactor<100){
     vertraginsfactor = 100;
@@ -181,6 +188,101 @@ void parseCommand(){
 void processCommand(){
  if (command == 'H') home1();
  if (command == 'M') move();
+ if (command == 'C') clamp();
+ if (command == 'R') release();
+ if (command == 'S') servo();
+}
+
+void servo(){
+  Serial.println("start servo test");
+  int newPos = requestedPos;
+  if (newPos<0) newPos = 0;
+  if (newPos>255) newPos = 255;
+  int steps = currentPos - newPos;
+  if (steps<0) steps = steps*-1;
+  int step = 1;
+  if (newPos<currentPos) step = -1;
+  long tmp = movementTime;
+  tmp = tmp*1000;
+  tmp = tmp/steps;
+  long sleepDelay = tmp;
+
+  Serial.print("currentPos:");Serial.println(currentPos);
+  Serial.print("requestedPos:");Serial.println(requestedPos);
+  Serial.print("newPos:");Serial.println(newPos);
+  Serial.print("movementTime:");Serial.println(movementTime);
+  Serial.print("step:");Serial.println(step);
+  Serial.print("steps:");Serial.println(steps);
+  Serial.print("sleepDelay:");Serial.println(sleepDelay);
+  long startTime = millis();
+  for (int pos = currentPos; pos!=newPos; pos = pos+step){
+      servoLeft.write( pos);
+      if (sleepDelay>16383){
+         delay(sleepDelay/1000); // 16383 is the max for delayMicroseconds, so use delay instead
+      }
+      else{
+        delayMicroseconds(sleepDelay);    
+      }
+  }
+  
+  
+  currentPos = newPos;
+//
+//  long startTime = millis();
+//  for (int i = 127; i < 254; i++) {   
+//      servoLeft.write( i);
+//      delayMicroseconds(14000);
+//  }
+//  for (int i = 254; i > 0; i--) {   
+//      servoLeft.write( i);
+//      delayMicroseconds(14000);
+//  }
+//  for (int i = 0; i < 127; i++) {   
+//      servoLeft.write( i);
+//      delayMicroseconds(14000);
+//  }
+  
+
+//      Serial.println(" - 100");
+//      servoLeft.write(100);
+//      delay(1000);
+//
+//      Serial.println(" - 200");
+//      servoLeft.write( 200);
+//      delay(1000);
+//
+//      Serial.println(" - 100");
+//      servoLeft.write(100);
+//      delay(1000);
+//
+//      Serial.println(" - 200");
+//      servoLeft.write(200);
+//      delay(1000);
+//
+//      Serial.println(" - 0");
+//      analogWrite(errorPin, 0);
+  long endTime = millis();
+  long diff = endTime - startTime;
+  
+  Serial.print("Eind servo test:");
+  Serial.println(diff);
+  Serial.println("RESET CURRENT COMMAND");
+  command = '-';
+  
+}
+
+void clamp(){
+  Serial.print("magneet aan");
+  digitalWrite(topSensorPin, HIGH);
+  Serial.println("RESET CURRENT COMMAND");
+  command = '-';
+}
+
+void release(){
+  Serial.print("magneet uit");
+  digitalWrite(topSensorPin, LOW);
+  Serial.println("RESET CURRENT COMMAND");
+  command = '-';
 }
 
 void home1(){
@@ -227,10 +329,10 @@ void checkError(){
   }
 
   if (error ){
-    digitalWrite(errorPin, HIGH);
+    //digitalWrite(errorPin, HIGH);
   }
   else{
-    digitalWrite(errorPin, LOW);    
+   // digitalWrite(errorPin, LOW);    
   }
   
 }

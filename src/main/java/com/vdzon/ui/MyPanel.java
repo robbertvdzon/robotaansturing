@@ -167,31 +167,36 @@ public class MyPanel extends JPanel {
       {
         JButton button = new JButton("Goto");
         button.setBounds(210, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, 0, 1000));
+        button.addActionListener(e -> gotoPos(tf, arm3, 0));
+//        button.addActionListener(e -> gotoPosArm3(tf, 0, 1000));
         f.add(button);
       }
       {
         JButton button = new JButton("-10");
         button.setBounds(315, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, -10, 1000));
+        button.addActionListener(e -> gotoPos(tf, arm3, -100));
+//        button.addActionListener(e -> gotoPosArm3(tf, -10, 1000));
         f.add(button);
       }
       {
         JButton button = new JButton("+10");
         button.setBounds(420, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, +10, 1000));
+        button.addActionListener(e -> gotoPos(tf, arm3, 100));
+//        button.addActionListener(e -> gotoPosArm3(tf, +10, 1000));
         f.add(button);
       }
       {
         JButton button = new JButton("-50");
         button.setBounds(525, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, -50, 1000));
+        button.addActionListener(e -> gotoPos(tf, arm3, -300));
+//        button.addActionListener(e -> gotoPosArm3(tf, -50, 1000));
         f.add(button);
       }
       {
         JButton button = new JButton("+50");
         button.setBounds(630, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, +50, 1000));
+        button.addActionListener(e -> gotoPos(tf, arm3, 300));
+//        button.addActionListener(e -> gotoPosArm3(tf, +50, 1000));
         f.add(button);
       }
     }
