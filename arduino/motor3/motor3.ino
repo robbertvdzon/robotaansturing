@@ -32,7 +32,7 @@ send: state + pos
 */
 
 #include <Wire.h>
-#include <Servo.h>
+#include <Servo.h> 
 
 #define NR_OF_BYTES_TO_READ 12
 
@@ -48,7 +48,7 @@ send: state + pos
 #define stepPin 8
 #define stepsPerRevolution 2000
 #define arm1SensorPin 6
-#define topSensorPin 4
+#define topSensorPin 4 
 // #define bottomSensorPin 7 : NOT USED ANYMORE
 #define enableMotorPin 5
 #define errorPin 9
@@ -99,11 +99,11 @@ void setup() {
   if (addr1) SLAVE_ADDRESS = SLAVE_ADDRESS+1;
   if (addr2) SLAVE_ADDRESS = SLAVE_ADDRESS+2;
 
-
+    
   Serial.begin(9600);
   Serial.print("Slave on adress:");
   Serial.println(SLAVE_ADDRESS);
-
+  
   Wire.begin(SLAVE_ADDRESS);
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
@@ -111,20 +111,20 @@ void setup() {
   digitalWrite(enableMotorPin, HIGH);
   digitalWrite(topSensorPin, LOW);
 
-
+  
 }
 
 void loop() {
   processCommand();
   checkError();
-}
+} 
 
 void sendData(){
   if (error){
-    Wire.write(IN_ERROR);
+    Wire.write(IN_ERROR);    
   }
   else{
-    Wire.write(state);
+    Wire.write(state);    
   }
 }
 
@@ -132,16 +132,16 @@ void receiveData(int byteCount){
   while(Wire.available()) {
     processCharRead(Wire.read());
   }
-}
+}  
 
 void processCharRead(char c){
   if (c == '^'){
     readPos = 0;
   }
-
+  
   if (readPos < NR_OF_BYTES_TO_READ){
-    number[readPos] = c;
-    number[readPos+1] = '\0';
+    number[readPos] = c;    
+    number[readPos+1] = '\0';    
   }
 
   readPos ++;
@@ -152,7 +152,7 @@ void processCharRead(char c){
 
 
 void parseCommand(){
-  Serial.print("parseCommand:");
+  Serial.print("parseCommand:"); 
   Serial.println(number);
 
   char buffer[7];
@@ -176,7 +176,7 @@ void parseCommand(){
   if (vertraginsfactor<100){
     vertraginsfactor = 100;
   }
-
+  
 
   requestedPos = toPos;
   command = number[1];
@@ -224,26 +224,26 @@ void servo(){
          delay(sleepDelay/1000); // 16383 is the max for delayMicroseconds, so use delay instead
       }
       else{
-        delayMicroseconds(sleepDelay);
+        delayMicroseconds(sleepDelay);    
       }
   }
-  servoLeft.write( newPos);
-  delay(100);
-
+  servoLeft.write( newPos); 
+  delay(100); 
+  
   currentPos = newPos;
   servoLeft.detach();
 
-
+  
 
   long endTime = millis();
   long diff = endTime - startTime;
-
+  
   Serial.println("");
   Serial.print("Eind servo test:");
   Serial.println(diff);
   Serial.println("RESET CURRENT COMMAND");
   command = '-';
-
+  
 }
 
 void clamp(){
@@ -283,7 +283,7 @@ void move(){
 
   state = READY;
   command = '-';
-
+  
 }
 
 void checkError(){
@@ -299,7 +299,7 @@ void checkError(){
   }
   else if (!error){
     Serial.println("Entering error mode");
-    error = true;
+    error = true;    
     digitalWrite(enableMotorPin, HIGH);
   }
 
@@ -307,43 +307,43 @@ void checkError(){
     //digitalWrite(errorPin, HIGH);
   }
   else{
-   // digitalWrite(errorPin, LOW);
+   // digitalWrite(errorPin, LOW);    
   }
-
+  
 }
 
 void moveUp(int reqPos){
   digitalWrite(enableMotorPin, LOW);
 
-  Serial.println("move up");
+  Serial.println("move up");    
   digitalWrite(dirPin, HIGH);
   long startTime = millis();
 
   moveNrSteps(reqPos - currentPos, +1);
 
   long totalTime = millis() - startTime;
+  
+  Serial.print("totalTime:");   
+  Serial.println(totalTime);   
 
-  Serial.print("totalTime:");
-  Serial.println(totalTime);
-
-  Serial.println("up");
+  Serial.println("up");    
   digitalWrite(enableMotorPin, HIGH);
 }
 
 void moveDown(int reqPos){
   digitalWrite(enableMotorPin, LOW);
 
-  Serial.println("move down");
+  Serial.println("move down");    
   digitalWrite(dirPin, LOW);
 
   moveNrSteps(currentPos - reqPos, -1);
 
-
+  
 //  while (currentPos>reqPos){
 //    pulse(stepPin, stepDelay);
 //    currentPos--;
 //  }
-  Serial.println("down");
+  Serial.println("down");    
   digitalWrite(enableMotorPin, HIGH);
 }
 
@@ -355,7 +355,7 @@ void moveNrSteps(int totalSteps, int direction){
   double delay = 0;
   double calculatedDelay = 0;
 
-  for (int i = 0; i < totalSteps; i++) {
+  for (int i = 0; i < totalSteps; i++) {    
     remainingSteps = totalSteps - i;
     calculatedDelay = 350;
     pulse(stepPin, calculatedDelay); // verreken verstaging!
@@ -367,17 +367,17 @@ void home() {
   digitalWrite(enableMotorPin, LOW);
   error = false;
 
-  arm1State = digitalRead(arm1SensorPin);
+  arm1State = digitalRead(arm1SensorPin); 
   Serial.println("\t start homing");
 
-  // move down until high
+  // move down until high   
   Serial.println("\t move fast down until high");
   digitalWrite(dirPin, LOW);
   while (!digitalRead(arm1SensorPin)){
     pulse(stepPin,HOME_SPEED);
   }
 
-  // move up until not high
+  // move up until not high   
   Serial.println("\t move slow up until not high");
   digitalWrite(dirPin, HIGH);
   while (digitalRead(arm1SensorPin)){
@@ -387,8 +387,8 @@ void home() {
   Serial.println("\t move one extra round");
     for (int i = 0; i < 1 * stepsPerRevolution; i++) {
       pulse(stepPin,HOME_SPEED);
-  }
-
+  } 
+  
   Serial.println("\t homing finished");
   currentPos = 00;
   digitalWrite(enableMotorPin, HIGH);
