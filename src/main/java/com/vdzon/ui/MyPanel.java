@@ -162,7 +162,7 @@ public class MyPanel extends JPanel {
     {
       final JTextField tf = new JTextField();
       tf.setBounds(5, 220, 100, 40);
-      tf.setText("900");
+      tf.setText("90");
       f.add(tf);
       {
         JButton button = new JButton("Goto");
