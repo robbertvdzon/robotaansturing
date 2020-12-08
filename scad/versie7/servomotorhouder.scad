@@ -2,19 +2,19 @@ difference(){
 	union(){
         
        translate([0,0,0]){
-           cube([42,34,4], center=false);
+           cube([42,62,4], center=false);
        }
        translate([0,0,0]){
-           cube([8,34,16], center=false);
+           cube([8,15+41,24], center=false);
        }
-       translate([42-4-10,0,0]){
-           cube([4,5,16], center=false);
+       translate([42-4-0,0,0]){
+           cube([4,7.5,24], center=false);
        }
-       translate([42-4-10,34-5,0]){
-           cube([4,5,16], center=false);
+       translate([42-4- 0,41+7.5,0]){
+           cube([4,7.5,24], center=false);
        }
-       translate([-(66-49)/2,34,0]){
-           cube([66,8,16], center=false);
+       translate([-1,15+41,0]){
+           cube([66,8,24], center=false);
        }
        
  
@@ -22,28 +22,38 @@ difference(){
 	
 	}
 	union() {
-       translate([-30,38,8-5]){
+       translate([-30,15+41+4,14-5]){
             rotate(a = [0,90,0]) {
               cylinder(h=600, r=1.7, $fn=100, center=false);
             }
        }       
-       translate([-30,38,8+5]){
+       translate([-30,15+41+4,14+5]){
             rotate(a = [0,90,0]) {
               cylinder(h=600, r=1.7, $fn=100, center=false);
             }
        }       
 
-       translate([-30,2.5,10]){
+       translate([-30,3.75,4+5]){
             rotate(a = [0,90,0]) {
               cylinder(h=600, r=1.3, $fn=100, center=false);
             }
        }       
-       translate([-30,2.5+29,10]){
+       translate([-30,3.75,4+5+10]){
             rotate(a = [0,90,0]) {
               cylinder(h=600, r=1.3, $fn=100, center=false);
             }
        }       
-       translate([-30,2.5+8.5,10]){
+       translate([-30,41+7.5+3.75,4+5]){
+            rotate(a = [0,90,0]) {
+              cylinder(h=600, r=1.3, $fn=100, center=false);
+            }
+       }       
+       translate([-30,41+7.5+3.75,4+5+10]){
+            rotate(a = [0,90,0]) {
+              cylinder(h=600, r=1.3, $fn=100, center=false);
+            }
+       }       
+       translate([-30,18,14]){
             rotate(a = [0,90,0]) {
               cylinder(h=600, r=1.3, $fn=100, center=false);
             }

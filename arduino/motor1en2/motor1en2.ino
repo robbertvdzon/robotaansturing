@@ -87,7 +87,7 @@ void setup() {
   pinMode(dirPin, OUTPUT);
   pinMode(enableMotorPin, OUTPUT);
 //  pinMode(errorPin, OUTPUT);
-//  servoLeft.attach(errorPin);
+  servoLeft.attach(errorPin);
 
 
   pinMode(adressPin1, INPUT);
@@ -197,7 +197,7 @@ void processCommand(){
 
 void servo(){
   Serial.println("start servo test");
-  servoLeft.attach(errorPin);
+ // servoLeft.attach(errorPin);
   int newPos = requestedPos;
   if (newPos<0) newPos = 0;
   if (newPos>180) newPos = 180;
@@ -229,7 +229,7 @@ void servo(){
   }
   servoLeft.write( newPos); // ga ook naar de laatste positie
   delay(100);  // zorg dat hij op de laatste posititie voordat de motor uitgezet wordt
-  servoLeft.detach(); // motor uit
+ // servoLeft.detach(); // motor uit
 
   currentPos = newPos;
 
