@@ -135,25 +135,25 @@ public class MyPanel extends JPanel {
         f.add(button);
       }
       {
-        JButton button = new JButton("-1000");
+        JButton button = new JButton("-1000x");
         button.setBounds(315, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tf, arm2, -1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+1000");
+        JButton button = new JButton("+1000x");
         button.setBounds(420, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tf, arm2, +1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("-5000");
+        JButton button = new JButton("-5000x");
         button.setBounds(525, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tf, arm2, -5000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+5000");
+        JButton button = new JButton("+5000x");
         button.setBounds(630, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tf, arm2, +5000));
         f.add(button);
@@ -183,15 +183,15 @@ public class MyPanel extends JPanel {
         f.add(button);
       }
       {
-        JButton button = new JButton("-50");
+        JButton button = new JButton("50");
         button.setBounds(525, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, -50, 1000));
+        button.addActionListener(e -> gotoPosArm3Abs(tf, 50));
         f.add(button);
       }
       {
-        JButton button = new JButton("+50");
+        JButton button = new JButton("100");
         button.setBounds(630, 220, 100, 40);
-        button.addActionListener(e -> gotoPosArm3(tf, +50, 1000));
+        button.addActionListener(e -> gotoPosArm3Abs(tf, 100));
         f.add(button);
       }
     }
@@ -387,6 +387,11 @@ public class MyPanel extends JPanel {
     gotoPosArm3(newPos, time);
   }
 
+  private void gotoPosArm3Abs(JTextField tf, int pos) {
+    tf.setText("" + pos);
+    gotoPosArm3(pos, 1);
+  }
+
   public void gotoPosArm3(int pos, long delay) {
     try {
       String formattedPos = String.format("%06d", pos);
@@ -443,7 +448,7 @@ public class MyPanel extends JPanel {
   private void homeArm3() {
     try {
       String formattedPos = String.format("%06d", 0);
-      String command = "^S" + formattedPos + "1000";
+      String command = "^S" + formattedPos + "01000";
       System.out.println("command:"+command);
       arm3.write(command.getBytes());
       lastPos3 = 0;

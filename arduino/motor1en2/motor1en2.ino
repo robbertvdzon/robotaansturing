@@ -49,7 +49,6 @@ send: state + pos
 #define stepsPerRevolution 2000
 #define arm1SensorPin 6
 #define topSensorPin 4 
-// #define bottomSensorPin 7 : NOT USED ANYMORE
 #define enableMotorPin 5
 #define errorPin 9
 #define adressPin1 10
@@ -326,7 +325,7 @@ void moveUp(int reqPos){
   Serial.println(totalTime);
 
   Serial.println("up");
-  digitalWrite(enableMotorPin, HIGH);
+//   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 }
 
 void moveDown(int reqPos){
@@ -343,7 +342,7 @@ void moveDown(int reqPos){
 //    currentPos--;
 //  }
   Serial.println("down");
-  digitalWrite(enableMotorPin, HIGH);
+//   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 }
 
 void moveNrSteps(int totalSteps, int direction){
@@ -399,7 +398,7 @@ void home() {
   
   Serial.println("\t homing finished");
   currentPos = 00;
-  digitalWrite(enableMotorPin, HIGH);
+//   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 
 }
 
