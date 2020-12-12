@@ -310,9 +310,9 @@ public class MyPanel extends JPanel {
 
                 gotoPos(arm1, pos1, formattedDelayFactor1);
                 gotoPos(arm2, pos2, formattedDelayFactor2);
-                gotoPosArm3(pos3, 1000);
+                gotoPosArm3(pos3, 500);
 
-                Thread.sleep(totalTime + 20);
+                Thread.sleep(totalTime);
               } catch (Exception ex) {
                 ex.printStackTrace();
 
