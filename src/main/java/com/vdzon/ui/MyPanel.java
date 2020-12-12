@@ -310,7 +310,9 @@ public class MyPanel extends JPanel {
 
                 gotoPos(arm1, pos1, formattedDelayFactor1);
                 gotoPos(arm2, pos2, formattedDelayFactor2);
-                gotoPosArm3(pos3, 500);
+                int servoTime = 500;
+                gotoPosArm3(pos3, servoTime);
+                if (totalTime<servoTime) totalTime = servoTime;
 
                 Thread.sleep(totalTime);
               } catch (Exception ex) {
