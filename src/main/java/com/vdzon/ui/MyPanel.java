@@ -29,8 +29,8 @@ public class MyPanel extends JPanel {
   int lastPos2 = 0;
   int lastPos3 = 0;
 
-  String formattedDelayFactor1 = "0100";
-  String formattedDelayFactor2 = "0100";
+  String formattedDelayFactor1 = "0050";
+  String formattedDelayFactor2 = "0050";
 
   private I2CDevice arm1 = null;
   private I2CDevice arm2 = null;
@@ -64,7 +64,7 @@ public class MyPanel extends JPanel {
 
     vertragingTextfield = new JTextField();
     vertragingTextfield.setBounds(410, 20, 100, 40);
-    vertragingTextfield.setText("0100");
+    vertragingTextfield.setText("0050");
     f.add(vertragingTextfield);
 
 
@@ -301,6 +301,9 @@ public class MyPanel extends JPanel {
                 int pos3 = Integer.parseInt(posArm3);
                 long totalTime = calcDelays(pos1, pos2);
 
+                formattedDelayFactor1 = vertragingTextfield.getText();
+                formattedDelayFactor2 = vertragingTextfield.getText();
+
                 System.out.println("totalTime="+totalTime);
                 System.out.println("formattedDelayFactor1="+formattedDelayFactor1);
                 System.out.println("formattedDelayFactor2="+formattedDelayFactor2);
@@ -309,7 +312,7 @@ public class MyPanel extends JPanel {
                 gotoPos(arm2, pos2, formattedDelayFactor2);
                 gotoPosArm3(pos3, totalTime);
 
-                Thread.sleep(totalTime + 2000);
+                Thread.sleep(totalTime + 20);
               } catch (Exception ex) {
                 ex.printStackTrace();
 
