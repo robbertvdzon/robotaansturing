@@ -310,9 +310,13 @@ public class MyPanel extends JPanel {
 
                 gotoPos(arm1, pos1, formattedDelayFactor1);
                 gotoPos(arm2, pos2, formattedDelayFactor2);
-                int servoTime = 500;
-                gotoPosArm3(pos3, servoTime);
-                if (totalTime<servoTime) totalTime = servoTime;
+
+                if (pos3!=lastPos3) {
+                  int servoTime = 500;
+                  gotoPosArm3(pos3, servoTime);
+                  if (totalTime < servoTime)
+                    totalTime = servoTime;
+                }
 
                 Thread.sleep(totalTime);
               } catch (Exception ex) {
@@ -414,7 +418,6 @@ public class MyPanel extends JPanel {
       e.printStackTrace();
     }
 
-    int oldPos = lastPos3;
     try {
       arm3.write("^S0000000000600000".getBytes());
     } catch (IOException e) {
