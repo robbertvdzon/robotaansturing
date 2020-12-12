@@ -460,17 +460,8 @@ public class MyPanel extends JPanel {
   }
 
   private void naarRustPos() {
-    try {
-      gotoPosAbs(tfArm1, arm1,17000);
-      gotoPosAbs(tfArm2, arm2,13500);
-      String formattedPos = String.format("%06d", 0);
-      String command = "^S" + formattedPos + "01000";
-      System.out.println("command:"+command);
-      arm3.write(command.getBytes());
-      lastPos3 = 0;
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    gotoPosAbs(tfArm1, arm1,17000);
+    gotoPosAbs(tfArm2, arm2,13500);
   }
 
   private void updateAndRestart() {
