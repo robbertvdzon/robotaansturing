@@ -135,13 +135,13 @@ public class MyPanel extends JPanel {
         f.add(button);
       }
       {
-        JButton button = new JButton("-1000x");
+        JButton button = new JButton("-1000");
         button.setBounds(315, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm2, arm2, -1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+1000x");
+        JButton button = new JButton("+1000");
         button.setBounds(420, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm2, arm2, +1000));
         f.add(button);
