@@ -37,6 +37,8 @@ public class MyPanel extends JPanel {
   private I2CDevice arm3 = null;
   private Thread currentLoopThread = null;
   JTextField vertragingTextfield;
+  final JTextField tfArm1 = new JTextField();
+  final JTextField tfArm2 = new JTextField();
 
   public MyPanel() {
     System.out.println("Starting");
@@ -81,81 +83,79 @@ public class MyPanel extends JPanel {
     }
 
     {
-      JButton bHome = new JButton("Home 3");
+      JButton bHome = new JButton("Naar rust pos");
       bHome.setBounds(415, 70, 200, 40);
-      bHome.addActionListener(e -> homeArm3());
+      bHome.addActionListener(e -> naarRustPos());
       f.add(bHome);
     }
 
     {
-      final JTextField tf = new JTextField();
-      tf.setBounds(5, 120, 100, 40);
-      tf.setText("0");
-      f.add(tf);
+      tfArm1.setBounds(5, 120, 100, 40);
+      tfArm1.setText("0");
+      f.add(tfArm1);
       {
         JButton button = new JButton("Goto");
         button.setBounds(210, 120, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm1, 0));
+        button.addActionListener(e -> gotoPos(tfArm1, arm1, 0));
         f.add(button);
       }
       {
         JButton button = new JButton("-1000");
         button.setBounds(315, 120, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm1, -1000));
+        button.addActionListener(e -> gotoPos(tfArm1, arm1, -1000));
         f.add(button);
       }
       {
         JButton button = new JButton("+1000");
         button.setBounds(420, 120, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm1, +1000));
+        button.addActionListener(e -> gotoPos(tfArm1, arm1, +1000));
         f.add(button);
       }
       {
         JButton button = new JButton("-5000");
         button.setBounds(525, 120, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm1, -5000));
+        button.addActionListener(e -> gotoPos(tfArm1, arm1, -5000));
         f.add(button);
       }
       {
         JButton button = new JButton("+5000");
         button.setBounds(630, 120, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm1, +5000));
+        button.addActionListener(e -> gotoPos(tfArm1, arm1, +5000));
         f.add(button);
       }
     }
     {
-      final JTextField tf = new JTextField();
-      tf.setBounds(5, 170, 100, 40);
-      tf.setText("0");
-      f.add(tf);
+      tfArm2.setBounds(5, 170, 100, 40);
+      tfArm2.setText("0");
+      f.add(tfArm2);
       {
         JButton button = new JButton("Goto");
         button.setBounds(210, 170, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm2, 0));
+        button.addActionListener(e -> gotoPos(tfArm2, arm2, 0));
         f.add(button);
       }
       {
         JButton button = new JButton("-1000x");
         button.setBounds(315, 170, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm2, -1000));
+        button.addActionListener(e -> gotoPos(tfArm2, arm2, -1000));
         f.add(button);
       }
       {
         JButton button = new JButton("+1000x");
         button.setBounds(420, 170, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm2, +1000));
+        button.addActionListener(e -> gotoPos(tfArm2, arm2, +1000));
         f.add(button);
       }
       {
-        JButton button = new JButton("-5000x");
+        JButton button = new JButton("-5000");
         button.setBounds(525, 170, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm2, -5000));
+        button.addActionListener(e -> gotoPos(tfArm2, arm2, -5000));
         f.add(button);
       }
       {
-        JButton button = new JButton("+5000x");
+        JButton button = new JButton("+5000");
         button.setBounds(630, 170, 100, 40);
-        button.addActionListener(e -> gotoPos(tf, arm2, +5000));
+        button.addActionListener(e -> gotoPos(tfArm2, arm2, +5000));
         f.add(button);
       }
     }
@@ -380,6 +380,11 @@ public class MyPanel extends JPanel {
     gotoPos(arm, newPos);
   }
 
+  private void gotoPosAbs(JTextField tf, I2CDevice arm, int newPos) {
+    tf.setText("" + newPos);
+    gotoPos(arm, newPos);
+  }
+
   private void gotoPosArm3(JTextField tf, int increment, long time) {
     int pos = Integer.parseInt(tf.getText());
     int newPos = pos + increment;
@@ -438,15 +443,26 @@ public class MyPanel extends JPanel {
   private void home(I2CDevice arm) {
     try {
       if (arm != null) { arm.write("^H0000000000600000".getBytes()); }
-      if (arm == arm1) { lastPos1 = 0; }
-      if (arm == arm2) { lastPos2 = 0; }
+      if (arm == arm1) {
+        tfArm1.setText("0");
+        lastPos1 = 0;
+      }
+      if (arm == arm2) {
+        tfArm2.setText("0");
+        lastPos2 = 0;
+      }
+
+
+
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void homeArm3() {
+  private void naarRustPos() {
     try {
+      gotoPosAbs(tfArm1, arm1,17000);
+      gotoPosAbs(tfArm2, arm2,13500);
       String formattedPos = String.format("%06d", 0);
       String command = "^S" + formattedPos + "01000";
       System.out.println("command:"+command);
