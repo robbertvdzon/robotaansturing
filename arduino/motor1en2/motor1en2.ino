@@ -172,8 +172,8 @@ void parseCommand(){
   buffer[4] = '\0';
   movementTime = atoi(buffer);
   vertraginsfactor = atoi(buffer);
-  if (vertraginsfactor<100){
-    vertraginsfactor = 100;
+  if (vertraginsfactor<10){
+    vertraginsfactor = 10;
   }
 
 
