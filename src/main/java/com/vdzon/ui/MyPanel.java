@@ -64,7 +64,7 @@ public class MyPanel extends JPanel {
 
     vertragingTextfield = new JTextField();
     vertragingTextfield.setBounds(410, 20, 100, 40);
-    vertragingTextfield.setText("0050");
+    vertragingTextfield.setText("0100");
     f.add(vertragingTextfield);
 
 
@@ -429,7 +429,7 @@ public class MyPanel extends JPanel {
 
 
   public void gotoPos(I2CDevice arm, int pos) {
-    gotoPos(arm, pos, "0100");
+    gotoPos(arm, pos, vertragingTextfield.getText());
   }
 
   public void gotoPos(I2CDevice arm, int pos, String vertraging) {
@@ -468,8 +468,8 @@ public class MyPanel extends JPanel {
   }
 
   private void naarRustPos() {
-    gotoPosAbs(tfArm1, arm1,17000);
-    gotoPosAbs(tfArm2, arm2,13500);
+    gotoPosAbs(tfArm1, arm1,100);
+    gotoPosAbs(tfArm2, arm2,100);
   }
 
   private void updateAndRestart() {

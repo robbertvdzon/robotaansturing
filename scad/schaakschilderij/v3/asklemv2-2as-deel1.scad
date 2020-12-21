@@ -3,7 +3,7 @@ difference(){
 	union(){
 
         translate([-9.5,-7.5,-14.5]){
-            cube([19,15,29], center=false);
+            cube([29,15,29], center=false);
         }
 
         
@@ -66,6 +66,20 @@ difference(){
                 cylinder(h=100, r=1.5, $fn=100, center=false);
             }
         }
+
+        translate([16,20,5.5]){
+            rotate([90,0,0]){
+                color("blue")
+                cylinder(h=100, r=1.2, $fn=100, center=false);
+            }
+        }
+        translate([16,20,-5.5]){
+            rotate([90,0,0]){
+                color("blue")
+                cylinder(h=100, r=1.2, $fn=100, center=false);
+            }
+        }
+
 
 	}
 }
