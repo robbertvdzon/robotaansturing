@@ -6,6 +6,8 @@ import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
 import com.vdzon.BerekenVersnelling;
 import com.vdzon.Delays;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -21,6 +23,8 @@ import javax.swing.JTextField;
 
 public class MyPanel extends JPanel {
 
+  static GraphicsDevice device = GraphicsEnvironment
+      .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
   private static int ARM1 = 0x5;
   private static int ARM2 = 0x7;
@@ -39,160 +43,161 @@ public class MyPanel extends JPanel {
   JTextField vertragingTextfield;
   final JTextField tfArm1 = new JTextField();
   final JTextField tfArm2 = new JTextField();
+  JFrame mainFrame = null;
 
   public MyPanel() {
     System.out.println("Starting");
     init();
 
-    JFrame f = new JFrame("Schaakrobot v1.6");
+    mainFrame = new JFrame("Schaakrobot v1.6");
 
-    f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    f.getContentPane().add(this);
-    f.pack();
-    f.setLocationByPlatform(true);
+    mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    mainFrame.getContentPane().add(this);
+    mainFrame.pack();
+    mainFrame.setLocationByPlatform(true);
 
     JButton b = new JButton("Restart & Update");
     b.setBounds(5, 20, 200, 40);
     b.addActionListener(e -> updateAndRestart());
-    f.add(b);
+    mainFrame.add(b);
 
     JButton bExit = new JButton("Restart");
     bExit.setBounds(210, 20, 200, 40);
     bExit.addActionListener(e -> System.exit(0));
-    f.add(bExit);
+    mainFrame.add(bExit);
 
 
     vertragingTextfield = new JTextField();
     vertragingTextfield.setBounds(410, 20, 100, 40);
     vertragingTextfield.setText("0100");
-    f.add(vertragingTextfield);
+    mainFrame.add(vertragingTextfield);
 
 
     {
       JButton bHome = new JButton("Home 1");
       bHome.setBounds(5, 70, 200, 40);
       bHome.addActionListener(e -> home(arm1));
-      f.add(bHome);
+      mainFrame.add(bHome);
     }
 
     {
       JButton bHome = new JButton("Home 2");
       bHome.setBounds(210, 70, 200, 40);
       bHome.addActionListener(e -> home(arm2));
-      f.add(bHome);
+      mainFrame.add(bHome);
     }
 
     {
       JButton bHome = new JButton("Naar rust pos");
       bHome.setBounds(415, 70, 200, 40);
       bHome.addActionListener(e -> naarRustPos());
-      f.add(bHome);
+      mainFrame.add(bHome);
     }
 
     {
       tfArm1.setBounds(5, 120, 100, 40);
       tfArm1.setText("0");
-      f.add(tfArm1);
+      mainFrame.add(tfArm1);
       {
         JButton button = new JButton("Goto");
         button.setBounds(210, 120, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm1, arm1, 0));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("-1000");
         button.setBounds(315, 120, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm1, arm1, -1000));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("+1000");
         button.setBounds(420, 120, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm1, arm1, +1000));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("-5000");
         button.setBounds(525, 120, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm1, arm1, -5000));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("+5000");
         button.setBounds(630, 120, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm1, arm1, +5000));
-        f.add(button);
+        mainFrame.add(button);
       }
     }
     {
       tfArm2.setBounds(5, 170, 100, 40);
       tfArm2.setText("0");
-      f.add(tfArm2);
+      mainFrame.add(tfArm2);
       {
         JButton button = new JButton("Goto");
         button.setBounds(210, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm2, arm2, 0));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("-1000");
         button.setBounds(315, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm2, arm2, -1000));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("+1000");
         button.setBounds(420, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm2, arm2, +1000));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("-5000");
         button.setBounds(525, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm2, arm2, -5000));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("+5000");
         button.setBounds(630, 170, 100, 40);
         button.addActionListener(e -> gotoPos(tfArm2, arm2, +5000));
-        f.add(button);
+        mainFrame.add(button);
       }
     }
     {
       final JTextField tf = new JTextField();
       tf.setBounds(5, 220, 100, 40);
       tf.setText("90");
-      f.add(tf);
+      mainFrame.add(tf);
       {
         JButton button = new JButton("Goto");
         button.setBounds(210, 220, 100, 40);
         button.addActionListener(e -> gotoPosArm3(tf, 0, 1000));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("-10");
         button.setBounds(315, 220, 100, 40);
         button.addActionListener(e -> gotoPosArm3(tf, -10, 1000));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("+10");
         button.setBounds(420, 220, 100, 40);
         button.addActionListener(e -> gotoPosArm3(tf, +10, 1000));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("50");
         button.setBounds(525, 220, 100, 40);
         button.addActionListener(e -> gotoPosArm3Abs(tf, 50));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("100");
         button.setBounds(630, 220, 100, 40);
         button.addActionListener(e -> gotoPosArm3Abs(tf, 100));
-        f.add(button);
+        mainFrame.add(button);
       }
     }
 
@@ -200,13 +205,13 @@ public class MyPanel extends JPanel {
       JButton button = new JButton("Magn. aan");
       button.setBounds(525, 270, 100, 40);
       button.addActionListener(e -> magneet(true));
-      f.add(button);
+      mainFrame.add(button);
     }
     {
       JButton button = new JButton("Magn. uit");
       button.setBounds(630, 270, 100, 40);
       button.addActionListener(e -> magneet(false));
-      f.add(button);
+      mainFrame.add(button);
     }
 
 
@@ -215,38 +220,38 @@ public class MyPanel extends JPanel {
       JScrollPane scrollPane = new JScrollPane(textArea);
       scrollPane.setBounds(5, 270, 300, 80);
       textArea.setEditable(true);
-      f.add(scrollPane);
+      mainFrame.add(scrollPane);
       textArea.setText(loadFile());
       {
         JButton button = new JButton("save");
         button.setBounds(315, 270, 100, 40);
         button.addActionListener(e -> saveToFile(textArea.getText()));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("run once");
         button.setBounds(315, 320, 100, 40);
         button.addActionListener(e -> runOnceInThread(textArea.getText()));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("loop");
         button.setBounds(315, 370, 100, 40);
         button.addActionListener(e -> startLoop(textArea.getText()));
-        f.add(button);
+        mainFrame.add(button);
       }
       {
         JButton button = new JButton("stop");
         button.setBounds(420, 370, 100, 40);
         button.addActionListener(e -> stopLoop());
-        f.add(button);
+        mainFrame.add(button);
       }
     }
 
-    f.setLayout(null);
+    mainFrame.setLayout(null);
 
-    f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    f.setVisible(true);
+    mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    mainFrame.setVisible(true);
   }
 
   private void magneet(boolean aan){
@@ -328,6 +333,11 @@ public class MyPanel extends JPanel {
           }
         }
     );
+  }
+
+  public void fullscreen(){
+    device.setFullScreenWindow(mainFrame);
+
   }
 
   public long calcDelays(int pos1, int pos2) {
