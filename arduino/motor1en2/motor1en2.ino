@@ -107,6 +107,9 @@ void setup() {
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
 
+  // show that we have been restarted
+  bootSeq();
+
   digitalWrite(enableMotorPin, HIGH);
   digitalWrite(topSensorPin, LOW);
 
@@ -400,6 +403,15 @@ void home() {
   currentPos = 00;
 //   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 
+}
+
+void bootSeq(){
+  for (int i = 0; i < 15; i++) {
+    digitalWrite(dirPin, HIGH);
+    delay(100);
+    digitalWrite(dirPin, LOW);
+    delay(100);
+  }
 }
 
 
