@@ -128,6 +128,11 @@ difference(){
                 cylinder(h=200, r=1.5, $fn=100, center=true);
             }
         }
+        translate([55,51,20]){
+            rotate([0,90,0]){
+                cylinder(h=20, r=4, $fn=100, center=true);
+            }
+        }
 
         translate([47/2+5,42/2,4]){
             rotate([0,0,90]){
