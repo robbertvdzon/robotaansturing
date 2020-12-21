@@ -391,10 +391,10 @@ void home() {
     pulse(stepPin,HOME_SPEED);
   }
 
-  Serial.println("\t move one extra round");
-    for (int i = 0; i < 1 * stepsPerRevolution; i++) {
-      pulse(stepPin,HOME_SPEED);
-  } 
+//   Serial.println("\t move one extra round");
+//     for (int i = 0; i < 1 * stepsPerRevolution; i++) {
+//       pulse(stepPin,HOME_SPEED);
+//   }
   
   Serial.println("\t homing finished");
   currentPos = 00;
