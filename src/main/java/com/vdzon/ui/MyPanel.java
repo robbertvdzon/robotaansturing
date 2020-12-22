@@ -202,13 +202,13 @@ public class MyPanel extends JPanel {
     }
 
     {
-      JButton button = new JButton("Magn. aan");
+      JButton button = new JButton("aan");
       button.setBounds(525, 270, 100, 40);
       button.addActionListener(e -> magneet(true));
       mainFrame.add(button);
     }
     {
-      JButton button = new JButton("Magn. uit");
+      JButton button = new JButton("uit");
       button.setBounds(630, 270, 100, 40);
       button.addActionListener(e -> magneet(false));
       mainFrame.add(button);
@@ -258,9 +258,9 @@ public class MyPanel extends JPanel {
     System.out.println("write arm3");
     try {
       if (aan)
-        arm3.write("^S0000000000000000".getBytes());
+        arm3.write("^C0000000000000000".getBytes());
       else
-        arm3.write("^S0000000000000000".getBytes());
+        arm3.write("^R0000000000000000".getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
