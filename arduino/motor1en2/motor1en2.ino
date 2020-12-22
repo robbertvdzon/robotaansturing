@@ -195,6 +195,8 @@ void processCommand(){
  if (command == 'C') clamp();
  if (command == 'R') release();
  if (command == 'S') servo();
+ if (command == 'P') pull();
+ if (command == 'X') releasePull();
 }
 
 void servo(){
@@ -257,6 +259,20 @@ void clamp(){
 void release(){
   Serial.print("magneet uit");
   digitalWrite(topSensorPin, LOW);
+  Serial.println("RESET CURRENT COMMAND");
+  command = '-';
+}
+
+void pull(){
+  Serial.print("pull");
+  digitalWrite(stepPin, HIGH);
+  Serial.println("RESET CURRENT COMMAND");
+  command = '-';
+}
+
+void releasePull(){
+  Serial.print("release");
+  digitalWrite(stepPin, LOW);
   Serial.println("RESET CURRENT COMMAND");
   command = '-';
 }

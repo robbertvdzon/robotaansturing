@@ -202,7 +202,7 @@ public class MyPanel extends JPanel {
     }
 
     {
-      JButton button = new JButton("aan");
+      JButton button = new JButton("Trek");
       button.setBounds(525, 270, 100, 40);
       button.addActionListener(e -> magneet(true));
       mainFrame.add(button);
@@ -213,7 +213,18 @@ public class MyPanel extends JPanel {
       button.addActionListener(e -> magneet(false));
       mainFrame.add(button);
     }
-
+    {
+      JButton button = new JButton("Duw");
+      button.setBounds(525, 320, 100, 40);
+      button.addActionListener(e -> pull(true));
+      mainFrame.add(button);
+    }
+    {
+      JButton button = new JButton("uit");
+      button.setBounds(630, 320, 100, 40);
+      button.addActionListener(e -> pull(false));
+      mainFrame.add(button);
+    }
 
     {
       JTextArea textArea = new JTextArea(5, 20);
@@ -261,6 +272,19 @@ public class MyPanel extends JPanel {
         arm3.write("^C0000000000000000".getBytes());
       else
         arm3.write("^R0000000000000000".getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    System.out.println("done");
+  }
+
+  private void pull(boolean aan){
+    System.out.println("write arm3");
+    try {
+      if (aan)
+        arm3.write("^P0000000000000000".getBytes());
+      else
+        arm3.write("^X0000000000000000".getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
