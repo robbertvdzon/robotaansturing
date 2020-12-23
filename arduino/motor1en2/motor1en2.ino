@@ -417,6 +417,8 @@ void home() {
   
   Serial.println("\t homing finished");
   currentPos = 00;
+
+  finishHome();
 //   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 
 }
@@ -429,6 +431,17 @@ void bootSeq(){
     delay(100);
   }
 }
+
+void finishHome(){
+  for (int i = 0; i < 5; i++) {
+    digitalWrite(topSensorPin, HIGH);
+    delay(100);
+    digitalWrite(topSensorPin, LOW);
+    delay(100);
+  }
+}
+
+
 
 
 
