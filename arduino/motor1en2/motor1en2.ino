@@ -252,11 +252,11 @@ void clamp(){
   Serial.print("magneet uit, pull aan");
   digitalWrite(topSensorPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(500);
-  Serial.print("magneet aan, pull aan");
-  digitalWrite(topSensorPin, HIGH);// magneet
-  digitalWrite(stepPin, HIGH);// pull
-  delay(500);
+//  delay(100);
+//  Serial.print("magneet aan, pull aan");
+//  digitalWrite(topSensorPin, HIGH);// magneet
+//  digitalWrite(stepPin, HIGH);// pull
+  delay(100);
   Serial.print("magneet aan, pull uit");
   digitalWrite(topSensorPin, HIGH);// magneet
   digitalWrite(stepPin, LOW);// pull
@@ -269,11 +269,11 @@ void release(){
   Serial.print("magneet aan, pull aan");
   digitalWrite(topSensorPin, HIGH);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(500);
-  Serial.print("magneet uit, pull aan");
-  digitalWrite(topSensorPin, LOW);// magneet
-  digitalWrite(stepPin, HIGH);// pull
-  delay(500);
+//  delay(100);
+//  Serial.print("magneet uit, pull aan");
+//  digitalWrite(topSensorPin, LOW);// magneet
+//  digitalWrite(stepPin, HIGH);// pull
+  delay(100);
   Serial.print("magneet uit, pull uit");
   digitalWrite(topSensorPin, LOW);// magneet
   digitalWrite(stepPin, LOW);// pull

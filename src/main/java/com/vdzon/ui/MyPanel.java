@@ -202,13 +202,13 @@ public class MyPanel extends JPanel {
     }
 
     {
-      JButton button = new JButton("Trek");
+      JButton button = new JButton("Pak");
       button.setBounds(525, 270, 100, 40);
       button.addActionListener(e -> clamp());
       mainFrame.add(button);
     }
     {
-      JButton button = new JButton("uit");
+      JButton button = new JButton("Los");
       button.setBounds(630, 270, 100, 40);
       button.addActionListener(e -> release());
       mainFrame.add(button);
