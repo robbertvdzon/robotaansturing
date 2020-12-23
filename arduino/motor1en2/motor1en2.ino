@@ -195,8 +195,6 @@ void processCommand(){
  if (command == 'C') clamp();
  if (command == 'R') release();
  if (command == 'S') servo();
- if (command == 'P') pull();
- if (command == 'X') releasePull();
 }
 
 void servo(){
@@ -250,32 +248,39 @@ void servo(){
 }
 
 void clamp(){
-  Serial.print("magneet aan");
-  digitalWrite(topSensorPin, HIGH);
+  Serial.print("clamp");
+  Serial.print("magneet uit, pull aan");
+  digitalWrite(topSensorPin, LOW);// magneet
+  digitalWrite(stepPin, HIGH);// pull
+  delay(500);
+  Serial.print("magneet aan, pull aan");
+  digitalWrite(topSensorPin, HIGH);// magneet
+  digitalWrite(stepPin, HIGH);// pull
+  delay(500);
+  Serial.print("magneet aan, pull uit");
+  digitalWrite(topSensorPin, HIGH);// magneet
+  digitalWrite(stepPin, LOW);// pull
   Serial.println("RESET CURRENT COMMAND");
   command = '-';
 }
 
 void release(){
-  Serial.print("magneet uit");
-  digitalWrite(topSensorPin, LOW);
-  Serial.println("RESET CURRENT COMMAND");
-  command = '-';
-}
-
-void pull(){
-  Serial.print("pull");
-  digitalWrite(stepPin, HIGH);
-  Serial.println("RESET CURRENT COMMAND");
-  command = '-';
-}
-
-void releasePull(){
   Serial.print("release");
-  digitalWrite(stepPin, LOW);
+  Serial.print("magneet aan, pull aan");
+  digitalWrite(topSensorPin, HIGH);// magneet
+  digitalWrite(stepPin, HIGH);// pull
+  delay(500);
+  Serial.print("magneet uit, pull aan");
+  digitalWrite(topSensorPin, LOW);// magneet
+  digitalWrite(stepPin, HIGH);// pull
+  delay(500);
+  Serial.print("magneet uit, pull uit");
+  digitalWrite(topSensorPin, LOW);// magneet
+  digitalWrite(stepPin, LOW);// pull
   Serial.println("RESET CURRENT COMMAND");
   command = '-';
 }
+
 
 void home1(){
   state = HOMING;

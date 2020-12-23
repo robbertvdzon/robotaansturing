@@ -204,27 +204,16 @@ public class MyPanel extends JPanel {
     {
       JButton button = new JButton("Trek");
       button.setBounds(525, 270, 100, 40);
-      button.addActionListener(e -> magneet(true));
+      button.addActionListener(e -> clamp());
       mainFrame.add(button);
     }
     {
       JButton button = new JButton("uit");
       button.setBounds(630, 270, 100, 40);
-      button.addActionListener(e -> magneet(false));
+      button.addActionListener(e -> release());
       mainFrame.add(button);
     }
-    {
-      JButton button = new JButton("Duw");
-      button.setBounds(525, 320, 100, 40);
-      button.addActionListener(e -> pull(true));
-      mainFrame.add(button);
-    }
-    {
-      JButton button = new JButton("uit");
-      button.setBounds(630, 320, 100, 40);
-      button.addActionListener(e -> pull(false));
-      mainFrame.add(button);
-    }
+
 
     {
       JTextArea textArea = new JTextArea(5, 20);
@@ -265,31 +254,24 @@ public class MyPanel extends JPanel {
     mainFrame.setVisible(true);
   }
 
-  private void magneet(boolean aan){
-    System.out.println("write arm3");
+  private void clamp(){
+    System.out.println("clamp");
     try {
-      if (aan)
         arm3.write("^C0000000000000000".getBytes());
-      else
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void release(){
+    System.out.println("release");
+    try {
         arm3.write("^R0000000000000000".getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
-    System.out.println("done");
   }
 
-  private void pull(boolean aan){
-    System.out.println("write arm3");
-    try {
-      if (aan)
-        arm3.write("^P0000000000000000".getBytes());
-      else
-        arm3.write("^X0000000000000000".getBytes());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    System.out.println("done");
-  }
 
   private void stopLoop() {
     if (currentLoopThread != null) {
