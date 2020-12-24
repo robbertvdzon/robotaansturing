@@ -300,8 +300,7 @@ public class MyPanel extends JPanel {
     Arrays.asList(split).forEach(
         row -> {
           if (row != null && !row.startsWith("#")) {
-            String[] splitWords = row.split(",");
-            if (row.equals("#pak")){
+            if (row.startsWith("pak")){
               clamp();
               try {
                 Thread.sleep(300);
@@ -310,7 +309,7 @@ public class MyPanel extends JPanel {
                 ex.printStackTrace();
               }
             }
-            else if (row.equals("#zet")){
+            else if (row.startsWith("zet")){
               release();
               try {
                 Thread.sleep(300);
@@ -321,6 +320,7 @@ public class MyPanel extends JPanel {
 
             }
             else {
+              String[] splitWords = row.split(",");
               if (splitWords.length >= 3) {
                 String posArm1 = splitWords[0].trim();
                 String posArm2 = splitWords[1].trim();
