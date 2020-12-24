@@ -202,13 +202,13 @@ public class MyPanel extends JPanel {
     }
 
     {
-      JButton button = new JButton("Pak");
+      JButton button = new JButton("pak");
       button.setBounds(525, 270, 100, 40);
       button.addActionListener(e -> clamp());
       mainFrame.add(button);
     }
     {
-      JButton button = new JButton("Los");
+      JButton button = new JButton("zet");
       button.setBounds(630, 270, 100, 40);
       button.addActionListener(e -> release());
       mainFrame.add(button);
@@ -301,38 +301,58 @@ public class MyPanel extends JPanel {
         row -> {
           if (row != null && !row.startsWith("#")) {
             String[] splitWords = row.split(",");
-
-            if (splitWords.length >= 3) {
-              String posArm1 = splitWords[0].trim();
-              String posArm2 = splitWords[1].trim();
-              String posArm3 = splitWords[2].trim();
+            if (row.equals("#pak")){
+              clamp();
               try {
-                int pos1 = Integer.parseInt(posArm1);
-                int pos2 = Integer.parseInt(posArm2);
-                int pos3 = Integer.parseInt(posArm3);
-                long totalTime = calcDelays(pos1, pos2);
-
-                formattedDelayFactor1 = vertragingTextfield.getText();
-                formattedDelayFactor2 = vertragingTextfield.getText();
-
-                System.out.println("totalTime="+totalTime);
-                System.out.println("formattedDelayFactor1="+formattedDelayFactor1);
-                System.out.println("formattedDelayFactor2="+formattedDelayFactor2);
-
-                gotoPos(arm1, pos1, formattedDelayFactor1);
-                gotoPos(arm2, pos2, formattedDelayFactor2);
-
-                if (pos3!=lastPos3) {
-                  int servoTime = 500;
-                  gotoPosArm3(pos3, servoTime);
-                  if (totalTime < servoTime)
-                    totalTime = servoTime;
-                }
-
-                Thread.sleep(totalTime);
-              } catch (Exception ex) {
+                Thread.sleep(300);
+              }
+              catch (Exception ex){
                 ex.printStackTrace();
+              }
+            }
+            else if (row.equals("#zet")){
+              release();
+              try {
+                Thread.sleep(300);
+              }
+              catch (Exception ex){
+                ex.printStackTrace();
+              }
 
+            }
+            else {
+              if (splitWords.length >= 3) {
+                String posArm1 = splitWords[0].trim();
+                String posArm2 = splitWords[1].trim();
+                String posArm3 = splitWords[2].trim();
+                try {
+                  int pos1 = Integer.parseInt(posArm1);
+                  int pos2 = Integer.parseInt(posArm2);
+                  int pos3 = Integer.parseInt(posArm3);
+                  long totalTime = calcDelays(pos1, pos2);
+
+                  formattedDelayFactor1 = vertragingTextfield.getText();
+                  formattedDelayFactor2 = vertragingTextfield.getText();
+
+                  System.out.println("totalTime=" + totalTime);
+                  System.out.println("formattedDelayFactor1=" + formattedDelayFactor1);
+                  System.out.println("formattedDelayFactor2=" + formattedDelayFactor2);
+
+                  gotoPos(arm1, pos1, formattedDelayFactor1);
+                  gotoPos(arm2, pos2, formattedDelayFactor2);
+
+//                  if (pos3 != lastPos3) {
+//                    int servoTime = 500;
+//                    gotoPosArm3(pos3, servoTime);
+//                    if (totalTime < servoTime)
+//                      totalTime = servoTime;
+//                  }
+//
+                  Thread.sleep(totalTime);
+                } catch (Exception ex) {
+                  ex.printStackTrace();
+
+                }
               }
             }
 

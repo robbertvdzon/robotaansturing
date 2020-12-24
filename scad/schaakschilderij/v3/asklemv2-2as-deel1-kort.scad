@@ -3,7 +3,7 @@ difference(){
 	union(){
 
         translate([-9.5,-7.5,-33/2]){
-            cube([29,15,33], center=false);
+            cube([19,15,33], center=false);
         }
 
         
@@ -32,7 +32,7 @@ difference(){
         translate([0,0,-25]){
             rotate([0,0,90]){
                 color("green")
-                cylinder(h=70, r=4, $fn=100, center=false);
+                cylinder(h=50, r=4, $fn=100, center=false);
             }
         }
         translate([0,0,0-5.5-4]){
@@ -67,18 +67,6 @@ difference(){
             }
         }
 
-        translate([16,20,5.5+4]){
-            rotate([90,0,0]){
-                color("blue")
-                cylinder(h=100, r=1.2, $fn=100, center=false);
-            }
-        }
-        translate([16,20,-5.5-4]){
-            rotate([90,0,0]){
-                color("blue")
-                cylinder(h=100, r=1.2, $fn=100, center=false);
-            }
-        }
 
 
 	}

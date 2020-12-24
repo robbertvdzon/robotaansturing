@@ -6,7 +6,7 @@ difference(){
             
 
         translate([-32.5, -32.5,0]){
-           cube([65,65,1.8], center=false);
+           cube([65,65,2.8], center=false);
         }                
 
 
@@ -20,10 +20,6 @@ difference(){
 
 	}
 	union() {
-
-        translate([-25, -25,1]){
-      //     cube([50,30,1.8], center=false);
-        }                
 
         translate([+10,20,0.5]){
             rotate([0,0,0]){
