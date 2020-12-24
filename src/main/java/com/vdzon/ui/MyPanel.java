@@ -300,7 +300,7 @@ public class MyPanel extends JPanel {
     Arrays.asList(split).forEach(
         row -> {
           if (row != null && !row.startsWith("#")) {
-            if (row.startsWith("pak")){
+            if (row.trim().startsWith("pak")){
               clamp();
               try {
                 Thread.sleep(300);
@@ -309,7 +309,7 @@ public class MyPanel extends JPanel {
                 ex.printStackTrace();
               }
             }
-            else if (row.startsWith("zet")){
+            else if (row.trim().startsWith("zet")){
               release();
               try {
                 Thread.sleep(300);
