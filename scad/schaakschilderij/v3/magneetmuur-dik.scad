@@ -6,7 +6,7 @@ difference(){
             
 
         translate([-32.5, -32.5,0]){
-           cube([65,65,2.8], center=false);
+           cube([65,65,3.8], center=false);
         }                
 
 

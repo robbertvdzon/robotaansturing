@@ -25,13 +25,13 @@ difference(){
                 cylinder(h=50, r=4.4, $fn=100, center=false);
             }
         }
-        translate([-20,0,0-5.5-4]){
+        translate([-20,0,0-9.5]){
             rotate([0,90,0]){
                 color("red")
                 cylinder(h=200, r=4.4, $fn=100, center=false);
             }
         }
-        translate([-20,0,0+5.5+4]){
+        translate([-20,0,0+9.5]){
             rotate([0,90,0]){
                 color("red")
                 cylinder(h=200, r=4.4, $fn=100, center=false);

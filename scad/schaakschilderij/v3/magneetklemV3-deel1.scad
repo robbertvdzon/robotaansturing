@@ -7,7 +7,7 @@ difference(){
 
         translate([0,0,7]){
             rotate([0,0,0]){
-                cylinder(h=10, r=12.5, $fn=100, center=false);
+                cylinder(h=10, r=12.2, $fn=100, center=false);
             }
         }
    
@@ -25,24 +25,21 @@ difference(){
         }
         translate([0,0,2]){
             rotate([0,0,0]){
-                cylinder(h=20, r=11, $fn=100, center=false);
+                cylinder(h=20, r=10.2, $fn=100, center=false);
             }
         }
 
-        translate([19.25,0,-1]){
+        translate([21,0,-1]){
             rotate([0,0,0]){
                 cylinder(h=28, r=1.2, $fn=100, center=false);
             }
         }
-        translate([-19.25,0,-1]){
+        translate([-21,0,-1]){
             rotate([0,0,0]){
                 cylinder(h=28, r=1.2, $fn=100, center=false);
             }
         }
-//19.25
-
-//38.5
-        //28.8 -28.5
+//142/21
 
 	}
 }
