@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -44,6 +45,7 @@ public class MyPanel extends JPanel {
   final JTextField tfArm1 = new JTextField();
   final JTextField tfArm2 = new JTextField();
   JFrame mainFrame = null;
+  JLabel statusLabel = new JLabel("status");
 
   public MyPanel() {
     System.out.println("Starting");
@@ -213,6 +215,21 @@ public class MyPanel extends JPanel {
       button.addActionListener(e -> release());
       mainFrame.add(button);
     }
+    {
+      JButton button = new JButton("sleep");
+      button.setBounds(525, 320, 100, 40);
+      button.addActionListener(e -> sleeping());
+      mainFrame.add(button);
+    }
+    {
+      JButton button = new JButton("status");
+      button.setBounds(525, 370, 100, 40);
+      button.addActionListener(e -> status());
+      mainFrame.add(button);
+
+      statusLabel.setBounds(630, 370, 100, 40);
+      mainFrame.add(statusLabel);
+    }
 
 
     {
@@ -272,6 +289,28 @@ public class MyPanel extends JPanel {
     }
   }
 
+  private void sleeping(){
+    System.out.println("sleeping");
+    try {
+        arm1.write("^X0000000000000000".getBytes());
+        arm2.write("^X0000000000000000".getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void status(){
+    System.out.println("status");
+    try {
+      int arm1Status = arm1.read();
+      int arm2Status = arm2.read();
+      int arm3Status = arm3.read();
+      statusLabel.setText("state:"+arm1Status+"-"+arm2Status+"-"+arm3Status);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 
   private void stopLoop() {
     if (currentLoopThread != null) {
@@ -311,6 +350,16 @@ public class MyPanel extends JPanel {
             }
             else if (row.trim().startsWith("zet")){
               release();
+              try {
+                Thread.sleep(300);
+              }
+              catch (Exception ex){
+                ex.printStackTrace();
+              }
+
+            }
+            else if (row.trim().startsWith("sleep")){
+              sleeping();
               try {
                 Thread.sleep(300);
               }

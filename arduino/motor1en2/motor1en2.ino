@@ -195,6 +195,7 @@ void processCommand(){
  if (command == 'C') clamp();
  if (command == 'R') release();
  if (command == 'S') servo();
+ if (command == 'X') sleeping();
 }
 
 void servo(){
@@ -231,7 +232,6 @@ void servo(){
   }
   servoLeft.write( newPos); // ga ook naar de laatste positie
   delay(100);  // zorg dat hij op de laatste posititie voordat de motor uitgezet wordt
- // servoLeft.detach(); // motor uit
 
   currentPos = newPos;
 
@@ -244,7 +244,6 @@ void servo(){
   Serial.println(diff);
   Serial.println("RESET CURRENT COMMAND");
   command = '-';
-
 }
 
 void clamp(){
@@ -252,10 +251,6 @@ void clamp(){
   Serial.print("magneet uit, pull aan");
   digitalWrite(topSensorPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-//  delay(100);
-//  Serial.print("magneet aan, pull aan");
-//  digitalWrite(topSensorPin, HIGH);// magneet
-//  digitalWrite(stepPin, HIGH);// pull
   delay(100);
   Serial.print("magneet aan, pull uit");
   digitalWrite(topSensorPin, HIGH);// magneet
@@ -269,10 +264,6 @@ void release(){
   Serial.print("magneet aan, pull aan");
   digitalWrite(topSensorPin, HIGH);// magneet
   digitalWrite(stepPin, HIGH);// pull
-//  delay(100);
-//  Serial.print("magneet uit, pull aan");
-//  digitalWrite(topSensorPin, LOW);// magneet
-//  digitalWrite(stepPin, HIGH);// pull
   delay(100);
   Serial.print("magneet uit, pull uit");
   digitalWrite(topSensorPin, LOW);// magneet
@@ -294,6 +285,11 @@ void home1(){
 }
 
 void move(){
+
+  if (state == HOMING_NEEDED){
+    home1();
+  }
+
   state = MOVING;
 
   if (requestedPos>currentPos){
@@ -322,6 +318,7 @@ void checkError(){
   else if (!error){
     Serial.println("Entering error mode");
     error = true;
+    state = HOMING_NEEDED;
     digitalWrite(enableMotorPin, HIGH);
   }
 
@@ -336,37 +333,22 @@ void checkError(){
 
 void moveUp(int reqPos){
   digitalWrite(enableMotorPin, LOW);
-
   Serial.println("move up");
   digitalWrite(dirPin, HIGH);
   long startTime = millis();
-
   moveNrSteps(reqPos - currentPos, +1);
-
   long totalTime = millis() - startTime;
-
   Serial.print("totalTime:");
   Serial.println(totalTime);
-
   Serial.println("up");
-//   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 }
 
 void moveDown(int reqPos){
   digitalWrite(enableMotorPin, LOW);
-
   Serial.println("move down");
   digitalWrite(dirPin, LOW);
-
   moveNrSteps(currentPos - reqPos, -1);
-
-
-//  while (currentPos>reqPos){
-//    pulse(stepPin, stepDelay);
-//    currentPos--;
-//  }
   Serial.println("down");
-//   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 }
 
 void moveNrSteps(int totalSteps, int direction){
@@ -389,7 +371,7 @@ void moveNrSteps(int totalSteps, int direction){
       tmp = tmp / 100;
       calculatedDelay = (int) tmp;
     }
-    pulse(stepPin, calculatedDelay); // verreken verstaging!
+    pulse(stepPin, calculatedDelay); // verreken versraging!
     currentPos+=direction;
   }
 }
@@ -415,10 +397,10 @@ void home() {
     pulse(stepPin,HOME_SPEED);
   }
 
-//   Serial.println("\t move one extra round");
-//     for (int i = 0; i < 1 * stepsPerRevolution; i++) {
-//       pulse(stepPin,HOME_SPEED);
-//   }
+  Serial.println("\t move klein stukje omhoog");
+    for (int i = 0; i < 10; i++) {
+      pulse(stepPin,HOME_SPEED);
+  }
   
   Serial.println("\t homing finished");
   currentPos = 00;
@@ -426,6 +408,25 @@ void home() {
   finishHome();
 //   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 
+}
+
+
+void sleeping() {
+  digitalWrite(enableMotorPin, LOW);
+  error = false;
+
+  arm1State = digitalRead(arm1SensorPin);
+  Serial.println("\t start homing");
+
+  // move down until high
+  Serial.println("\t move fast down until high");
+  digitalWrite(dirPin, LOW);
+  while (!digitalRead(arm1SensorPin)){
+    pulse(stepPin,HOME_SPEED);
+  }
+
+  digitalWrite(enableMotorPin, HIGH);
+  state = HOMING_NEEDED
 }
 
 void bootSeq(){
