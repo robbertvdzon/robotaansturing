@@ -77,11 +77,11 @@ static const int indexSteps = 20;
 void setup() {
 
   pinMode(arm1SensorPin, INPUT);
-  pinMode(topSensorPin, OUTPUT);
+  pinMode(topSensorPin, INPUT);
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
   pinMode(enableMotorPin, OUTPUT);
-//  pinMode(errorPin, OUTPUT);
+  pinMode(errorPin, OUTPUT);
 
 
   pinMode(adressPin1, INPUT);
@@ -194,11 +194,11 @@ void processCommand(){
 void clamp(){
   Serial.print("clamp");
   Serial.print("magneet aan, pull aan");
-  digitalWrite(topSensorPin, LOW);// magneet
+  digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(50);
+  delay(500);
   Serial.print("magneet aan, pull uit");
-  digitalWrite(topSensorPin, HIGH);// magneet
+  digitalWrite(dirPin, HIGH);// magneet
   digitalWrite(stepPin, LOW);// pull
   Serial.println("RESET CURRENT COMMAND");
   command = '-';
@@ -207,11 +207,11 @@ void clamp(){
 void release(){
   Serial.print("release");
   Serial.print("magneet aan, pull aan");
-  digitalWrite(topSensorPin, LOW);// magneet
+  digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(50);
+  delay(500);
   Serial.print("magneet uit, pull uit");
-  digitalWrite(topSensorPin, LOW);// magneet
+  digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, LOW);// pull
   Serial.println("RESET CURRENT COMMAND");
   command = '-';
@@ -268,6 +268,7 @@ void checkError(){
     state = HOMING_NEEDED;
     digitalWrite(enableMotorPin, HIGH);
     command = '-';
+    errorMessage();
   }
 
   if (error ){
@@ -378,23 +379,21 @@ void sleeping() {
 }
 
 void bootSeq(){
-  for (int i = 0; i < 20; i++) {
-    digitalWrite(dirPin, HIGH);
-    delay(10);
-    digitalWrite(dirPin, LOW);
-    delay(10);
+    beep();
+}
+
+void errorMessage(){
+  for (int i = 0; i < 3; i++) {
+    beep();
   }
 }
 
-void finishHome(){
-  for (int i = 0; i < 5; i++) {
-    digitalWrite(topSensorPin, HIGH);
+void beep(){
+    digitalWrite(errorPin, HIGH);
     delay(100);
-    digitalWrite(topSensorPin, LOW);
+    digitalWrite(errorPin, LOW);
     delay(100);
-  }
 }
-
 
 
 
