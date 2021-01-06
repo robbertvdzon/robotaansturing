@@ -32,7 +32,6 @@ send: state + pos
 */
 
 #include <Wire.h>
-#include <Servo.h> 
 
 #define NR_OF_BYTES_TO_READ 12
 
@@ -57,7 +56,6 @@ send: state + pos
 char command;
 int requestedPos;
 int vertraginsfactor; // for arm1 en arm2
-int movementTime; // only for arm3
 
 char number[50];
 int state = HOMING_NEEDED;
@@ -69,7 +67,6 @@ int newDir = 0;
 int turn = 0;
 int homeFinished = 0;
 bool error = 0;
-Servo servoLeft;
 
 int SLAVE_ADDRESS = 5;
 
@@ -81,12 +78,10 @@ void setup() {
 
   pinMode(arm1SensorPin, INPUT);
   pinMode(topSensorPin, OUTPUT);
-//  pinMode(bottomSensorPin, INPUT);
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
   pinMode(enableMotorPin, OUTPUT);
 //  pinMode(errorPin, OUTPUT);
-  servoLeft.attach(errorPin);
 
 
   pinMode(adressPin1, INPUT);
@@ -173,7 +168,6 @@ void parseCommand(){
   buffer[2] = number[10];
   buffer[3] = number[11];
   buffer[4] = '\0';
-  movementTime = atoi(buffer);
   vertraginsfactor = atoi(buffer);
   if (vertraginsfactor<10){
     vertraginsfactor = 10;
@@ -194,56 +188,7 @@ void processCommand(){
  if (command == 'M') move();
  if (command == 'C') clamp();
  if (command == 'R') release();
- if (command == 'S') servo();
  if (command == 'X') sleeping();
-}
-
-void servo(){
-  Serial.println("start servo test");
- // servoLeft.attach(errorPin);
-  int newPos = requestedPos;
-  if (newPos<0) newPos = 0;
-  if (newPos>180) newPos = 180;
-  int steps = currentPos - newPos;
-  if (steps<0) steps = steps*-1;
-  int step = 1;
-  if (newPos<currentPos) step = -1;
-  long tmp = movementTime;
-  tmp = tmp*1000;
-  tmp = tmp/steps;
-  long sleepDelay = tmp;
-
-  Serial.print("currentPos:");Serial.println(currentPos);
-  Serial.print("requestedPos:");Serial.println(requestedPos);
-  Serial.print("newPos:");Serial.println(newPos);
-  Serial.print("movementTime:");Serial.println(movementTime);
-  Serial.print("step:");Serial.println(step);
-  Serial.print("steps:");Serial.println(steps);
-  Serial.print("sleepDelay:");Serial.println(sleepDelay);
-  long startTime = millis();
-  for (int pos = currentPos; pos!=newPos; pos = pos+step){
-      servoLeft.write( pos);
-      if (sleepDelay>16383){
-         delay(sleepDelay/1000); // 16383 is the max for delayMicroseconds, so use delay instead
-      }
-      else{
-        delayMicroseconds(sleepDelay);
-      }
-  }
-  servoLeft.write( newPos); // ga ook naar de laatste positie
-  delay(100);  // zorg dat hij op de laatste posititie voordat de motor uitgezet wordt
-
-  currentPos = newPos;
-
-
-
-  long endTime = millis();
-  long diff = endTime - startTime;
-
-  Serial.print("Eind servo test:");
-  Serial.println(diff);
-  Serial.println("RESET CURRENT COMMAND");
-  command = '-';
 }
 
 void clamp(){
