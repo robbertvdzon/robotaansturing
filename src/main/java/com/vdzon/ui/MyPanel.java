@@ -269,6 +269,7 @@ public class MyPanel extends JPanel {
 
     mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     mainFrame.setVisible(true);
+    startReadStatus();
   }
 
   private void clamp(){
@@ -299,15 +300,37 @@ public class MyPanel extends JPanel {
     }
   }
 
-  private void status(){
-    System.out.println("status");
-    try {
-      int arm1Status = arm1.read();
-      int arm2Status = arm2.read();
-      int arm3Status = arm3.read();
-      statusLabel.setText("state:"+arm1Status+"-"+arm2Status+"-"+arm3Status);
-    } catch (IOException e) {
-      e.printStackTrace();
+  public void startReadStatus(){
+    currentLoopThread = new Thread(() -> status());
+    currentLoopThread.start();
+
+  }
+
+  private String getStatusString(int status){
+    if (status==0) return "HN";
+    if (status==1) return "MO";
+    if (status==2) return "HO";
+    if (status==3) return "ER";
+    return "??";
+  }
+
+
+    private void status(){
+    while(true) {
+      System.out.println("status");
+      try {
+        long startTime = System.currentTimeMillis();
+        int arm1Status = arm1.read();
+        int arm2Status = arm2.read();
+        int arm3Status = arm3.read();
+        long endTime = System.currentTimeMillis();
+        long diff = endTime - startTime;
+        statusLabel.setText(getStatusString(arm1Status) + "-" + getStatusString(arm2Status) + "-" + getStatusString(arm3Status)+":"+diff);
+
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 
