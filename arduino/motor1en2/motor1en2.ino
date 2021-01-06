@@ -192,6 +192,7 @@ void processCommand(){
 }
 
 void clamp(){
+  state = MOVING;
   Serial.print("clamp");
   Serial.print("magneet aan, pull aan");
   digitalWrite(dirPin, LOW);// magneet
@@ -201,10 +202,12 @@ void clamp(){
   digitalWrite(dirPin, HIGH);// magneet
   digitalWrite(stepPin, LOW);// pull
   Serial.println("RESET CURRENT COMMAND");
+  state = READY;
   command = '-';
 }
 
 void release(){
+  state = MOVING;
   Serial.print("release");
   Serial.print("magneet aan, pull aan");
   digitalWrite(dirPin, LOW);// magneet
@@ -214,6 +217,7 @@ void release(){
   digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, LOW);// pull
   Serial.println("RESET CURRENT COMMAND");
+  state = READY;
   command = '-';
 }
 

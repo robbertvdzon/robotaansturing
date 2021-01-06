@@ -333,8 +333,8 @@ public class MyPanel extends JPanel {
         int arm1Status = arm1.read();
         int arm2Status = arm2.read();
         int arm3Status = arm3.read();
-        statusLabel.setText(getStatusString(arm1Status) + "-" + getStatusString(arm2Status) + "-" + getArm3StatusString(arm3Status));
-        allReady = arm1Status==2 && arm2Status==1 && arm3Status!=2; // arm3 : alleen checken dat hij niet aan het moven is
+        allReady = arm1Status==1 && arm2Status==1 && arm3Status!=2; // arm3 : alleen checken dat hij niet aan het moven is
+        statusLabel.setText(getStatusString(arm1Status) + "-" + getStatusString(arm2Status) + "-" + getArm3StatusString(arm3Status)+":"+allReady);
         Thread.sleep(10);
       } catch (Exception e) {
         e.printStackTrace();
