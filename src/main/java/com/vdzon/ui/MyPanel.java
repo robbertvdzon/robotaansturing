@@ -316,6 +316,15 @@ public class MyPanel extends JPanel {
     return "??";
   }
 
+  private String getArm3StatusString(int status){
+    if (status==0) return "RE";
+    if (status==1) return "RE";
+    if (status==2) return "MO";
+    if (status==3) return "HO";
+    if (status==4) return "ER";
+    return "??";
+  }
+
 
     private void status(){
     while(true) {
@@ -324,8 +333,8 @@ public class MyPanel extends JPanel {
         int arm1Status = arm1.read();
         int arm2Status = arm2.read();
         int arm3Status = arm3.read();
-        statusLabel.setText(getStatusString(arm1Status) + "-" + getStatusString(arm2Status) + "-" + getStatusString(arm3Status));
-        allReady = arm1Status==2 && arm2Status==1 && arm3Status==1;
+        statusLabel.setText(getStatusString(arm1Status) + "-" + getStatusString(arm2Status) + "-" + getArm3StatusString(arm3Status));
+        allReady = arm1Status==2 && arm2Status==1 && arm3Status!=2; // arm3 : alleen checken dat hij niet aan het moven is
         Thread.sleep(10);
       } catch (Exception e) {
         e.printStackTrace();
