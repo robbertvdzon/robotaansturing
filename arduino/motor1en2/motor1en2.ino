@@ -248,10 +248,10 @@ void servo(){
 
 void clamp(){
   Serial.print("clamp");
-  Serial.print("magneet uit, pull aan");
+  Serial.print("magneet aan, pull aan");
   digitalWrite(topSensorPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(100);
+  delay(50);
   Serial.print("magneet aan, pull uit");
   digitalWrite(topSensorPin, HIGH);// magneet
   digitalWrite(stepPin, LOW);// pull
@@ -262,9 +262,9 @@ void clamp(){
 void release(){
   Serial.print("release");
   Serial.print("magneet aan, pull aan");
-  digitalWrite(topSensorPin, HIGH);// magneet
+  digitalWrite(topSensorPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(100);
+  delay(50);
   Serial.print("magneet uit, pull uit");
   digitalWrite(topSensorPin, LOW);// magneet
   digitalWrite(stepPin, LOW);// pull
@@ -290,6 +290,7 @@ void move(){
     home1();
   }
 
+  Serial.println("Start moving");
   state = MOVING;
 
   if (requestedPos>currentPos){
@@ -305,6 +306,7 @@ void move(){
 }
 
 void checkError(){
+
   if (state == HOMING) return;
 
   boolean homeSensorOn = digitalRead(arm1SensorPin)==1;
@@ -320,6 +322,7 @@ void checkError(){
     error = true;
     state = HOMING_NEEDED;
     digitalWrite(enableMotorPin, HIGH);
+    command = '-';
   }
 
   if (error ){
@@ -371,7 +374,7 @@ void moveNrSteps(int totalSteps, int direction){
       tmp = tmp / 100;
       calculatedDelay = (int) tmp;
     }
-    pulse(stepPin, calculatedDelay); // verreken versraging!
+    pulse(stepPin, calculatedDelay); // verreken vertraging!
     currentPos+=direction;
   }
 }
@@ -398,14 +401,14 @@ void home() {
   }
 
   Serial.println("\t move klein stukje omhoog");
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 100; i++) {
       pulse(stepPin,HOME_SPEED);
   }
   
   Serial.println("\t homing finished");
   currentPos = 00;
 
-  finishHome();
+ // finishHome();
 //   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 
 }
@@ -426,15 +429,15 @@ void sleeping() {
   }
 
   digitalWrite(enableMotorPin, HIGH);
-  state = HOMING_NEEDED
+  state = HOMING_NEEDED;
 }
 
 void bootSeq(){
-  for (int i = 0; i < 15; i++) {
+  for (int i = 0; i < 20; i++) {
     digitalWrite(dirPin, HIGH);
-    delay(100);
+    delay(10);
     digitalWrite(dirPin, LOW);
-    delay(100);
+    delay(10);
   }
 }
 
