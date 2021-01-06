@@ -27,6 +27,7 @@ public class MyPanel extends JPanel {
   static GraphicsDevice device = GraphicsEnvironment
       .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
+  private boolean allReady = false;
   private static int ARM1 = 0x5;
   private static int ARM2 = 0x7;
   private static int ARM3 = 0x8;
@@ -320,16 +321,13 @@ public class MyPanel extends JPanel {
     while(true) {
       System.out.println("status");
       try {
-        long startTime = System.currentTimeMillis();
         int arm1Status = arm1.read();
         int arm2Status = arm2.read();
         int arm3Status = arm3.read();
-        long endTime = System.currentTimeMillis();
-        long diff = endTime - startTime;
-        statusLabel.setText(getStatusString(arm1Status) + "-" + getStatusString(arm2Status) + "-" + getStatusString(arm3Status)+":"+diff);
-
-
-      } catch (IOException e) {
+        statusLabel.setText(getStatusString(arm1Status) + "-" + getStatusString(arm2Status) + "-" + getStatusString(arm3Status));
+        allReady = arm1Status==2 && arm2Status==1 && arm3Status==1;
+        Thread.sleep(10);
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
@@ -363,33 +361,35 @@ public class MyPanel extends JPanel {
     Arrays.asList(split).forEach(
         row -> {
           if (row != null && !row.startsWith("#")) {
+            waitUntilReady(100);
+
             if (row.trim().startsWith("pak")){
               clamp();
-              try {
-                Thread.sleep(300);
-              }
-              catch (Exception ex){
-                ex.printStackTrace();
-              }
+//              try {
+//                Thread.sleep(300);
+//              }
+//              catch (Exception ex){
+//                ex.printStackTrace();
+//              }
             }
             else if (row.trim().startsWith("zet")){
               release();
-              try {
-                Thread.sleep(300);
-              }
-              catch (Exception ex){
-                ex.printStackTrace();
-              }
+//              try {
+//                Thread.sleep(300);
+//              }
+//              catch (Exception ex){
+//                ex.printStackTrace();
+//              }
 
             }
             else if (row.trim().startsWith("sleep")){
               sleeping();
-              try {
-                Thread.sleep(300);
-              }
-              catch (Exception ex){
-                ex.printStackTrace();
-              }
+//              try {
+//                Thread.sleep(300);
+//              }
+//              catch (Exception ex){
+//                ex.printStackTrace();
+//              }
 
             }
             else {
@@ -397,31 +397,20 @@ public class MyPanel extends JPanel {
               if (splitWords.length >= 3) {
                 String posArm1 = splitWords[0].trim();
                 String posArm2 = splitWords[1].trim();
-                String posArm3 = splitWords[2].trim();
                 try {
                   int pos1 = Integer.parseInt(posArm1);
                   int pos2 = Integer.parseInt(posArm2);
-                  int pos3 = Integer.parseInt(posArm3);
-                  long totalTime = calcDelays(pos1, pos2);
+//                  long totalTime = calcDelays(pos1, pos2);
 
                   formattedDelayFactor1 = vertragingTextfield.getText();
                   formattedDelayFactor2 = vertragingTextfield.getText();
 
-                  System.out.println("totalTime=" + totalTime);
+//                  System.out.println("totalTime=" + totalTime);
                   System.out.println("formattedDelayFactor1=" + formattedDelayFactor1);
                   System.out.println("formattedDelayFactor2=" + formattedDelayFactor2);
 
                   gotoPos(arm1, pos1, formattedDelayFactor1);
                   gotoPos(arm2, pos2, formattedDelayFactor2);
-
-//                  if (pos3 != lastPos3) {
-//                    int servoTime = 500;
-//                    gotoPosArm3(pos3, servoTime);
-//                    if (totalTime < servoTime)
-//                      totalTime = servoTime;
-//                  }
-//
-                  Thread.sleep(totalTime);
                 } catch (Exception ex) {
                   ex.printStackTrace();
 
@@ -432,6 +421,22 @@ public class MyPanel extends JPanel {
           }
         }
     );
+  }
+
+  private void waitUntilReady(int initialDelay) {
+    sleep(initialDelay);
+    while (!allReady){
+      sleep(10);
+    }
+
+  }
+
+  private void sleep(int initialDelay) {
+    try {
+      Thread.sleep(initialDelay);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   public void fullscreen(){
