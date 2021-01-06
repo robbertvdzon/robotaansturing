@@ -196,7 +196,7 @@ void clamp(){
   Serial.print("magneet aan, pull aan");
   digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(500);
+  delay(100);
   Serial.print("magneet aan, pull uit");
   digitalWrite(dirPin, HIGH);// magneet
   digitalWrite(stepPin, LOW);// pull
@@ -209,7 +209,7 @@ void release(){
   Serial.print("magneet aan, pull aan");
   digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(500);
+  delay(100);
   Serial.print("magneet uit, pull uit");
   digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, LOW);// pull
@@ -255,8 +255,9 @@ void checkError(){
   if (state == HOMING) return;
 
   boolean homeSensorOn = digitalRead(arm1SensorPin)==1;
+  boolean topSensorOn = digitalRead(topSensorPin)==1;
 
-  if (!homeSensorOn){
+  if (!homeSensorOn && !topSensorOn){
     if (error){
       Serial.println("Error fixed");
       error = false;
