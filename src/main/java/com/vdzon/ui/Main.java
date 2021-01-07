@@ -15,7 +15,7 @@ public class Main {
   }
 
   public void start() {
-    System.out.println("Starting..");
+    System.out.println("Starting backend..");
 
     app = Javalin.create(  (config) ->{
         config.enableWebjars();
@@ -30,7 +30,9 @@ public class Main {
 
     RobotAansturing robotAansturing = new RobotAansturingImpl();
     new RestEndpoints().initRestEndpoints(app, robotAansturing);
+    System.out.println("Starting server..");
     app.start(8080);
+    System.out.println("Starting browser..");
     startBrowser();
   }
 

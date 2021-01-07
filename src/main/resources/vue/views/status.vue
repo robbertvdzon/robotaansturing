@@ -1,7 +1,7 @@
 <template id="status">
     <app-frame>
         <div>
-            <div class="content">
+            <div class="myBorder">
             Schaakrobot
         <span>
               <button type="submit" v-on:click="rebuild">rebuild</button>
@@ -30,3 +30,13 @@
     });
 
 </script>
+<style scoped>
+  .myBorder
+  {
+    width : 250px,
+    height : 250px,
+      border: 5px outset red;
+      background-color: lightblue;
+  }
+
+</style>
