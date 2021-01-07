@@ -1,4 +1,4 @@
-package com.vdzon;
+package com.vdzon.berekenarmen;
 
 public class Delays {
   public double delay1;

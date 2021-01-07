@@ -1,5 +1,6 @@
 package com.vdzon;
 
+import com.vdzon.berekenarmen.Delays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
