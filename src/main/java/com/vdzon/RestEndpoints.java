@@ -15,6 +15,7 @@ public class RestEndpoints {
 //    app.get("/", ctx -> ctx.redirect("/index.html"));
     app.post("/move", ctx -> ctx.result("Got move request of " + move(ctx)));
     app.get("/rebuild", ctx -> rebuild());
+    app.get("/restart", ctx -> restart());
   }
 
   private void rebuild() {
@@ -25,6 +26,9 @@ public class RestEndpoints {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+  private void restart() {
+      System.exit(0);
   }
 
 

@@ -5,6 +5,7 @@
             Schaakrobot
         <span>
               <button type="submit" v-on:click="rebuild">rebuild</button>
+              <button type="submit" v-on:click="restart">restart</button>
         </span>
             </div>
         </div>
@@ -25,6 +26,10 @@
             rebuild: function (event) {
                 fetch(`rebuild`)
                     .catch(() => alert("Error while rebuilding"));
+            },
+            restart: function (event) {
+                fetch(`rebuild`)
+                    .catch(() => alert("Error while restart"));
             }
         }
     });

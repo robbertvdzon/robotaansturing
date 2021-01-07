@@ -30,9 +30,9 @@ public class Main {
 
     RobotAansturing robotAansturing = new RobotAansturingImpl();
     new RestEndpoints().initRestEndpoints(app, robotAansturing);
-    System.out.println("Starting browser..");
-    startBrowser();
-    System.out.println("Starting server..");
+    System.out.println("Starting browser");
+//    startBrowser();
+    System.out.println("Starting server");
     app.start(8080);
   }
 
