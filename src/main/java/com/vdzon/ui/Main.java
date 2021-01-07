@@ -4,23 +4,27 @@ import com.vdzon.RestEndpoints;
 import com.vdzon.robot.RobotAansturing;
 import com.vdzon.robot.RobotAansturingImpl;
 import io.javalin.Javalin;
-import java.io.IOException;
 
 public class Main {
 
   Javalin app;
 
   public static void main(String[] args) {
-    new com.vdzon.Main().start();
+    new Main().start();
   }
 
   public void start() {
+    System.out.println("Starting..");
     app = Javalin.create();
     app.enableStaticFiles("/html");
     RobotAansturing robotAansturing = new RobotAansturingImpl();
     new RestEndpoints().initRestEndpoints(app, robotAansturing);
     app.start(8080);
+    startBrowser();
+  }
 
+  private void startBrowser() {
+    System.out.println("Starting browser");
     try {
       String homeDirectory = System.getProperty("user.home");
       Process process;
@@ -29,7 +33,7 @@ public class Main {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
+    System.out.println("Started");
   }
 
   public void stop() {
