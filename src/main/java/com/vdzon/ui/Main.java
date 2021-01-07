@@ -4,6 +4,7 @@ import com.vdzon.RestEndpoints;
 import com.vdzon.robot.RobotAansturing;
 import com.vdzon.robot.RobotAansturingImpl;
 import io.javalin.Javalin;
+import io.javalin.plugin.rendering.vue.VueComponent;
 
 public class Main {
 
@@ -15,8 +16,18 @@ public class Main {
 
   public void start() {
     System.out.println("Starting..");
-    app = Javalin.create();
-    app.enableStaticFiles("/html");
+
+    app = Javalin.create(  (config) ->{
+        config.enableWebjars();
+      config.addStaticFiles("/html");
+    });
+
+//    app = Javalin.create();
+//    app.enableStaticFiles("/html");
+
+    app.get("/", new VueComponent("<status></status>"));
+
+
     RobotAansturing robotAansturing = new RobotAansturingImpl();
     new RestEndpoints().initRestEndpoints(app, robotAansturing);
     app.start(8080);
