@@ -2,7 +2,7 @@
     <app-frame>
         <div>
             <div class="content">
-            Hallo!
+            Schaakrobot
         <span>
               <button type="submit" v-on:click="rebuild">rebuild</button>
         </span>
