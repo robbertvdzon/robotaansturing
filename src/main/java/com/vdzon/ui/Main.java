@@ -39,7 +39,7 @@ public class Main {
     try {
       String homeDirectory = System.getProperty("user.home");
       Process process;
-      process = Runtime.getRuntime().exec(String.format("chromium-browser --start-fullscreen http://localhost:8080/index.html", homeDirectory));
+      process = Runtime.getRuntime().exec(String.format("chromium-browser --start-fullscreen http://localhost:8080/", homeDirectory));
       int exitCode = process.waitFor();
     } catch (Exception e) {
       e.printStackTrace();
