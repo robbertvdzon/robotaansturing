@@ -2,7 +2,7 @@
     <app-frame>
         <div>
             <div class="myBorder">
-            Schaakrobot
+            Schaakrobot, v2
         <span>
               <button type="submit" v-on:click="rebuild">rebuild</button>
               <button type="submit" v-on:click="restart">restart</button>
