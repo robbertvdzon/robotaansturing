@@ -30,23 +30,22 @@ public class Main {
 
     RobotAansturing robotAansturing = new RobotAansturingImpl();
     new RestEndpoints().initRestEndpoints(app, robotAansturing);
-    System.out.println("Starting server..");
-    app.start(8080);
     System.out.println("Starting browser..");
     startBrowser();
+    System.out.println("Starting server..");
+    app.start(8080);
   }
 
   private void startBrowser() {
-    System.out.println("Starting browser");
     try {
       String homeDirectory = System.getProperty("user.home");
       Process process;
       process = Runtime.getRuntime().exec(String.format("chromium-browser --start-fullscreen http://localhost:8080/", homeDirectory));
-      int exitCode = process.waitFor();
+//      int exitCode = process.waitFor();
     } catch (Exception e) {
       e.printStackTrace();
     }
-    System.out.println("Started");
+    System.out.println("Browser started");
   }
 
   public void stop() {
