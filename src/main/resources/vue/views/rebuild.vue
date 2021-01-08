@@ -14,7 +14,7 @@
             <div class="myBorder">
             Status
         <span>
-              <button type="submit" v-on:click="rebuild">rebuild</button>
+              <button type="submit" v-on:click="rebuildapp">rebuild</button>
         </span>
             </div>
         </div>
@@ -32,7 +32,7 @@
         methods: {
             load: function (event) {
             },
-            rebuild: function (event) {
+            rebuildapp: function (event) {
                 fetch(`/api/rebuild`)
                     .catch(() => alert("Error while rebuilding"));
             }
