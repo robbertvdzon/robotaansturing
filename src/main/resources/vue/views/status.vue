@@ -2,20 +2,23 @@
     <app-frame>
 
         <div>
+          <table with="480px">
+            <tr>
+              <td align="left" width="100px">
+                <button type="submit" v-on:click="prev">prev</button>
+              </td>
+              <td width="280px">
 
-          <nav>
-            <ul class="nav nav-pills pull-left">
-              <li role="presentation" ><a href="#" id="statusPrev"><</a></li>
-            </ul>
-            <ul class="nav nav-pills pull-right">
-              <li role="presentation" ><a href="#" id="statusNext">></a></li>
-            </ul>
-          </nav>
-
+              </td>
+              <td width="100px" align="right">
+                <button type="submit" v-on:click="next">next</button>
+              </td>
+            </tr>
+          </table>
               <nettoets-header activebutton="operationallog" title="Status"></nettoets-header>
             <div class="myBorder">
-            Status
-        <span>
+              Status
+            <span>
         </span>
             </div>
         </div>
@@ -33,13 +36,11 @@
         methods: {
             load: function (event) {
             },
-            rebuild: function (event) {
-                fetch(`rebuild`)
-                    .catch(() => alert("Error while rebuilding"));
+            prev: function (event) {
+              window.location.href = "/home";
             },
-            restart: function (event) {
-                fetch(`rebuild`)
-                    .catch(() => alert("Error while restart"));
+            next: function (event) {
+              window.location.href = "/demo";
             }
         }
     });
