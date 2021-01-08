@@ -1,8 +1,9 @@
 <template id="status">
     <app-frame>
         <div>
+              <nettoets-header activebutton="operationallog" title="Nettoets - Audit Log"></nettoets-header>
             <div class="myBorder">
-            Schaakrobot, v2
+            Schaakrobot, v3
         <span>
               <button type="submit" v-on:click="rebuild">rebuild</button>
               <button type="submit" v-on:click="restart">restart</button>
