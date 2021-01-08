@@ -3,8 +3,8 @@
     <div class="header clearfix">
     <nav>
       <ul class="nav nav-pills pull-right">
-        <li role="presentation" v-bind:class = "(activebutton=='operationallog')?'active':''" ><a href="#" id="operationallogpage">Audit log</a></li>
-        <li role="presentation" v-bind:class = "(activebutton=='berekening')?'active':''" ><a href="#" id="berekeningpage">Toets</a></li>
+        <li role="presentation" v-bind:class = "(activebutton=='status')?'active':''" ><a href="#" id="operationallogpage"><</a></li>
+        <li role="presentation" v-bind:class = "(activebutton=='demo')?'active':''" ><a href="#" id="berekeningpage">></a></li>
       </ul>
     </nav>
     <table>
@@ -37,13 +37,10 @@ Vue.component("nettoets-header", {
 
 $(document).ready(function () {
   $("#berekeningpage").click(function () {
-    window.location.href = "/berekening";
-  });
-  $("#auditlogpage").click(function () {
-    window.location.href = "/auditlog";
+    window.location.href = "/demo";
   });
   $("#operationallogpage").click(function () {
-    window.location.href = "/operationallog";
+    window.location.href = "/status";
   });
 });
 

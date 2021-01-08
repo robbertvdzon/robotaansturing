@@ -1,9 +1,9 @@
-<template id="status">
+<template id="demo">
     <app-frame>
         <div>
-              <nettoets-header activebutton="operationallog" title="Status"></nettoets-header>
+              <nettoets-header activebutton="operationallog" title="Demo"></nettoets-header>
             <div class="myBorder">
-            Status
+            Demo
         <span>
               <button type="submit" v-on:click="rebuild">rebuild</button>
               <button type="submit" v-on:click="restart">restart</button>
@@ -13,10 +13,10 @@
     </app-frame>
 </template>
 <script>
-    Vue.component("status", {
-        template: "#status",
+    Vue.component("demo", {
+        template: "#demo",
         data: () => ({
-            status: null,
+            demo: null,
         }),
         created() {
             this.load()

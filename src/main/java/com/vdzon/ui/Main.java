@@ -26,6 +26,8 @@ public class Main {
 //    app.enableStaticFiles("/html");
 
     app.get("/", new VueComponent("<status></status>"));
+    app.get("/demo", new VueComponent("<demo></demo>"));
+    app.get("/status", new VueComponent("<status></status>"));
 
 
     RobotAansturing robotAansturing = new RobotAansturingImpl();
