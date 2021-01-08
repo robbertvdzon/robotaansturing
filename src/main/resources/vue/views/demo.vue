@@ -3,8 +3,10 @@
         <div>
 
           <nav>
-            <ul class="nav nav-pills pull-right">
+            <ul class="nav nav-pills pull-left">
               <li role="presentation" ><a href="#" id="demoPrev"><</a></li>
+            </ul>
+            <ul class="nav nav-pills pull-right">
               <li role="presentation" ><a href="#" id="demoNext">></a></li>
             </ul>
           </nav>

@@ -4,8 +4,10 @@
         <div>
 
           <nav>
-            <ul class="nav nav-pills pull-right">
+            <ul class="nav nav-pills pull-left">
               <li role="presentation" ><a href="#" id="statusPrev"><</a></li>
+            </ul>
+            <ul class="nav nav-pills pull-right">
               <li role="presentation" ><a href="#" id="statusNext">></a></li>
             </ul>
           </nav>

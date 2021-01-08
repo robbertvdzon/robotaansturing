@@ -1,7 +1,7 @@
 <template id="nettoets-header">
   <div class="container">
     <div class="header clearfix">
-    <!--
+
     <table>
       <tr>
         <td>
@@ -14,7 +14,7 @@
         </td>
       </tr>
     </table>
-    -->
+
     </div>
     <robotstatus></robotstatus>
   </div>
