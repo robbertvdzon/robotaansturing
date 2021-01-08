@@ -13,9 +13,9 @@ public class RestEndpoints {
   public void initRestEndpoints(Javalin app, RobotAansturing robotAansturing) {
     this.robotAansturing = robotAansturing;
 //    app.get("/", ctx -> ctx.redirect("/index.html"));
-    app.post("/move", ctx -> ctx.result("Got move request of " + move(ctx)));
-    app.get("/rebuild", ctx -> rebuild());
-    app.get("/restart", ctx -> restart());
+    app.post("/api/move", ctx -> ctx.result("Got move request of " + move(ctx)));
+    app.get("/api/rebuild", ctx -> rebuild());
+    app.get("/api/restart", ctx -> restart());
   }
 
   private void rebuild() {

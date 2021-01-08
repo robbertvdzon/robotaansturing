@@ -1,18 +1,18 @@
-<template id="demo">
+<template id="manual">
     <app-frame>
+
         <div>
 
           <nav>
             <ul class="nav nav-pills pull-right">
-              <li role="presentation" ><a href="#" id="demoPrev"><</a></li>
-              <li role="presentation" ><a href="#" id="demoNext">></a></li>
+              <li role="presentation" ><a href="#" id="manualPrev"><</a></li>
+              <li role="presentation" ><a href="#" id="manualNext">></a></li>
             </ul>
           </nav>
 
-
-              <nettoets-header activebutton="operationallog" title="Demo"></nettoets-header>
+              <nettoets-header activebutton="operationallog" title="Manual"></nettoets-header>
             <div class="myBorder">
-            Demo
+            Status
         <span>
         </span>
             </div>
@@ -20,10 +20,10 @@
     </app-frame>
 </template>
 <script>
-    Vue.component("demo", {
-        template: "#demo",
+    Vue.component("manual", {
+        template: "#manual",
         data: () => ({
-            demo: null,
+            manual: null,
         }),
         created() {
             this.load()
@@ -31,23 +31,23 @@
         methods: {
             load: function (event) {
             },
-            rebuild: function (event) {
-                fetch(`rebuild`)
+            manual: function (event) {
+                fetch(`manual`)
                     .catch(() => alert("Error while rebuilding"));
             },
             restart: function (event) {
-                fetch(`rebuild`)
+                fetch(`manual`)
                     .catch(() => alert("Error while restart"));
             }
         }
     });
 
 $(document).ready(function () {
-  $("#demoPrev").click(function () {
-    window.location.href = "/status";
-  });
-  $("#demoNext").click(function () {
+  $("#manualPrev").click(function () {
     window.location.href = "/rebuild";
+  });
+  $("#manualNext").click(function () {
+    window.location.href = "/home";
   });
 });
 

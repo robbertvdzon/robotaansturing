@@ -1,12 +1,19 @@
 <template id="status">
     <app-frame>
+
         <div>
+
+          <nav>
+            <ul class="nav nav-pills pull-right">
+              <li role="presentation" ><a href="#" id="statusPrev"><</a></li>
+              <li role="presentation" ><a href="#" id="statusNext">></a></li>
+            </ul>
+          </nav>
+
               <nettoets-header activebutton="operationallog" title="Status"></nettoets-header>
             <div class="myBorder">
             Status
         <span>
-              <button type="submit" v-on:click="rebuild">rebuild</button>
-              <button type="submit" v-on:click="restart">restart</button>
         </span>
             </div>
         </div>
@@ -34,6 +41,15 @@
             }
         }
     });
+
+$(document).ready(function () {
+  $("#statusPrev").click(function () {
+    window.location.href = "/home";
+  });
+  $("#statusNext").click(function () {
+    window.location.href = "/demo";
+  });
+});
 
 </script>
 <style scoped>

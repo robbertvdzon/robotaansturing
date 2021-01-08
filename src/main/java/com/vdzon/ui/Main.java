@@ -28,6 +28,9 @@ public class Main {
     app.get("/", new VueComponent("<status></status>"));
     app.get("/demo", new VueComponent("<demo></demo>"));
     app.get("/status", new VueComponent("<status></status>"));
+    app.get("/manual", new VueComponent("<manual></manual>"));
+    app.get("/home", new VueComponent("<home></home>"));
+    app.get("/rebuild", new VueComponent("<rebuild></rebuild>"));
 
 
     RobotAansturing robotAansturing = new RobotAansturingImpl();

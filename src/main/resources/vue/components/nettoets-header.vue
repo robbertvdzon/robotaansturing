@@ -1,12 +1,6 @@
 <template id="nettoets-header">
   <div class="container">
     <div class="header clearfix">
-    <nav>
-      <ul class="nav nav-pills pull-right">
-        <li role="presentation" v-bind:class = "(activebutton=='status')?'active':''" ><a href="#" id="operationallogpage"><</a></li>
-        <li role="presentation" v-bind:class = "(activebutton=='demo')?'active':''" ><a href="#" id="berekeningpage">></a></li>
-      </ul>
-    </nav>
     <table>
       <tr>
         <td>
@@ -16,17 +10,11 @@
         </td>
         <td>
           <h3 class="header_title" id="header_title" name="header_title">{{ title }}</h3>
-
         </td>
       </tr>
     </table>
-      <div style="display: flex; justify-content: flex-end">
-        <div>
-          {{$javalin.state.currentUser}}
-          <a href="/authentication_logout" ><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-        </div>
-      </div>
     </div>
+    <robotstatus></robotstatus>
   </div>
 </template>
 

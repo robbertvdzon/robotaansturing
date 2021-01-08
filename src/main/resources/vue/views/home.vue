@@ -1,29 +1,31 @@
-<template id="demo">
+<template id="home">
     <app-frame>
+
         <div>
 
           <nav>
             <ul class="nav nav-pills pull-right">
-              <li role="presentation" ><a href="#" id="demoPrev"><</a></li>
-              <li role="presentation" ><a href="#" id="demoNext">></a></li>
+              <li role="presentation" ><a href="#" id="homePrev"><</a></li>
+              <li role="presentation" ><a href="#" id="homeNext">></a></li>
             </ul>
           </nav>
 
-
-              <nettoets-header activebutton="operationallog" title="Demo"></nettoets-header>
+              <nettoets-header activebutton="operationallog" title="Home"></nettoets-header>
             <div class="myBorder">
-            Demo
+            Status
         <span>
+              <button type="submit" v-on:click="home">home vertical</button>
+              <button type="submit" v-on:click="restart">home horizontal</button>
         </span>
             </div>
         </div>
     </app-frame>
 </template>
 <script>
-    Vue.component("demo", {
-        template: "#demo",
+    Vue.component("home", {
+        template: "#home",
         data: () => ({
-            demo: null,
+            home: null,
         }),
         created() {
             this.load()
@@ -31,23 +33,23 @@
         methods: {
             load: function (event) {
             },
-            rebuild: function (event) {
-                fetch(`rebuild`)
+            home: function (event) {
+                fetch(`home`)
                     .catch(() => alert("Error while rebuilding"));
             },
             restart: function (event) {
-                fetch(`rebuild`)
+                fetch(`home`)
                     .catch(() => alert("Error while restart"));
             }
         }
     });
 
 $(document).ready(function () {
-  $("#demoPrev").click(function () {
-    window.location.href = "/status";
+  $("#homePrev").click(function () {
+    window.location.href = "/manual";
   });
-  $("#demoNext").click(function () {
-    window.location.href = "/rebuild";
+  $("#homeNext").click(function () {
+    window.location.href = "/status";
   });
 });
 

@@ -1,29 +1,30 @@
-<template id="demo">
+<template id="rebuild">
     <app-frame>
+
         <div>
 
           <nav>
             <ul class="nav nav-pills pull-right">
-              <li role="presentation" ><a href="#" id="demoPrev"><</a></li>
-              <li role="presentation" ><a href="#" id="demoNext">></a></li>
+              <li role="presentation" ><a href="#" id="rebuildPrev"><</a></li>
+              <li role="presentation" ><a href="#" id="rebuildNext">></a></li>
             </ul>
           </nav>
 
-
-              <nettoets-header activebutton="operationallog" title="Demo"></nettoets-header>
+              <nettoets-header activebutton="operationallog" title="Rebuild"></nettoets-header>
             <div class="myBorder">
-            Demo
+            Status
         <span>
+              <button type="submit" v-on:click="rebuild">rebuild</button>
         </span>
             </div>
         </div>
     </app-frame>
 </template>
 <script>
-    Vue.component("demo", {
-        template: "#demo",
+    Vue.component("rebuild", {
+        template: "#rebuild",
         data: () => ({
-            demo: null,
+            rebuild: null,
         }),
         created() {
             this.load()
@@ -32,22 +33,18 @@
             load: function (event) {
             },
             rebuild: function (event) {
-                fetch(`rebuild`)
+                fetch(`/api/rebuild`)
                     .catch(() => alert("Error while rebuilding"));
-            },
-            restart: function (event) {
-                fetch(`rebuild`)
-                    .catch(() => alert("Error while restart"));
             }
         }
     });
 
 $(document).ready(function () {
-  $("#demoPrev").click(function () {
-    window.location.href = "/status";
+  $("#rebuildPrev").click(function () {
+    window.location.href = "/demo";
   });
-  $("#demoNext").click(function () {
-    window.location.href = "/rebuild";
+  $("#rebuildNext").click(function () {
+    window.location.href = "/manual";
   });
 });
 
