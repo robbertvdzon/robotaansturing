@@ -24,8 +24,7 @@ import javax.swing.JTextField;
 
 public class MyPanel extends JPanel {
 
-  static GraphicsDevice device = GraphicsEnvironment
-      .getLocalGraphicsEnvironment().getScreenDevices()[0];
+  static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 
   private boolean allReady = false;
   private static int ARM1 = 0x5;
@@ -205,14 +204,14 @@ public class MyPanel extends JPanel {
     }
 
     {
-      JButton button = new JButton("pak");
-      button.setBounds(525, 270, 100, 40);
+      JButton button = new JButton("p");
+      button.setBounds(120, 120, 40, 40);
       button.addActionListener(e -> clamp());
       mainFrame.add(button);
     }
     {
-      JButton button = new JButton("zet");
-      button.setBounds(630, 270, 100, 40);
+      JButton button = new JButton("z");
+      button.setBounds(165, 120, 40, 40);
       button.addActionListener(e -> release());
       mainFrame.add(button);
     }
@@ -242,13 +241,13 @@ public class MyPanel extends JPanel {
       textArea.setText(loadFile());
       {
         JButton button = new JButton("save");
-        button.setBounds(315, 270, 100, 40);
+        button.setBounds(315, 260, 100, 20);
         button.addActionListener(e -> saveToFile(textArea.getText()));
         mainFrame.add(button);
       }
       {
         JButton button = new JButton("run once");
-        button.setBounds(315, 320, 100, 40);
+        button.setBounds(315, 285, 100, 20);
         button.addActionListener(e -> runOnceInThread(textArea.getText()));
         mainFrame.add(button);
       }
@@ -450,7 +449,6 @@ public class MyPanel extends JPanel {
 
   public void fullscreen(){
     device.setFullScreenWindow(mainFrame);
-
   }
 
   public long calcDelays(int pos1, int pos2) {

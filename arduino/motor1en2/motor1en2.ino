@@ -44,10 +44,10 @@ send: state + pos
 #define HOME_SPEED 120
 
 #define dirPin 3
-#define stepPin 8
+#define stepPin 4 // 8
 #define stepsPerRevolution 2000
 #define arm1SensorPin 6
-#define topSensorPin 4 
+#define topSensorPin 8 //4 
 #define enableMotorPin 5
 #define errorPin 9
 #define adressPin1 10
