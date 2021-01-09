@@ -124,7 +124,7 @@
                         <addClasspath>true</addClasspath>
                         <classpathPrefix>libs/</classpathPrefix>
                         <mainClass>
-                          com.vdzon.ui.MainWeb
+                          com.vdzon.ui.Main
                         </mainClass>
                     </manifest>
                 </archive>
