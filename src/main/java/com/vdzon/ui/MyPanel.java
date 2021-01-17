@@ -76,7 +76,7 @@ public class MyPanel extends JPanel {
     bExit.addActionListener(e -> System.exit(0));
     mainFrame.add(bExit);
 
-    ipLabel.setBounds(10, 70, 100, 40);
+    ipLabel.setBounds(10, 70, 200, 40);
     mainFrame.add(ipLabel);
 
     status1Label.setBounds(10, 90, 100, 40);
