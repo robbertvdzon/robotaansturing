@@ -57,7 +57,7 @@ public class MyPanel extends JPanel {
 
   public MyPanel() {
     System.out.println("Starting");
-//    init();
+    init();
 
     mainFrame = new JFrame("Schaakrobot v1.6");
 
@@ -372,20 +372,20 @@ public class MyPanel extends JPanel {
 //    return "123";
 //  }
 //
-//  public void init() {
-//    if (arm1 != null) { return; }
-//    try {
-//      I2CBus i2c = I2CFactory.getInstance(I2CBus.BUS_1);
-//      arm1 = i2c.getDevice(ARM1);
-//      arm2 = i2c.getDevice(ARM2);
-//      arm3 = i2c.getDevice(ARM3);
-//    } catch (UnsupportedBusNumberException e) {
-//      System.out.println("ERROR, UnsupportedBusNumberException in init");
-//    } catch (IOException e) {
-//      System.out.println("ERROR IOException in init:" + e.getMessage());
-//    }
-//
-//  }
+  public void init() {
+    if (arm1 != null) { return; }
+    try {
+      I2CBus i2c = I2CFactory.getInstance(I2CBus.BUS_1);
+      arm1 = i2c.getDevice(ARM1);
+      arm2 = i2c.getDevice(ARM2);
+      arm3 = i2c.getDevice(ARM3);
+    } catch (UnsupportedBusNumberException e) {
+      System.out.println("ERROR, UnsupportedBusNumberException in init");
+    } catch (IOException e) {
+      System.out.println("ERROR IOException in init:" + e.getMessage());
+    }
+
+  }
 //
 //  private void gotoPos(JTextField tf, I2CDevice arm, int increment) {
 //    int pos = Integer.parseInt(tf.getText());
