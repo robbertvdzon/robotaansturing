@@ -2,7 +2,7 @@
 difference(){
 	union(){ 
         translate([0,0,0]){
-           cube([65,15,3], center=false);
+           cube([63,13,3], center=false);
         }                
 	}
 	union() {

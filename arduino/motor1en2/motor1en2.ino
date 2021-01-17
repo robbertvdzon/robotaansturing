@@ -105,8 +105,10 @@ void setup() {
   // show that we have been restarted
   bootSeq();
 
-  digitalWrite(enableMotorPin, HIGH);
-  digitalWrite(topSensorPin, LOW);
+  digitalWrite(dirPin, LOW);
+  digitalWrite(stepPin, LOW);
+  digitalWrite(enableMotorPin, LOW);
+  digitalWrite(errorPin, LOW);
 
 
 }
@@ -197,7 +199,7 @@ void clamp(){
   Serial.print("magneet aan, pull aan");
   digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(100);
+  delay(500);
   Serial.print("magneet aan, pull uit");
   digitalWrite(dirPin, HIGH);// magneet
   digitalWrite(stepPin, LOW);// pull
@@ -212,7 +214,7 @@ void release(){
   Serial.print("magneet aan, pull aan");
   digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, HIGH);// pull
-  delay(100);
+  delay(500);
   Serial.print("magneet uit, pull uit");
   digitalWrite(dirPin, LOW);// magneet
   digitalWrite(stepPin, LOW);// pull
@@ -403,12 +405,12 @@ void beep(){
 
 
 
-void pulse(int pin, long delay){
+void pulse(int pin, long delaytime){
     checkError();
     if (!error){
       digitalWrite(pin, HIGH);
-      delayMicroseconds(delay);
+      delayMicroseconds(delaytime);
       digitalWrite(pin, LOW);
-      delayMicroseconds(delay);
+      delayMicroseconds(delaytime);
     }
 }

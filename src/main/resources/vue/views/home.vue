@@ -14,8 +14,8 @@
             <div class="myBorder">
             Status
         <span>
-              <button type="submit" v-on:click="home">home vertical</button>
-              <button type="submit" v-on:click="restart">home horizontal</button>
+              <button type="submit" v-on:click="home_vert">home vertical</button>
+              <button type="submit" v-on:click="home_hor">home horizontal</button>
         </span>
             </div>
         </div>
@@ -33,13 +33,13 @@
         methods: {
             load: function (event) {
             },
-            home: function (event) {
-                fetch(`home`)
-                    .catch(() => alert("Error while rebuilding"));
+            home_vert: function (event) {
+                fetch(`/api/home_vert`)
+                    .catch(() => alert("Error home vert"));
             },
-            restart: function (event) {
-                fetch(`home`)
-                    .catch(() => alert("Error while restart"));
+            home_hor: function (event) {
+                fetch(`/api/home_hor`)
+                    .catch(() => alert("Error home hor"));
             }
         }
     });
