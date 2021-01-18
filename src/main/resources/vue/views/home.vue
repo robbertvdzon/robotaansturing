@@ -70,10 +70,8 @@ $(document).ready(function () {
 </script>
 <style scoped>
 .myBorder {
-  width: 250px,
-  height: 250px,
-  border: 5px outset red;
-  background-color: lightblue;
+  color: white;
+  background-color: #4d6b85;
 }
 
 </style>

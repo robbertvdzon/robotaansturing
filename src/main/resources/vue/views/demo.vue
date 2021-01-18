@@ -4,8 +4,8 @@
 
       <nav>
         <ul class="nav nav-pills pull-right">
-          <li role="presentation"><a href="#" id="homePrev"><</a></li>
-          <li role="presentation"><a href="#" id="homeNext">></a></li>
+          <li role="presentation"><a href="#" id="demoPrev"><</a></li>
+          <li role="presentation"><a href="#" id="demoNext">></a></li>
         </ul>
       </nav>
 
@@ -54,10 +54,8 @@ $(document).ready(function () {
 </script>
 <style scoped>
 .myBorder {
-  width: 250px,
-  height: 250px,
-  border: 5px outset red;
-  background-color: lightblue;
+  color: white;
+  background-color: #4d6b85;
 }
 
 </style>

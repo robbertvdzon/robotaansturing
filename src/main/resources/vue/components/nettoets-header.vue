@@ -5,7 +5,7 @@
     <table>
       <tr>
         <td>
-          <img _ngcontent-byh-c1="" alt="Liander Logo" width="100px" src="/logo_liander.hd.png">
+          <img _ngcontent-byh-c1="" alt="Liander Logo" width="100px" src="/logo.png">
         </td>
         <td width="20px">
         </td>
@@ -16,7 +16,6 @@
     </table>
 
     </div>
-    <robotstatus></robotstatus>
   </div>
 </template>
 

@@ -4,26 +4,23 @@ import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
-import com.vdzon.BerekenVersnelling;
-import com.vdzon.berekenarmen.Delays;
+import java.awt.Color;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Enumeration;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class MyPanel extends JPanel {
@@ -49,6 +46,7 @@ public class MyPanel extends JPanel {
   final JTextField tfArm1 = new JTextField();
   final JTextField tfArm2 = new JTextField();
   JFrame mainFrame = null;
+
   JLabel ipLabel = new JLabel("ip");
   JLabel status1Label = new JLabel("status arm1");
   JLabel status2Label = new JLabel("status arm2");
@@ -63,18 +61,33 @@ public class MyPanel extends JPanel {
 
     mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     mainFrame.getContentPane().add(this);
+    mainFrame.getContentPane().setBackground( Color.WHITE );
     mainFrame.pack();
     mainFrame.setLocationByPlatform(true);
 
     JButton b = new JButton("Restart & Update");
-    b.setBounds(5, 20, 200, 40);
+    b.setBounds(65, 20, 200, 40);
     b.addActionListener(e -> updateAndRestart());
     mainFrame.add(b);
 
-    JButton bExit = new JButton("Restart");
-    bExit.setBounds(210, 20, 200, 40);
+    JButton bExit = new JButton("Exit");
+    bExit.setBounds(270, 20, 200, 40);
     bExit.addActionListener(e -> System.exit(0));
     mainFrame.add(bExit);
+
+
+
+    try {
+      BufferedImage read = ImageIO.read(getClass().getResource("/logo.jpg"));
+      ImageIcon icon = new ImageIcon(read);
+      JLabel imageLabel = new JLabel(icon);
+      imageLabel.setBounds(5, 20, 60, 60);
+      mainFrame.add(imageLabel);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
 
     ipLabel.setBounds(10, 70, 200, 40);
     mainFrame.add(ipLabel);
