@@ -68,6 +68,26 @@ public class RobotAansturingImpl implements RobotAansturing {
 
   }
 
+  @Override
+  public void clamp(){
+    System.out.println("clamp");
+    try {
+        arm3.write("^C0000000000000000".getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void release(){
+    System.out.println("release");
+    try {
+        arm3.write("^R0000000000000000".getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 
   private void home(I2CDevice arm) {
     try {

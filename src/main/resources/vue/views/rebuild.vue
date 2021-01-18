@@ -1,43 +1,43 @@
 <template id="rebuild">
-    <app-frame>
+  <app-frame>
 
-        <div>
+    <div>
 
-          <nav>
-            <ul class="nav nav-pills pull-right">
-              <li role="presentation" ><a href="#" id="rebuildPrev"><</a></li>
-              <li role="presentation" ><a href="#" id="rebuildNext">></a></li>
-            </ul>
-          </nav>
+      <nav>
+        <ul class="nav nav-pills pull-right">
+          <li role="presentation"><a href="#" id="homePrev"><</a></li>
+          <li role="presentation"><a href="#" id="homeNext">></a></li>
+        </ul>
+      </nav>
 
-              <nettoets-header activebutton="operationallog" title="Rebuild"></nettoets-header>
-            <div class="myBorder">
-            Status
+      <nettoets-header activebutton="operationallog" title="Rebuild"></nettoets-header>
+      <div class="myBorder">
+        Status
         <span>
               <button type="submit" v-on:click="rebuildapp">rebuild</button>
         </span>
-            </div>
-        </div>
-    </app-frame>
+      </div>
+    </div>
+  </app-frame>
 </template>
 <script>
-    Vue.component("rebuild", {
-        template: "#rebuild",
-        data: () => ({
-            rebuild: null,
-        }),
-        created() {
-            this.load()
-        },
-        methods: {
-            load: function (event) {
-            },
-            rebuildapp: function (event) {
-                fetch(`/api/rebuild`)
-                    .catch(() => alert("Error while rebuilding"));
-            }
-        }
-    });
+Vue.component("rebuild", {
+  template: "#rebuild",
+  data: () => ({
+    rebuild: null,
+  }),
+  created() {
+    this.load()
+  },
+  methods: {
+    load: function (event) {
+    },
+    rebuildapp: function (event) {
+      fetch(`/api/rebuild`)
+      .catch(() => alert("Error while rebuilding"));
+    }
+  }
+});
 
 $(document).ready(function () {
   $("#rebuildPrev").click(function () {
@@ -50,12 +50,11 @@ $(document).ready(function () {
 
 </script>
 <style scoped>
-  .myBorder
-  {
-    width : 250px,
-    height : 250px,
-      border: 5px outset red;
-      background-color: lightblue;
-  }
+.myBorder {
+  width: 250px,
+  height: 250px,
+  border: 5px outset red;
+  background-color: lightblue;
+}
 
 </style>

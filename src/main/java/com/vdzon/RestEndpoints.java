@@ -16,8 +16,10 @@ public class RestEndpoints {
     app.post("/api/move", ctx -> ctx.result("Got move request of " + move(ctx)));
     app.get("/api/rebuild", ctx -> rebuild());
     app.get("/api/restart", ctx -> restart());
-    app.get("/api/home_vert", ctx -> home_vert());
-    app.get("/api/home_hor", ctx -> home_hor());
+    app.get("/api/home_vert", ctx -> robotAansturing.homeVert());
+    app.get("/api/home_hor", ctx -> robotAansturing.homeHor());
+    app.get("/api/clamp", ctx -> robotAansturing.clamp());
+    app.get("/api/release", ctx -> robotAansturing.release());
   }
 
   private void rebuild() {
@@ -32,14 +34,6 @@ public class RestEndpoints {
   private void restart() {
       System.exit(0);
   }
-
-  private void home_vert() {
-    robotAansturing.homeVert();
-  }
-  private void home_hor() {
-    robotAansturing.homeHor();
-  }
-
 
   private String move(Context ctx) {
     return "";
