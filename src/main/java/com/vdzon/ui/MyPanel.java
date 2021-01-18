@@ -218,7 +218,7 @@ public class MyPanel extends JPanel {
         status2Label.setText(getStatusString(arm2Status));
         status3Label.setText(getArm3StatusString(arm3Status));
         status4Label.setText("ready:"+allReady);
-        Thread.sleep(10);
+        Thread.sleep(300);
       } catch (Exception e) {
         e.printStackTrace();
       }
