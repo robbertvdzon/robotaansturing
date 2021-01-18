@@ -55,8 +55,8 @@ public class BerekenVersnelling {
     double tijd1 = berekenTijd(pulses1);
     double tijd2 = berekenTijd(pulses2);
     double tijd = Math.max(tijd1, tijd2);
-    if (tijd<2000){
-      tijd = 2000;
+    if (tijd<100){
+      tijd = 100;
     }
 
     double doubleDiff1 = tijd-tijd1;
