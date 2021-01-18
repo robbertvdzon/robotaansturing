@@ -12,7 +12,7 @@
 
       <nettoets-header activebutton="operationallog" title="Manual"></nettoets-header>
       <div class="myBorder">
-        Status
+        Manual actions
         <span>
         </span>
       </div>

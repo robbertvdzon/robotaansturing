@@ -12,7 +12,7 @@
 
       <nettoets-header activebutton="operationallog" title="Home"></nettoets-header>
       <div class="myBorder">
-        Status
+        Homing
       </div>
       <span>
               <button type="submit" v-on:click="home_vert">home vertical</button>

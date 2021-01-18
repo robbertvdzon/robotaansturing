@@ -12,11 +12,11 @@
 
       <nettoets-header activebutton="operationallog" title="Rebuild"></nettoets-header>
       <div class="myBorder">
-        Status
-        <span>
+        Update software
+      </div>
+      <span>
               <button type="submit" v-on:click="rebuildapp">rebuild</button>
         </span>
-      </div>
     </div>
   </app-frame>
 </template>
