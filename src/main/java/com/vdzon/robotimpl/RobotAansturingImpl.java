@@ -4,6 +4,8 @@ import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
+import com.vdzon.BerekenVersnelling;
+import com.vdzon.berekenarmen.Delays;
 import com.vdzon.robitapi.RobotAansturing;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -57,8 +59,9 @@ public class RobotAansturingImpl implements RobotAansturing {
 
   @Override
   public void moveto(int x, int y) {
-    gotoPos(arm1,x);
-    gotoPos(arm2,y);
+    calcDelays(x,y);
+    gotoPos(arm1,x, formattedDelayFactor1);
+    gotoPos(arm2,y, formattedDelayFactor2);
 
   }
 
@@ -80,9 +83,9 @@ public class RobotAansturingImpl implements RobotAansturing {
   }
 
 
-  public void gotoPos(I2CDevice arm, int pos) {
-    gotoPos(arm, pos, "0100");
-  }
+//  public void gotoPos(I2CDevice arm, int pos) {
+//    gotoPos(arm, pos, "0100");
+//  }
 
 
   public void gotoPos(I2CDevice arm, int pos, String vertraging) {
@@ -159,5 +162,22 @@ public class RobotAansturingImpl implements RobotAansturing {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public long calcDelays(int pos1, int pos2) {
+    int pulses1 = Math.abs(pos1 - lastPos1);
+    int pulses2 = Math.abs(pos2 - lastPos2);
+
+    Delays delays = BerekenVersnelling.calcDelays(pulses1, pulses2);
+
+    double delayFactor1 = pulses1 == 0 ? 1  : delays.delay1;
+    double delayFactor2 = pulses2 == 0 ? 1  : delays.delay2;
+
+    if (delayFactor1>9999) delayFactor1 = 9999;
+    if (delayFactor2>9999) delayFactor2 = 9999;
+
+    formattedDelayFactor1 = String.format("%04d", (int)delayFactor1);
+    formattedDelayFactor2 = String.format("%04d", (int)delayFactor2);
+    return delays.totalTime;
   }
 }
