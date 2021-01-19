@@ -118,6 +118,7 @@ public class RobotAansturingClient implements RobotAansturing {
 //        Header headers = entity.getContentType();
 //        System.out.println(headers);
 //
+
         if (entity != null) {
           // return it as a String
           String result = EntityUtils.toString(entity);
