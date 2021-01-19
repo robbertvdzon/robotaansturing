@@ -24,7 +24,7 @@ public class RobotAansturingClient implements RobotAansturing {
 
   @Override
   public void moveto(int x, int y) {
-    get(host+"/api/move/"+x+"/"+y);
+    post(host+"/api/move",x+","+y);
   }
 
   @Override

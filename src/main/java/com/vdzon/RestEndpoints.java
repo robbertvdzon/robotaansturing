@@ -9,7 +9,7 @@ public class RestEndpoints {
 
   public void initRestEndpoints(Javalin app, RobotAansturing robotAansturing) {
     this.robotAansturing = robotAansturing;
-    app.get("/api/move/:x/:y", ctx -> move(ctx.pathParam("x"), ctx.pathParam("y")));
+    app.post("/api/move", ctx -> move(ctx.body()));
     app.get("/api/rebuild", ctx -> robotAansturing.rebuild());
     app.get("/api/restart", ctx -> robotAansturing.restart());
     app.get("/api/home_vert", ctx -> robotAansturing.homeVert());
@@ -28,8 +28,9 @@ public class RestEndpoints {
     app.get("/api/stopdemo", ctx -> robotAansturing.stopDemo());
   }
 
-  private void move(String x, String y) {
-    robotAansturing.moveto(Integer.valueOf(x), Integer.valueOf(y));
+  private void move(String body) {
+    String[] split = body.split(",");
+    robotAansturing.moveto(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
   }
 
 

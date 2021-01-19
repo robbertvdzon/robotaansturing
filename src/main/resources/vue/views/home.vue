@@ -29,11 +29,25 @@
               <button type="submit" v-on:click="move3">Pos3</button>
               <button type="submit" v-on:click="move4">Pos4</button>
        </span>
-      <button type="submit" v-on:click="getDemo">getDemo</button>
+      <br><br>
+      <button type="submit" v-on:click="saveDemo">saveDemo</button>
       <button type="submit" v-on:click="startDemoOnce">start Demo once</button>
       <button type="submit" v-on:click="startDemoLoop">start Demo loop</button>
       <button type="submit" v-on:click="stopDemo">stop Demo</button>
       <br>
+      Manual pos:
+      <input v-model="pos" >
+      <button type="submit" v-on:click="move">move</button>
+      <br>
+      A8:
+      <input v-model="a8pos" >
+      <button type="submit" v-on:click="saveA8">Save</button>
+      <br>
+      H1:
+      <input v-model="h1pos" >
+      <button type="submit" v-on:click="saveH1">Save</button>
+      <br>
+      <textarea v-model="demo" rows="10" cols="20"></textarea>
     </div>
   </app-frame>
 </template>
@@ -42,32 +56,67 @@ Vue.component("home", {
   template: "#home",
   data: () => ({
     home: null,
+    demo:"hoi",
+    pos:"1000,1000",
+    a8pos:"",
+    h1pos:""
   }),
   created() {
     this.load()
   },
   methods: {
     load: function (event) {
+      fetch(`/api/demo`)
+      .then(res => res.text())
+      .then(text => this.demo=text)
+      .catch(() => alert("Error"));
+
+      fetch(`/api/a8`)
+      .then(res => res.text())
+      .then(text => this.a8pos=text)
+      .catch(() => alert("Error"));
+
+      fetch(`/api/h1`)
+      .then(res => res.text())
+      .then(text => this.h1pos=text)
+      .catch(() => alert("Error"));
+
     },
     home_vert: function (event) {
       fetch(`/api/home_vert`)
       .catch(() => alert("Error"));
     },
     move1: function (event) {
-      fetch(`/api/move/3000/11000`)
-      .catch(() => alert("Error"));
+      axios.post(`/api/move`, "3000x11000")
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
     },
     move2: function (event) {
-      fetch(`/api/move/10000/3000`)
-      .catch(() => alert("Error"));
+      axios.post(`/api/move`, "10000x3000")
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
     },
     move3: function (event) {
-      fetch(`/api/move/13000/13000`)
-      .catch(() => alert("Error"));
+      axios.post(`/api/move`, "13000x13000")
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
     },
     move4: function (event) {
-      fetch(`/api/move/1000/1000`)
-      .catch(() => alert("Error"));
+      axios.post(`/api/move`, "1000x1000")
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
     },
     home_hor: function (event) {
       fetch(`/api/home_hor`)
@@ -81,16 +130,48 @@ Vue.component("home", {
       fetch(`/api/release`)
       .catch(() => alert("Error"));
     },
+    saveDemo: function (event) {
+      axios.post(`/api/demo`, this.demo)
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
+    },
+    move: function (event) {
+      axios.post(`/api/move`, this.pos)
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
+    },
+    saveA8: function (event) {
+      axios.post(`/api/a8`, this.a8pos)
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
+    },
+    saveH1: function (event) {
+      axios.post(`/api/h1`, this.h1pos)
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
+    },
     startDemoOnce: function (event) {
-      fetch(`/api/startDemoOnce`)
+      fetch(`/api/startdemoonce`)
       .catch(() => alert("Error"));
     },
     startDemoLoop: function (event) {
-      fetch(`/api/startDemoLoop`)
+      fetch(`/api/startdemoloop`)
       .catch(() => alert("Error"));
     },
     stopDemo: function (event) {
-      fetch(`/api/stopDemo`)
+      fetch(`/api/stopdemo`)
       .catch(() => alert("Error"));
     }
 

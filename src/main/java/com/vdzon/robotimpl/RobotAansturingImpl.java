@@ -62,7 +62,7 @@ public class RobotAansturingImpl implements RobotAansturing {
     calcDelays(x,y);
     gotoPos(arm1,x, formattedDelayFactor1);
     gotoPos(arm2,y, formattedDelayFactor2);
-
+    waitUntilReady(100);
   }
 
   @Override
@@ -243,7 +243,7 @@ public class RobotAansturingImpl implements RobotAansturing {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return "123";
+    return "1000,1000";
   }
 
   private void udateStatus(){
