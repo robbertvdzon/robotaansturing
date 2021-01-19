@@ -139,6 +139,7 @@ public class RobotAansturingImpl implements RobotAansturing {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    waitUntilReady(100);
   }
 
 
@@ -172,6 +173,7 @@ public class RobotAansturingImpl implements RobotAansturing {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    waitUntilReady(100);
   }
 
   @Override
@@ -182,6 +184,7 @@ public class RobotAansturingImpl implements RobotAansturing {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    waitUntilReady(100);
   }
 
   @Override
@@ -362,6 +365,11 @@ public class RobotAansturingImpl implements RobotAansturing {
             }
             else if (row.trim().startsWith("sleep")){
               sleep();
+            }
+            else if (row.trim().startsWith("home")){
+              homeHor();
+              homeVert();
+              waitUntilReady(100);
             }
             else {
               String[] splitWords = row.split(",");
