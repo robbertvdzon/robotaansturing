@@ -201,20 +201,20 @@ public class MyPanel extends JPanel {
   }
 
   private String getStatusString(int status){
-    if (status==0) return "HN";
-    if (status==1) return "RE";
-    if (status==2) return "MO";
-    if (status==3) return "HO";
-    if (status==4) return "ER";
+    if (status==0) return "Homing needed";
+    if (status==1) return "Ready";
+    if (status==2) return "Moving";
+    if (status==3) return "Homing";
+    if (status==4) return "Error";
+    if (status==5) return "Going to sleep";
+    if (status==6) return "Sleeping";
     return "??";
   }
 
   private String getArm3StatusString(int status){
-    if (status==0) return "RE";
-    if (status==1) return "RE";
-    if (status==2) return "MO";
-    if (status==3) return "HO";
-    if (status==4) return "ER";
+    if (status==1) return "Ready";
+    if (status==2) return "Grabbing";
+    if (status==3) return "Releasing";
     return "??";
   }
 
