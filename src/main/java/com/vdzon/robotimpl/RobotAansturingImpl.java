@@ -58,6 +58,59 @@ public class RobotAansturingImpl implements RobotAansturing {
 
 
   @Override
+  public void movetoVlak(String vlak) {
+    System.out.println("move to vlak "+vlak);
+    String posA8 = getA8();
+    String posH1 = getH1();
+    int xa = Integer.parseInt(posA8.split(",")[0]);
+    int xh = Integer.parseInt(posH1.split(",")[0]);
+    int y8 = Integer.parseInt(posA8.split(",")[1]);
+    int y1 = Integer.parseInt(posH1.split(",")[1]);
+
+    int xDelta = (xa-xh)/7;
+    int yDelta = (y8-y1)/7;
+
+    System.out.println("xDelta="+xDelta);
+    System.out.println("yDelta="+yDelta);
+
+    char letter = vlak.toUpperCase().charAt(0);
+    char cijfer = vlak.toUpperCase().charAt(1);
+
+    System.out.println("letter="+letter);
+    System.out.println("cijfer="+cijfer);
+
+    int x = xa;
+    if (letter=='A') x = xa;
+    if (letter=='B') x = xa-xDelta*1;
+    if (letter=='C') x = xa-xDelta*2;
+    if (letter=='D') x = xa-xDelta*3;
+    if (letter=='E') x = xa-xDelta*4;
+    if (letter=='F') x = xa-xDelta*5;
+    if (letter=='G') x = xa-xDelta*6;
+    if (letter=='H') x = xh;
+
+    int y = y8;
+    if (cijfer=='8') y = y8;
+    if (letter=='7') y = y8-yDelta*1;
+    if (letter=='6') y = y8-yDelta*2;
+    if (letter=='5') y = y8-yDelta*3;
+    if (letter=='4') y = y8-yDelta*4;
+    if (letter=='3') y = y8-yDelta*5;
+    if (letter=='2') y = y8-yDelta*6;
+    if (letter=='1') y = y1;
+
+    System.out.println("new y = "+y);
+    System.out.println("new x = "+x);
+    if (y>15000) y = 15000;
+    if (y<100) y = 100;
+    if (x>15000) x = 15000;
+    if (x<100) x = 100;
+
+    moveto(x,y);
+
+  }
+
+  @Override
   public void moveto(int x, int y) {
     calcDelays(x,y);
     gotoPos(arm1,x, formattedDelayFactor1);

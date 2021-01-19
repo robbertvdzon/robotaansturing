@@ -10,6 +10,7 @@ public class RestEndpoints {
   public void initRestEndpoints(Javalin app, RobotAansturing robotAansturing) {
     this.robotAansturing = robotAansturing;
     app.post("/api/move", ctx -> move(ctx.body()));
+    app.post("/api/movevlak", ctx -> robotAansturing.movetoVlak(ctx.body()));
     app.get("/api/rebuild", ctx -> robotAansturing.rebuild());
     app.get("/api/restart", ctx -> robotAansturing.restart());
     app.get("/api/home_vert", ctx -> robotAansturing.homeVert());

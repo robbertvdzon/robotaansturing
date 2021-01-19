@@ -23,6 +23,11 @@ public class RobotAansturingClient implements RobotAansturing {
   }
 
   @Override
+  public void movetoVlak(String vlak) {
+    post(host+"/api/movevlak",vlak);
+  }
+
+  @Override
   public void moveto(int x, int y) {
     post(host+"/api/move",x+","+y);
   }

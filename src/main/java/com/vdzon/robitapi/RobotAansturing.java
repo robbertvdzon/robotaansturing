@@ -3,6 +3,8 @@ package com.vdzon.robitapi;
 
 public interface RobotAansturing {
 
+  void movetoVlak(String vlak);
+
   void moveto(int x, int y);
 
   void homeVert();
