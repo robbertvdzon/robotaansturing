@@ -348,7 +348,6 @@ public class RobotAansturingImpl implements RobotAansturing {
     Arrays.asList(split).forEach(
         row -> {
           if (row != null && !row.startsWith("#")) {
-            waitUntilReady(100);
 
             if (row.trim().startsWith("@")){
               System.out.println("moveto:"+row);

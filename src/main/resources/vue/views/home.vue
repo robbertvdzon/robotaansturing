@@ -23,12 +23,9 @@
               <button type="submit" v-on:click="clamp">Pak</button>
               <button type="submit" v-on:click="release">Laat los</button>
        </span>
-      <span>
-              <button type="submit" v-on:click="move1">Pos1</button>
-              <button type="submit" v-on:click="move2">Pos2</button>
-              <button type="submit" v-on:click="move3">Pos3</button>
-              <button type="submit" v-on:click="move4">Pos4</button>
-       </span>
+      <br>
+      <button type="submit" v-on:click="sleeping">Sleep</button>
+      <br>
       <br><br>
       <button type="submit" v-on:click="saveDemo">saveDemo</button>
       <button type="submit" v-on:click="startDemoOnce">start Demo once</button>
@@ -91,40 +88,12 @@ Vue.component("home", {
       fetch(`/api/home_vert`)
       .catch(() => alert("Error"));
     },
-    move1: function (event) {
-      axios.post(`/api/move`, "3000x11000")
-      .then(res => {
-      })
-      .catch(error => {
-        alert("Error")
-      })
-    },
-    move2: function (event) {
-      axios.post(`/api/move`, "10000x3000")
-      .then(res => {
-      })
-      .catch(error => {
-        alert("Error")
-      })
-    },
-    move3: function (event) {
-      axios.post(`/api/move`, "13000x13000")
-      .then(res => {
-      })
-      .catch(error => {
-        alert("Error")
-      })
-    },
-    move4: function (event) {
-      axios.post(`/api/move`, "1000x1000")
-      .then(res => {
-      })
-      .catch(error => {
-        alert("Error")
-      })
-    },
     home_hor: function (event) {
       fetch(`/api/home_hor`)
+      .catch(() => alert("Error"));
+    },
+    sleeping: function (event) {
+      fetch(`/api/sleep`)
       .catch(() => alert("Error"));
     },
     clamp: function (event) {
