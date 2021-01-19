@@ -344,6 +344,9 @@ public class RobotAansturingImpl implements RobotAansturing {
           if (row != null && !row.startsWith("#")) {
             waitUntilReady(100);
 
+            if (row.trim().startsWith("@")){
+              movetoVlak(row.trim().substring(1,2));
+            }
             if (row.trim().startsWith("pak")){
               clamp();
             }
