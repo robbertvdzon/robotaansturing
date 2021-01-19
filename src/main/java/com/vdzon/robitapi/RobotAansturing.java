@@ -19,5 +19,22 @@ public interface RobotAansturing {
 
   void restart();
 
-  void waitUntilReady();
+  String getA8();
+
+  void setA8(String pos);
+
+  String getH1();
+
+  void setH1(String pos);
+
+  String getDemoString();
+
+  void setDemoString(String demoString);
+
+  void runDemoLoop();
+
+  void runDemoOnce();
+
+  void stopDemo();
+
 }

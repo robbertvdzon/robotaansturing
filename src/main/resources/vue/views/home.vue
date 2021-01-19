@@ -29,6 +29,11 @@
               <button type="submit" v-on:click="move3">Pos3</button>
               <button type="submit" v-on:click="move4">Pos4</button>
        </span>
+      <button type="submit" v-on:click="getDemo">getDemo</button>
+      <button type="submit" v-on:click="startDemoOnce">start Demo once</button>
+      <button type="submit" v-on:click="startDemoLoop">start Demo loop</button>
+      <button type="submit" v-on:click="stopDemo">stop Demo</button>
+      <br>
     </div>
   </app-frame>
 </template>
@@ -49,7 +54,7 @@ Vue.component("home", {
       .catch(() => alert("Error"));
     },
     move1: function (event) {
-      fetch(`/api/move/5000/1000`)
+      fetch(`/api/move/3000/11000`)
       .catch(() => alert("Error"));
     },
     move2: function (event) {
@@ -57,7 +62,7 @@ Vue.component("home", {
       .catch(() => alert("Error"));
     },
     move3: function (event) {
-      fetch(`/api/move/10000/10000`)
+      fetch(`/api/move/13000/13000`)
       .catch(() => alert("Error"));
     },
     move4: function (event) {
@@ -74,6 +79,18 @@ Vue.component("home", {
     },
     release: function (event) {
       fetch(`/api/release`)
+      .catch(() => alert("Error"));
+    },
+    startDemoOnce: function (event) {
+      fetch(`/api/startDemoOnce`)
+      .catch(() => alert("Error"));
+    },
+    startDemoLoop: function (event) {
+      fetch(`/api/startDemoLoop`)
+      .catch(() => alert("Error"));
+    },
+    stopDemo: function (event) {
+      fetch(`/api/stopDemo`)
       .catch(() => alert("Error"));
     }
 

@@ -17,6 +17,15 @@ public class RestEndpoints {
     app.get("/api/sleep", ctx -> robotAansturing.sleep());
     app.get("/api/clamp", ctx -> robotAansturing.clamp());
     app.get("/api/release", ctx -> robotAansturing.release());
+    app.get("/api/a8", ctx -> ctx.result(robotAansturing.getA8()));
+    app.post("/api/a8", ctx -> robotAansturing.setA8(ctx.body()));
+    app.get("/api/h1", ctx -> ctx.result(robotAansturing.getH1()));
+    app.post("/api/h1", ctx -> robotAansturing.setH1(ctx.body()));
+    app.get("/api/demo", ctx -> ctx.result(robotAansturing.getDemoString()));
+    app.post("/api/demo", ctx -> robotAansturing.setDemoString(ctx.body()));
+    app.get("/api/startdemoonce", ctx -> robotAansturing.runDemoOnce());
+    app.get("/api/startdemoloop", ctx -> robotAansturing.runDemoLoop());
+    app.get("/api/stopdemo", ctx -> robotAansturing.stopDemo());
   }
 
   private void move(String x, String y) {

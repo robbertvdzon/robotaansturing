@@ -9,6 +9,10 @@ import com.vdzon.berekenarmen.Delays;
 import com.vdzon.robitapi.RobotAansturing;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -19,10 +23,10 @@ public class RobotAansturingImpl implements RobotAansturing {
   private static int ARM3 = 0x5;// was 8
   int lastPos1 = 0;
   int lastPos2 = 0;
-  int lastPos3 = 0;
 
   String formattedDelayFactor1 = "0050";
   String formattedDelayFactor2 = "0050";
+  private boolean allReady = false;
 
   private I2CDevice arm1 = null;
   private I2CDevice arm2 = null;
@@ -38,9 +42,6 @@ public class RobotAansturingImpl implements RobotAansturing {
     }
   }
 
-
-
-
   public void init() {
     if (arm1 != null) { return; }
     try {
@@ -53,7 +54,6 @@ public class RobotAansturingImpl implements RobotAansturing {
     } catch (IOException e) {
       System.out.println("ERROR IOException in init:" + e.getMessage());
     }
-
   }
 
 
@@ -142,9 +142,50 @@ public class RobotAansturingImpl implements RobotAansturing {
   }
 
   @Override
-  public void waitUntilReady() {
-
+  public String getA8() {
+    return loadFile("/home/pi/a8.data");
   }
+
+  @Override
+  public void setA8(String pos) {
+    saveToFile("/home/pi/a8.data", pos);
+  }
+
+  @Override
+  public String getH1() {
+    return loadFile("/home/pi/h1.data");
+  }
+
+  @Override
+  public void setH1(String pos) {
+    saveToFile("/home/pi/h1.data", pos);
+  }
+
+  @Override
+  public String getDemoString() {
+    return loadFile("/home/pi/loop.data");
+  }
+
+  @Override
+  public void setDemoString(String demoString) {
+    saveToFile("/home/pi/loop.data", demoString);
+  }
+
+  @Override
+  public void runDemoOnce() {
+    runOnceInThread(getDemoString());
+  }
+
+  @Override
+  public void runDemoLoop() {
+    startLoop(getDemoString());
+  }
+
+  @Override
+  public void stopDemo() {
+    stopLoop();
+  }
+
 
 
   private void home(I2CDevice arm) {
@@ -176,8 +217,126 @@ public class RobotAansturingImpl implements RobotAansturing {
     if (delayFactor1>9999) delayFactor1 = 9999;
     if (delayFactor2>9999) delayFactor2 = 9999;
 
+    // speedup 2x
+    delayFactor1 = delayFactor1/2;
+    delayFactor2 = delayFactor2/2;
+
     formattedDelayFactor1 = String.format("%04d", (int)delayFactor1);
     formattedDelayFactor2 = String.format("%04d", (int)delayFactor2);
     return delays.totalTime;
+  }
+
+
+  private void saveToFile(String filename, String text) {
+    Path path = Paths.get(filename);
+    byte[] strToBytes = text.getBytes();
+    try {
+      Files.write(path, strToBytes);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private String loadFile(String filename) {
+    try {
+      return new String(Files.readAllBytes(Paths.get(filename)));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return "123";
+  }
+
+  private void udateStatus(){
+      try {
+        int arm1Status = arm1.read();
+        int arm2Status = arm2.read();
+        int arm3Status = arm3.read();
+        allReady = arm1Status==1 && arm2Status==1 && arm3Status!=2; // arm3 : alleen checken dat hij niet aan het moven is
+        Thread.sleep(10);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+  }
+
+
+
+
+
+  private void stopLoop() {
+    if (currentLoopThread != null) {
+      currentLoopThread.stop();
+    }
+  }
+
+  private void startLoop(String text) {
+    currentLoopThread = new Thread(() -> runInLoop(text));
+    currentLoopThread.start();
+  }
+
+  private void runOnceInThread(String text) {
+    new Thread(() -> runOnce(text)).start();
+  }
+
+  private void runInLoop(String text) {
+    while (true) {
+      runOnce(text);
+    }
+  }
+
+  private void runOnce(String text) {
+    String[] split = text.split("#");
+
+    Arrays.asList(split).forEach(
+        row -> {
+          if (row != null && !row.startsWith("#")) {
+            waitUntilReady(100);
+
+            if (row.trim().startsWith("pak")){
+              clamp();
+            }
+            else if (row.trim().startsWith("zet")){
+              release();
+            }
+            else if (row.trim().startsWith("sleep")){
+              sleep();
+            }
+            else {
+              String[] splitWords = row.split(",");
+              if (splitWords.length >= 3) {
+                String posArm1 = splitWords[0].trim();
+                String posArm2 = splitWords[1].trim();
+                try {
+                  int pos1 = Integer.parseInt(posArm1);
+                  int pos2 = Integer.parseInt(posArm2);
+                  calcDelays(pos1, pos2);
+                  gotoPos(arm1, pos1, formattedDelayFactor1);
+                  gotoPos(arm2, pos2, formattedDelayFactor2);
+                } catch (Exception ex) {
+                  ex.printStackTrace();
+                }
+              }
+            }
+
+          }
+        }
+    );
+  }
+
+  private void waitUntilReady(int initialDelay) {
+    sleep(initialDelay);
+    udateStatus();
+    while (!allReady){
+      sleep(10);
+      udateStatus();
+    }
+
+  }
+
+  private void sleep(int initialDelay) {
+    try {
+      Thread.sleep(initialDelay);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 }
