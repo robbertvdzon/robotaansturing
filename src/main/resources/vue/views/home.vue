@@ -35,6 +35,10 @@
       <button type="submit" v-on:click="startDemoLoop">start Demo loop</button>
       <button type="submit" v-on:click="stopDemo">stop Demo</button>
       <br>
+      Naar vlak:
+      <input v-model="vlak" >
+      <button type="submit" v-on:click="movevlak">naar vlak</button>
+      <br>
       Manual pos:
       <input v-model="pos" >
       <button type="submit" v-on:click="move">move</button>
@@ -59,7 +63,8 @@ Vue.component("home", {
     demo:"hoi",
     pos:"1000,1000",
     a8pos:"",
-    h1pos:""
+    h1pos:"",
+    vlak:"A8"
   }),
   created() {
     this.load()
@@ -140,6 +145,14 @@ Vue.component("home", {
     },
     move: function (event) {
       axios.post(`/api/move`, this.pos)
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
+    },
+    movevlak: function (event) {
+      axios.post(`/api/movevlak`, this.vlak)
       .then(res => {
       })
       .catch(error => {

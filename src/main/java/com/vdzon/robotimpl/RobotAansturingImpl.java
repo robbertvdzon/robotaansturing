@@ -91,13 +91,13 @@ public class RobotAansturingImpl implements RobotAansturing {
 
     int y = y8;
     if (cijfer=='8') y = y8;
-    if (letter=='7') y = y8-yDelta*1;
-    if (letter=='6') y = y8-yDelta*2;
-    if (letter=='5') y = y8-yDelta*3;
-    if (letter=='4') y = y8-yDelta*4;
-    if (letter=='3') y = y8-yDelta*5;
-    if (letter=='2') y = y8-yDelta*6;
-    if (letter=='1') y = y1;
+    if (cijfer=='7') y = y8-yDelta*1;
+    if (cijfer=='6') y = y8-yDelta*2;
+    if (cijfer=='5') y = y8-yDelta*3;
+    if (cijfer=='4') y = y8-yDelta*4;
+    if (cijfer=='3') y = y8-yDelta*5;
+    if (cijfer=='2') y = y8-yDelta*6;
+    if (cijfer=='1') y = y1;
 
     System.out.println("new y = "+y);
     System.out.println("new x = "+x);
