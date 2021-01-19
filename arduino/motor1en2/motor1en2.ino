@@ -40,14 +40,16 @@ send: state + pos
 #define MOVING 2
 #define HOMING 3
 #define IN_ERROR 4
+#define GOING_TO_SLEEP 5
+#define SLEEPING 6
 
 #define HOME_SPEED 120
 
 #define dirPin 3
-#define stepPin 4 // 8
+#define stepPin 4 
 #define stepsPerRevolution 2000
 #define arm1SensorPin 6
-#define topSensorPin 8 //4 
+#define topSensorPin 8
 #define enableMotorPin 5
 #define errorPin 9
 #define adressPin1 10
@@ -55,7 +57,7 @@ send: state + pos
 
 char command;
 int requestedPos;
-int vertraginsfactor; // for arm1 en arm2
+int vertraginsfactor; 
 
 char number[50];
 int state = HOMING_NEEDED;
@@ -76,14 +78,13 @@ static const int delayArraySize = 124;
 static const int indexSteps = 20;
 void setup() {
 
-  pinMode(arm1SensorPin, INPUT);
-  pinMode(topSensorPin, INPUT);
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
   pinMode(enableMotorPin, OUTPUT);
   pinMode(errorPin, OUTPUT);
 
-
+  pinMode(arm1SensorPin, INPUT);
+  pinMode(topSensorPin, INPUT);
   pinMode(adressPin1, INPUT);
   pinMode(adressPin1, INPUT);
 
@@ -105,6 +106,7 @@ void setup() {
   // show that we have been restarted
   bootSeq();
 
+  // reset the pins
   digitalWrite(dirPin, LOW);
   digitalWrite(stepPin, LOW);
   digitalWrite(enableMotorPin, LOW);
@@ -188,41 +190,8 @@ void parseCommand(){
 void processCommand(){
  if (command == 'H') home1();
  if (command == 'M') move();
- if (command == 'C') clamp();
- if (command == 'R') release();
  if (command == 'X') sleeping();
 }
-
-void clamp(){
-  state = MOVING;
-  Serial.print("clamp");
-  Serial.print("magneet aan, pull aan");
-  digitalWrite(dirPin, LOW);// magneet
-  digitalWrite(stepPin, HIGH);// pull
-  delay(500);
-  Serial.print("magneet aan, pull uit");
-  digitalWrite(dirPin, HIGH);// magneet
-  digitalWrite(stepPin, LOW);// pull
-  Serial.println("RESET CURRENT COMMAND");
-  state = READY;
-  command = '-';
-}
-
-void release(){
-  state = MOVING;
-  Serial.print("release");
-  Serial.print("magneet aan, pull aan");
-  digitalWrite(dirPin, LOW);// magneet
-  digitalWrite(stepPin, HIGH);// pull
-  delay(500);
-  Serial.print("magneet uit, pull uit");
-  digitalWrite(dirPin, LOW);// magneet
-  digitalWrite(stepPin, LOW);// pull
-  Serial.println("RESET CURRENT COMMAND");
-  state = READY;
-  command = '-';
-}
-
 
 void home1(){
   state = HOMING;
@@ -231,18 +200,19 @@ void home1(){
   Serial.print("pos:");Serial.println(requestedPos);
   home();
   state = READY;
-  Serial.println("RESET CURRENT COMMAND");
   command = '-';
 }
 
 void move(){
 
-  if (state == HOMING_NEEDED){
+  if (state == HOMING_NEEDED || state == SLEEPING){
     home1();
   }
 
   Serial.println("Start moving");
-  state = MOVING;
+  if (state!=GOING_TO_SLEEP){
+    state = MOVING;
+  }
 
   if (requestedPos>currentPos){
     moveUp(requestedPos);
@@ -251,7 +221,9 @@ void move(){
     moveDown(requestedPos);
   }
 
-  state = READY;
+  if (state!=GOING_TO_SLEEP){
+    state = READY;
+  }
   command = '-';
 
 }
@@ -259,6 +231,8 @@ void move(){
 void checkError(){
 
   if (state == HOMING) return;
+  if (state == GOING_TO_SLEEP) return;
+  if (state == SLEEPING) return;
 
   boolean homeSensorOn = digitalRead(arm1SensorPin)==1;
   boolean topSensorOn = digitalRead(topSensorPin)==1;
@@ -270,7 +244,8 @@ void checkError(){
     }
   }
   else if (!error){
-    Serial.println("Entering error mode");
+    Serial.print("Entering error mode while in state:");
+    Serial.println(state);
     error = true;
     state = HOMING_NEEDED;
     digitalWrite(enableMotorPin, HIGH);
@@ -278,33 +253,20 @@ void checkError(){
     errorMessage();
   }
 
-  if (error ){
-    //digitalWrite(errorPin, HIGH);
-  }
-  else{
-   // digitalWrite(errorPin, LOW);
-  }
-
 }
 
 void moveUp(int reqPos){
   digitalWrite(enableMotorPin, LOW);
-  Serial.println("move up");
   digitalWrite(dirPin, HIGH);
   long startTime = millis();
   moveNrSteps(reqPos - currentPos, +1);
   long totalTime = millis() - startTime;
-  Serial.print("totalTime:");
-  Serial.println(totalTime);
-  Serial.println("up");
 }
 
 void moveDown(int reqPos){
   digitalWrite(enableMotorPin, LOW);
-  Serial.println("move down");
   digitalWrite(dirPin, LOW);
   moveNrSteps(currentPos - reqPos, -1);
-  Serial.println("down");
 }
 
 void moveNrSteps(int totalSteps, int direction){
@@ -361,13 +323,12 @@ void home() {
   Serial.println("\t homing finished");
   currentPos = 00;
 
- // finishHome();
-//   digitalWrite(enableMotorPin, HIGH); // Hou motor bekrachtigd!
 
 }
 
 
 void sleeping() {
+  state = GOING_TO_SLEEP;
   digitalWrite(enableMotorPin, LOW);
   error = false;
 
@@ -382,7 +343,8 @@ void sleeping() {
   }
 
   digitalWrite(enableMotorPin, HIGH);
-  state = HOMING_NEEDED;
+  state = SLEEPING;
+  command = '-';  
 }
 
 void bootSeq(){
@@ -401,8 +363,6 @@ void beep(){
     digitalWrite(errorPin, LOW);
     delay(100);
 }
-
-
 
 
 void pulse(int pin, long delaytime){
