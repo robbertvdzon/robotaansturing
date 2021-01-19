@@ -131,7 +131,7 @@ Vue.component("status", {
 
 $(document).ready(function () {
   $("#statusPrev").click(function () {
-    window.location.href = "/home";
+    window.location.href = "/rebuild";
   });
   $("#statusNext").click(function () {
     window.location.href = "/demo";

@@ -16,6 +16,12 @@
         <span>
         </span>
       </div>
+      <button type="submit" v-on:click="saveDemo">saveDemo</button>
+      <button type="submit" v-on:click="startDemoOnce">start Demo once</button>
+      <button type="submit" v-on:click="startDemoLoop">start Demo loop</button>
+      <button type="submit" v-on:click="stopDemo">stop Demo</button>
+      <br>
+      <textarea v-model="demo" rows="10" cols="20"></textarea>
     </div>
   </app-frame>
 </template>
@@ -30,14 +36,30 @@ Vue.component("demo", {
   },
   methods: {
     load: function (event) {
+      fetch(`/api/demo`)
+      .then(res => res.text())
+      .then(text => this.demo=text)
+      .catch(() => alert("Error"));
     },
-    rebuild: function (event) {
-      fetch(`rebuild`)
-      .catch(() => alert("Error while rebuilding"));
+    saveDemo: function (event) {
+      axios.post(`/api/demo`, this.demo)
+      .then(res => {
+      })
+      .catch(error => {
+        alert("Error")
+      })
     },
-    restart: function (event) {
-      fetch(`rebuild`)
-      .catch(() => alert("Error while restart"));
+    startDemoOnce: function (event) {
+      fetch(`/api/startdemoonce`)
+      .catch(() => alert("Error"));
+    },
+    startDemoLoop: function (event) {
+      fetch(`/api/startdemoloop`)
+      .catch(() => alert("Error"));
+    },
+    stopDemo: function (event) {
+      fetch(`/api/stopdemo`)
+      .catch(() => alert("Error"));
     }
   }
 });
