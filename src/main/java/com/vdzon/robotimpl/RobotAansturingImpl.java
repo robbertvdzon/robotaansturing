@@ -133,13 +133,14 @@ public class RobotAansturingImpl implements RobotAansturing {
   @Override
   public void sleep() {
     System.out.println("sleeping");
+    moveto(100,100);
     try {
       arm1.write("^X0000000000000000".getBytes());
       arm2.write("^X0000000000000000".getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
-    waitUntilReady(100);
+    waitUntilReady(50);
   }
 
 
