@@ -62,10 +62,10 @@ public class RobotAansturingImpl implements RobotAansturing {
     System.out.println("move to vlak "+vlak);
     String posA8 = getA8();
     String posH1 = getH1();
-    int xa = Integer.parseInt(posA8.split(",")[0]);
-    int xh = Integer.parseInt(posH1.split(",")[0]);
-    int y8 = Integer.parseInt(posA8.split(",")[1]);
-    int y1 = Integer.parseInt(posH1.split(",")[1]);
+    int xa = Integer.parseInt(posA8.split(",")[1]);
+    int xh = Integer.parseInt(posH1.split(",")[1]);
+    int y8 = Integer.parseInt(posA8.split(",")[0]);
+    int y1 = Integer.parseInt(posH1.split(",")[0]);
 
     int xDelta = (xa-xh)/7;
     int yDelta = (y8-y1)/7;
@@ -345,7 +345,9 @@ public class RobotAansturingImpl implements RobotAansturing {
             waitUntilReady(100);
 
             if (row.trim().startsWith("@")){
-              movetoVlak(row.trim().substring(1,2));
+              System.out.println("moveto:"+row);
+              System.out.println("ss:"+row.trim().substring(1,3));
+              movetoVlak(row.trim().substring(1,3));
             }
             if (row.trim().startsWith("pak")){
               clamp();
