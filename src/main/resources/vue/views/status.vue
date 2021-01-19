@@ -32,9 +32,7 @@
               <button type="submit" v-on:click="clamp">Pak</button>
               <button type="submit" v-on:click="release">Laat los</button>
        </span>
-      <br>
       <hr>
-      <br>
       <span>
               <button type="submit" v-on:click="home_vert">home vertical</button>
               <button type="submit" v-on:click="home_hor">home horizontal</button>
@@ -131,7 +129,7 @@ Vue.component("status", {
 
 $(document).ready(function () {
   $("#statusPrev").click(function () {
-    window.location.href = "/rebuild";
+    window.location.href = "/manual";
   });
   $("#statusNext").click(function () {
     window.location.href = "/demo";

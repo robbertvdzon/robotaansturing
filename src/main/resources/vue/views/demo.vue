@@ -16,12 +16,13 @@
         <span>
         </span>
       </div>
-      <button type="submit" v-on:click="saveDemo">saveDemo</button>
-      <button type="submit" v-on:click="startDemoOnce">start Demo once</button>
-      <button type="submit" v-on:click="startDemoLoop">start Demo loop</button>
-      <button type="submit" v-on:click="stopDemo">stop Demo</button>
-      <br>
       <textarea v-model="demo" rows="10" cols="20"></textarea>
+      <button type="submit" v-on:click="saveDemo">saveDemo</button>
+      <br><br>
+      <button type="submit" v-on:click="startDemoOnce">start once</button>
+      <button type="submit" v-on:click="startDemoLoop">start in loop</button>
+      <button type="submit" v-on:click="stopDemo">stop demo</button>
+      <br>
     </div>
   </app-frame>
 </template>

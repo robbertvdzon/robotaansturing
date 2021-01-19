@@ -19,6 +19,7 @@
       <span>
               <button type="submit" v-on:click="home_vert">home vertical</button>
               <button type="submit" v-on:click="home_hor">home horizontal</button>
+              <button type="submit" v-on:click="sleeping">Sleep</button>
        </span>
       <br>
       <span>
@@ -26,15 +27,16 @@
               <button type="submit" v-on:click="release">Laat los</button>
        </span>
       <br>
-      <button type="submit" v-on:click="sleeping">Sleep</button>
-
+      <br>
       Naar vlak:
       <input v-model="vlak" >
       <button type="submit" v-on:click="movevlak">naar vlak</button>
       <br>
+      <br>
       Manual pos:
       <input v-model="pos" >
       <button type="submit" v-on:click="move">move</button>
+      <br>
       <br>
       A8:
       <input v-model="a8pos" >
