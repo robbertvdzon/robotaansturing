@@ -99,12 +99,11 @@ public class RobotAansturingImpl implements RobotAansturing {
     if (cijfer=='2') y = y8-yDelta*6;
     if (cijfer=='1') y = y1;
 
-    System.out.println("new y = "+y);
-    System.out.println("new x = "+x);
-    if (y>15000) y = 15000;
+    if (y>18500) y = 18500;
     if (y<100) y = 100;
     if (x>15000) x = 15000;
     if (x<100) x = 100;
+
 
     moveto(y,x);
 
@@ -113,15 +112,11 @@ public class RobotAansturingImpl implements RobotAansturing {
   @Override
   public void moveto(int x, int y) {
     System.out.println("move to pos "+x+","+y);
-    System.out.println("lastpos1="+lastPos1);
-    System.out.println("lastpos2="+lastPos2);
 
     calcDelays(x,y);
     gotoPos(arm1,x, formattedDelayFactor1);
     gotoPos(arm2,y, formattedDelayFactor2);
     waitUntilReady(100);
-    System.out.println("new pos1="+lastPos1);
-    System.out.println("new pos2="+lastPos2);
   }
 
   @Override
