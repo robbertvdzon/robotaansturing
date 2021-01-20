@@ -112,6 +112,7 @@ public class RobotAansturingImpl implements RobotAansturing {
 
   @Override
   public void moveto(int x, int y) {
+    System.out.println("move to pos "+x+","+y);
     calcDelays(x,y);
     gotoPos(arm1,x, formattedDelayFactor1);
     gotoPos(arm2,y, formattedDelayFactor2);
@@ -143,17 +144,12 @@ public class RobotAansturingImpl implements RobotAansturing {
     waitUntilReady(50);
   }
 
-
-//  public void gotoPos(I2CDevice arm, int pos) {
-//    gotoPos(arm, pos, "0100");
-//  }
-
-
   public void gotoPos(I2CDevice arm, int pos, String vertraging) {
     try {
+      System.out.println("gotopos:"+pos+" to "+arm.getAddress()+" vertraging:"+vertraging);
       String formattedPos = String.format("%06d", pos);
       String command = "^M" + formattedPos + vertraging;
-      System.out.println("command:"+command);
+      System.out.println("command:"+command+" to "+arm.getAddress());
       if (arm != null) { arm.write(command.getBytes()); }
       if (arm == arm1) { lastPos1 = pos; }
       if (arm == arm2) { lastPos2 = pos; }
