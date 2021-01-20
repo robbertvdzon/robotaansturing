@@ -113,10 +113,15 @@ public class RobotAansturingImpl implements RobotAansturing {
   @Override
   public void moveto(int x, int y) {
     System.out.println("move to pos "+x+","+y);
+    System.out.println("lastpos1="+lastPos1);
+    System.out.println("lastpos2="+lastPos2);
+
     calcDelays(x,y);
     gotoPos(arm1,x, formattedDelayFactor1);
     gotoPos(arm2,y, formattedDelayFactor2);
     waitUntilReady(100);
+    System.out.println("new pos1="+lastPos1);
+    System.out.println("new pos2="+lastPos2);
   }
 
   @Override
@@ -268,6 +273,9 @@ public class RobotAansturingImpl implements RobotAansturing {
     int pulses1 = Math.abs(pos1 - lastPos1);
     int pulses2 = Math.abs(pos2 - lastPos2);
 
+    System.out.println("pulses1="+pulses1);
+    System.out.println("pulses2="+pulses2);
+
     Delays delays = BerekenVersnelling.calcDelays(pulses1, pulses2);
 
     double delayFactor1 = pulses1 == 0 ? 1  : delays.delay1;
@@ -279,6 +287,9 @@ public class RobotAansturingImpl implements RobotAansturing {
     // speedup 2x
     delayFactor1 = delayFactor1/2;
     delayFactor2 = delayFactor2/2;
+
+    System.out.println("delayFactor1="+delayFactor1);
+    System.out.println("delayFactor2="+delayFactor2);
 
     formattedDelayFactor1 = String.format("%04d", (int)delayFactor1);
     formattedDelayFactor2 = String.format("%04d", (int)delayFactor2);
