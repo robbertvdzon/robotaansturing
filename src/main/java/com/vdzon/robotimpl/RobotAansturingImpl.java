@@ -280,8 +280,8 @@ public class RobotAansturingImpl implements RobotAansturing {
     if (delayFactor2>9999) delayFactor2 = 9999;
 
     // speedup 2x
-    delayFactor1 = delayFactor1/2;
-    delayFactor2 = delayFactor2/2;
+//    delayFactor1 = delayFactor1/2;
+//    delayFactor2 = delayFactor2/2;
 
     System.out.println("delayFactor1="+delayFactor1);
     System.out.println("delayFactor2="+delayFactor2);
