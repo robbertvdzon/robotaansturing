@@ -91,6 +91,14 @@ void setup() {
   digitalWrite(magneet2PinB, LOW);
   digitalWrite(beepPin, LOW);
 
+  digitalWrite(magneet1PinA, LOW);//high = pos
+//  digitalWrite(magneet1PinB, HIGH);//2e : spanning
+  analogWrite(magneet1PinB, 50);
+  delay(500);
+  digitalWrite(magneet1PinA, HIGH);//high = pos
+  analogWrite(magneet1PinB, 255);
+  delay(500);
+  digitalWrite(magneet1PinB, LOW);//2e : spanning
 
 }
 
@@ -167,12 +175,17 @@ void clamp(){
   state = GRABBING;
   Serial.print("clamp");
   Serial.print("magneet aan, pull aan");
-  digitalWrite(magneet1PinA, LOW);// magneet
-  digitalWrite(magneet1PinB, HIGH);// pull
+
+  digitalWrite(magneet1PinA, HIGH);//high = pos
+  analogWrite(magneet1PinB, 255); // volle kracht
   delay(500);
   Serial.print("magneet aan, pull uit");
-  digitalWrite(magneet1PinA, HIGH);// magneet
-  digitalWrite(magneet1PinB, LOW);// pull
+  digitalWrite(magneet1PinA, LOW);//high = pos
+  analogWrite(magneet1PinB, 255); // volle kracht
+  delay(500);
+  Serial.print("magneet aan, pull uit");
+  digitalWrite(magneet1PinA, LOW);//high = pos
+  analogWrite(magneet1PinB, 50); // halve kracht
   Serial.println("RESET CURRENT COMMAND");
   state = READY;
   command = '-';
@@ -182,12 +195,11 @@ void release(){
   state = RELEASING;
   Serial.print("release");
   Serial.print("magneet aan, pull aan");
-  digitalWrite(magneet1PinA, LOW);// magneet
-  digitalWrite(magneet1PinB, HIGH);// pull
+  digitalWrite(magneet1PinA, HIGH);//high = pos
+  analogWrite(magneet1PinB, 255); // volle kracht
   delay(500);
   Serial.print("magneet uit, pull uit");
-  digitalWrite(magneet1PinA, LOW);// magneet
-  digitalWrite(magneet1PinB, LOW);// pull
+  digitalWrite(magneet1PinB, LOW);//uit
   Serial.println("RESET CURRENT COMMAND");
   state = READY;
   command = '-';

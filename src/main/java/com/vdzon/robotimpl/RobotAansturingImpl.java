@@ -167,10 +167,12 @@ public class RobotAansturingImpl implements RobotAansturing {
     System.out.println("clamp");
     try {
         arm3.write("^C0000000000000000".getBytes());
-    } catch (IOException e) {
+        Thread.sleep(400);
+    } catch (Exception e) {
       e.printStackTrace();
     }
-    waitUntilReady(100);
+
+//    waitUntilReady(100);
   }
 
   @Override
@@ -178,10 +180,11 @@ public class RobotAansturingImpl implements RobotAansturing {
     System.out.println("release");
     try {
         arm3.write("^R0000000000000000".getBytes());
-    } catch (IOException e) {
+      Thread.sleep(400);
+    } catch (Exception e) {
       e.printStackTrace();
     }
-    waitUntilReady(100);
+//    waitUntilReady(100);
   }
 
   @Override
@@ -282,9 +285,8 @@ public class RobotAansturingImpl implements RobotAansturing {
     // speedup 2x
 //    delayFactor1 = delayFactor1/2;
 //    delayFactor2 = delayFactor2/2;
-    delayFactor1 = delayFactor1*3;
-    delayFactor2 = delayFactor2*3;
-
+//    delayFactor1 = delayFactor1*3;
+//    delayFactor2 = delayFactor2*3;
     System.out.println("delayFactor1="+delayFactor1);
     System.out.println("delayFactor2="+delayFactor2);
 

@@ -27,13 +27,6 @@ difference(){
             }
         }  
 
-        translate([-20,0,0]){
-            rotate([0,90,0]){
-                cylinder(h=108, r=1.2, $fn=100, center=false);
-            }
-        }  
-
-
         for (hoek =[0:45:360])
         rotate([0,0,hoek]){
 
