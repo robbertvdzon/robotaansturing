@@ -352,9 +352,14 @@ void bootSeq(){
 }
 
 void errorMessage(){
-  for (int i = 0; i < 3; i++) {
-    beep();
-  }
+  beepLong();
+}
+
+void beepLong(){
+    digitalWrite(errorPin, HIGH);
+    delay(300);
+    digitalWrite(errorPin, LOW);
+    delay(100);
 }
 
 void beep(){
