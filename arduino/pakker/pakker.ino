@@ -92,13 +92,26 @@ void setup() {
   digitalWrite(beepPin, LOW);
 
   digitalWrite(magneet1PinA, LOW);//high = pos
-//  digitalWrite(magneet1PinB, HIGH);//2e : spanning
-//  analogWrite(magneet1PinB, 50);
-//  delay(500);
-//  digitalWrite(magneet1PinA, HIGH);//high = pos
-//  analogWrite(magneet1PinB, 255);
-//  delay(500);
   digitalWrite(magneet1PinB, LOW);//2e : spanning
+//
+//
+//
+//  digitalWrite(magneet1PinA, HIGH);
+//  for (int i = 0; i < 255; i=i+26) { // in 10 stappen naar 100% : 50sec
+//    Serial.println(i);
+//    analogWrite(magneet1PinB, i);
+//    delay(500);
+//  }
+// 
+//  delay(100); // wacht 100msec
+//
+//  for (int i = 255; i > 0; i=i-26) { // in 10 stappen naar 100% : 50sec
+//    Serial.println(i);
+//    analogWrite(magneet1PinB, i);
+//    delay(500);
+//  }
+
+  
 
 }
 
@@ -178,7 +191,10 @@ void clamp(){
 
   digitalWrite(magneet1PinA, HIGH);//high = pos
   analogWrite(magneet1PinB, 255); // volle kracht
-  delay(100);
+  delay(50);
+  digitalWrite(magneet1PinA, HIGH);//high = pos
+  analogWrite(magneet1PinB, 50); // volle kracht
+  delay(1000);
   Serial.print("magneet aan, pull uit");
   digitalWrite(magneet1PinA, LOW);//high = pos
   analogWrite(magneet1PinB, 255); // volle kracht
@@ -197,7 +213,9 @@ void release(){
   Serial.print("magneet aan, pull aan");
   digitalWrite(magneet1PinA, HIGH);//high = pos
   analogWrite(magneet1PinB, 255); // volle kracht
-  delay(200);
+  delay(50);
+  analogWrite(magneet1PinB, 50); // halve kracht
+  delay(1000);
   Serial.print("magneet uit, pull uit");
   digitalWrite(magneet1PinB, LOW);//uit
   Serial.println("RESET CURRENT COMMAND");
