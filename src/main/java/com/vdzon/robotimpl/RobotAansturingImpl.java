@@ -287,8 +287,8 @@ public class RobotAansturingImpl implements RobotAansturing {
     delayFactor2 = delayFactor2/2;
 //    delayFactor1 = delayFactor1*3;
 //    delayFactor2 = delayFactor2*3;
-    System.out.println("delayFactor1="+delayFactor1);
-    System.out.println("delayFactor2="+delayFactor2);
+    System.out.println("delayFactor1a="+delayFactor1);
+    System.out.println("delayFactor2a="+delayFactor2);
 
     formattedDelayFactor1 = String.format("%04d", (int)delayFactor1);
     formattedDelayFactor2 = String.format("%04d", (int)delayFactor2);
