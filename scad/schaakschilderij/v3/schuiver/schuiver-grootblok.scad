@@ -32,7 +32,7 @@ difference(){
 
             translate([-1,-5,-30]){
                 rotate([0,0,0]){
-                    cube([2,5,60], center=false);
+                    cube([2,10,60], center=false);
                 }
             }
         }

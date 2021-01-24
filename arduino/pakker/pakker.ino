@@ -194,11 +194,11 @@ void clamp(){
   delay(50);
   digitalWrite(magneet1PinA, HIGH);//high = pos
   analogWrite(magneet1PinB, 50); // volle kracht
-  delay(1000);
+  delay(50);
   Serial.print("magneet aan, pull uit");
   digitalWrite(magneet1PinA, LOW);//high = pos
   analogWrite(magneet1PinB, 255); // volle kracht
-  delay(200);
+  delay(100);
   Serial.print("magneet aan, pull uit");
   digitalWrite(magneet1PinA, LOW);//high = pos
   analogWrite(magneet1PinB, 50); // halve kracht
