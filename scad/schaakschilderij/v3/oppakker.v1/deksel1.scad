@@ -37,7 +37,12 @@ difference(){
             }
         }        
 
-        translate([18+39/2,24-52+6.5,-1]){
+        translate([18+39-13,24-52+6.5,-1]){
+            rotate([0,0,90]){
+                cylinder(h=48, r=3, $fn=100, center=false);
+            }
+        }        
+        translate([18+13,24-52+6.5,-1]){
             rotate([0,0,90]){
                 cylinder(h=48, r=3, $fn=100, center=false);
             }
