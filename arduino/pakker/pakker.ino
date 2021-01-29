@@ -88,6 +88,8 @@ void setup() {
   digitalWrite(beepPin, LOW);
   analogWrite(magneetPin, 0);
   analogWrite(pullMagneetPin, 0);
+  
+  
 
 }
 

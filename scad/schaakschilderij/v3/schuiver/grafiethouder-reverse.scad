@@ -29,8 +29,8 @@ translate([0,-7,-7]){
                 }  
 
 
-                translate([-3.5,1,0]){
-                    cube([7,12,40], center=false);
+                translate([-3.5,1,6]){
+                    cube([7,12,34], center=false);
                 }
 
             }
