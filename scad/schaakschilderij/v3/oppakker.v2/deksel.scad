@@ -1,39 +1,93 @@
 
+$dikte = 1;
+$extraHoogte = 10;
+
 difference(){
 	union(){
-        translate([0,0,0]){
-            roundedcube([77+4, 56+4, 52+4], false, 6, "zmax");
+        translate([-2-2-$dikte,-23+5-$dikte,0]){
+          roundedcube([77+4+$dikte*2, 56+$dikte*2, 50+$dikte+$extraHoogte], false, 6, "zmax");
         }
+       
+        // assen: blok er onder
 
-
+        translate([9.5+75/2,50,17.5]){
+            rotate([90,0,0]){
+//                cylinder(h=200, r=5, $fn=100, center=false);
+            }
+        }        
+        translate([-10,-10+5,6.5]){
+            rotate([0,90,0]){
+  //             cylinder(h=200, r=5, $fn=100, center=false);
+            }
+        }  
 
         
 	}
 	union() {
+        translate([-2-2,-23+5,-0.01]){
+          roundedcube([77+4, 56, 50+$extraHoogte], false, 6, "zmax");
+//          roundedcube([77, 56, 50], false, 6, "zmax");
+//           cube([77,56,50]);
+        }
+        // gewone pakker
+        translate([0,0,-0.01]){
+           //include <oppakker.scad>;                
+        }  
+        // pakker + 7mm ruimte bovenin
+        translate([0,0,7]){
+           //include <oppakker.scad>;                
+        }  
 
-        translate([-2+3,-10+5,6.5]){
-            rotate([0,90,0]){
-                cylinder(h=280, r=6, $fn=100, center=false);
-            }
-        }        
-        translate([-9.5+75/2,38-3,17.5]){
+
+        
+        // assen
+        translate([-9.5+75/2,50,17.5]){
             rotate([90,0,0]){
                 cylinder(h=200, r=6, $fn=100, center=false);
             }
-        }
-        translate([9.5+75/2,38-3,17.5]){
-            rotate([90,0,0]){
-                cylinder(h=250, r=6, $fn=100, center=false);
+            translate([-6,-115,-20]){
+             cube([12,110,20]);
             }
-        }     
-
-
-        translate([2,2,-0.01]){
-           cube([77,56,52], center=false);
         }
+        translate([9.5+75/2,50,17.5]){
+            rotate([90,0,0]){
+                cylinder(h=200, r=6, $fn=100, center=false);
+            }
+            translate([-6,-115,-20]){
+             cube([12,110,20]);
+            }
+        }        
+        translate([-10,-10+5,6.5]){
+            rotate([0,90,0]){
+               cylinder(h=200, r=6, $fn=100, center=false);
+            }
+            translate([-5,-6,-20]){
+             cube([110,12,20]);
+            }
+        }  
+
+
+        
+        // boorgaten voor deksel        
+        translate([75/2,130,40]){
+            rotate([90,0,0]){
+                cylinder(h=120, r=1.2, $fn=100, center=false);
+            }
+        }               
+        translate([75/2-20,-0,5]){
+            rotate([90,0,0]){
+                cylinder(h=20, r=1.2, $fn=100, center=false);
+            }
+        }               
+        translate([75/2+20,-0,5]){
+            rotate([90,0,0]){
+                cylinder(h=20, r=1.2, $fn=100, center=false);
+            }
+        }  
 
 	}
 }
+
 
 
 $fs = 0.15;

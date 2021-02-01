@@ -304,7 +304,7 @@ difference(){
         // boorgaten voor deksel        
         translate([75/2,130,40]){
             rotate([90,0,0]){
-                cylinder(h=200, r=1.2, $fn=100, center=false);
+                cylinder(h=120, r=1.2, $fn=100, center=false);
             }
         }               
         translate([75/2-20,-0,5]){
