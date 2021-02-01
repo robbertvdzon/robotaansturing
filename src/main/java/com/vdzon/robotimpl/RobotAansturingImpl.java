@@ -286,8 +286,8 @@ public class RobotAansturingImpl implements RobotAansturing {
 
 //    delayFactor1 = delayFactor1/2;
 //    delayFactor2 = delayFactor2/2;
-    delayFactor1 = delayFactor1/3;
-    delayFactor2 = delayFactor2/3;
+    delayFactor1 = delayFactor1/4;
+    delayFactor2 = delayFactor2/4;
 //    delayFactor1 = delayFactor1*2;
 //    delayFactor2 = delayFactor2*2;
 //    delayFactor1 = delayFactor1*3;
