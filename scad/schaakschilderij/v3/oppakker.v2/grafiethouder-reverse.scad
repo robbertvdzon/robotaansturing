@@ -11,9 +11,9 @@ translate([0,-7,-7]){
                 }  
 
 
-                translate([0,7,14]){
+                translate([0,7,7]){
                     rotate([0,0,90]){
-                        cylinder(h=40-14, r=4.5, $fn=100, center=false);
+                        cylinder(h=40-7, r=4.5, $fn=100, center=false);
                     }
                 }  
 
